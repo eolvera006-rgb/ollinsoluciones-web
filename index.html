@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ollin Soluciones</title>
+<meta name="description" content="Soluciones y automatización a la medida para cualquier empresa. Si se repite, se puede automatizar. Sin inversión inicial.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Schibsted+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Hallmark · pre-emit critique: P5 H5 E4 S5 R4 V5
+ * route: custom (marca Ollin) · rev 4 (diagnóstico + hero neutral) · structure: franjas a todo lo ancho — hero noche con tablero, rejilla de resultados, franja tezontle, hoja de términos, contacto noche
+ * paper: niebla #EFF5F5 · noche #0B1012 · accent: tezontle #6C2B24 · display: Newsreader · body: Schibsted Grotesk · data: IBM Plex Mono
+ * copy: sin métricas de la empresa; el tablero del hero es ilustrativo y lo dice
+ */
+:root{
+  --niebla:#EFF5F5; --blanco:#FAFCFC; --tinta:#121A1C; --pizarra:#505A5D; --linea:#CBD3D3; --linea-2:#DDE4E4;
+  --noche:#0B1012; --noche-2:#141C1F; --noche-3:#1C2528; --niebla-noche:#E7ECED; --gris-noche:#A9B3B5; --linea-noche:#2A3336;
+  --tezontle:#6C2B24; --tezontle-claro:#BF6B5E; --tez-muted:#E4CFCB; --tez-linea:#8A433B;
+
+  --paper:var(--niebla); --paper-2:var(--blanco); --ink:var(--tinta); --muted:var(--pizarra); --rule:var(--linea); --rule-2:var(--linea-2);
+  --accent:var(--tezontle); --accent-ink:var(--blanco);
+
+  --font-display:"Newsreader","Iowan Old Style",Georgia,serif;
+  --font-body:"Schibsted Grotesk","Helvetica Neue",Arial,sans-serif;
+  --font-data:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --gutter:clamp(20px,4.5vw,64px); --max:1200px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#101719; --paper-2:var(--noche-2); --ink:var(--niebla-noche); --muted:var(--gris-noche); --rule:var(--linea-noche); --rule-2:#20292C;
+  --accent:var(--tezontle-claro); --accent-ink:var(--noche); color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#101719; --paper-2:var(--noche-2); --ink:var(--niebla-noche); --muted:var(--gris-noche); --rule:var(--linea-noche); --rule-2:#20292C;
+  --accent:var(--tezontle-claro); --accent-ink:var(--noche); color-scheme:dark;
+}
+/* Franjas: redefinen los tokens localmente, así todo lo de adentro (logo incluido) se adapta solo */
+.noche{--paper:var(--noche); --paper-2:var(--noche-2); --ink:var(--niebla-noche); --muted:var(--gris-noche); --rule:var(--linea-noche); --rule-2:var(--noche-3); --accent:var(--tezontle-claro); --accent-ink:var(--noche)}
+.tezontle{--paper:var(--tezontle); --ink:var(--niebla); --muted:var(--tez-muted); --rule:var(--tez-linea); --accent:var(--niebla); --accent-ink:var(--tezontle)}
+
+*{box-sizing:border-box}
+html,body{overflow-x:clip}
+html{scroll-behavior:smooth}
+body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased}
+.banda{background:var(--paper); color:var(--ink)}
+.wrap{max-width:var(--max); margin:0 auto; padding-inline:var(--gutter)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
+h1,h2,h3{font-family:var(--font-display); font-weight:400; font-style:normal; margin:0; text-wrap:balance; overflow-wrap:anywhere; min-width:0}
+p{margin:0}
+.mono{font-family:var(--font-data); font-size:12px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--muted)}
+.mono .punto{display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--accent); margin-right:10px; vertical-align:1px}
+.pend{font-family:var(--font-data); font-size:.85em; letter-spacing:0; text-transform:none; color:var(--accent); border-bottom:1px dotted currentColor}
+
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:10px; font-family:var(--font-body); font-weight:700; font-size:15px; letter-spacing:.01em; text-decoration:none; white-space:nowrap; min-height:50px; padding:0 26px; border-radius:2px; border:1px solid var(--ink); color:var(--ink); background:transparent; cursor:pointer; transition:background .2s, color .2s, border-color .2s}
+.btn:hover{background:var(--ink); color:var(--paper)}
+.btn.lleno{background:var(--accent); border-color:var(--accent); color:var(--accent-ink)}
+.btn.lleno:hover{background:var(--ink); border-color:var(--ink); color:var(--paper)}
+.sim{fill:var(--accent)} .let{fill:var(--ink)}
+
+/* — Barra — */
+.nav{display:flex; align-items:center; justify-content:space-between; gap:24px; padding-block:26px; border-bottom:1px solid var(--rule)}
+.nav .logo{display:block; width:clamp(148px,16vw,196px)}
+.nav .logo svg{display:block; width:100%; height:auto}
+.nav ul{list-style:none; margin:0; padding:0; display:flex; gap:36px; font-size:14.5px}
+.nav ul a{text-decoration:none; color:var(--muted); white-space:nowrap; transition:color .2s}
+.nav ul a:hover{color:var(--ink)}
+.nav .btn{min-height:42px; padding:0 18px; font-size:14px}
+@media (max-width:880px){ .nav ul{display:none} }
+
+/* Barra fija y ojo que mira alrededor */
+.barra{position:sticky; top:env(safe-area-inset-top,0px); z-index:10; background:var(--paper)}
+.barra .nav{padding-block:18px}
+.nav .pupila{animation:mirar 30s ease-in-out infinite}
+/* 0–5.4 s mira alrededor · 5.4–30 s reposo */
+@keyframes mirar{
+  0%,1.5%{transform:translate(0,0)}
+  3%,6.5%{transform:translate(-509px,57px)}
+  8%,11%{transform:translate(-358px,396px)}
+  12.5%,16%{transform:translate(38px,320px)}
+  18%,100%{transform:translate(0,0)}
+}
+@media (prefers-reduced-motion:reduce){ .nav .pupila{animation:none} }
+
+/* — Hero — */
+.hero{position:relative; overflow:hidden}
+.hero .rueda{position:absolute; width:min(62vw,760px); aspect-ratio:1; right:max(-18vw,-240px); top:clamp(24px,5vw,80px); pointer-events:none}
+.hero .rueda svg{display:block; width:100%; height:100%; animation:rodar 1.8s cubic-bezier(.2,.7,.1,1) both}
+.hero .rueda .sim{fill:var(--tezontle)}
+@keyframes rodar{from{transform:translateX(22%) rotate(-150deg)} to{transform:none}}
+@media (prefers-reduced-motion:reduce){ .hero .rueda svg{animation:none} html{scroll-behavior:auto} *{transition:none!important} }
+.hero-in{position:relative; display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); gap:clamp(40px,6vw,96px); align-items:end; padding-block:clamp(56px,9vw,130px) clamp(72px,9vw,120px)}
+@media (max-width:920px){ .hero-in{grid-template-columns:minmax(0,1fr)} .hero .rueda{width:88vw; right:-40vw; top:0; opacity:.55} }
+.hero h1{font-size:clamp(52px,8.4vw,118px); line-height:.94; letter-spacing:-.03em; margin-top:26px}
+.hero h1 span{color:var(--accent)}
+.hero .lede{font-size:clamp(18px,1.55vw,21px); line-height:1.55; color:var(--muted); max-width:52ch; margin-top:32px}
+.hero .cta{display:flex; flex-wrap:wrap; gap:14px; margin-top:40px}
+
+/* Tablero ilustrativo */
+.tablero{margin:0; background:color-mix(in oklab, var(--paper-2) 92%, transparent); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border:1px solid var(--rule); border-radius:4px; font-family:var(--font-data); font-size:13px; box-shadow:0 30px 80px -30px rgb(0 0 0 / .6)}
+.tablero .cab{display:flex; justify-content:space-between; gap:12px; padding:16px 20px; border-bottom:1px solid var(--rule); font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted)}
+.tareas{list-style:none; margin:0; padding:4px 22px}
+.tareas li{display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:baseline; gap:16px; padding:15px 0; border-bottom:1px solid var(--rule-2)}
+.tareas li:last-child{border-bottom:0}
+.tareas li > span:first-child{color:var(--ink)}
+.tareas .estado{display:flex; gap:10px; white-space:nowrap; font-size:12px; letter-spacing:.06em; text-transform:uppercase}
+.tareas s{color:var(--muted); opacity:.7}
+.tareas b{font-weight:500; color:var(--accent)}
+@media (max-width:420px){ .tareas li{grid-template-columns:minmax(0,1fr)} }
+.tablero .pie-t{padding:18px 22px 20px; border-top:1px solid var(--rule)}
+.tablero .pie-t b{font-family:var(--font-display); font-weight:400; font-size:22px; letter-spacing:-.01em; color:var(--ink)}
+
+/* — Secciones claras — */
+.sec{padding-block:clamp(80px,11vw,150px)}
+.sec.pegada{padding-top:0}
+.cabeza{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:28px clamp(40px,6vw,96px); align-items:end; margin-bottom:clamp(48px,6vw,80px)}
+@media (max-width:860px){ .cabeza{grid-template-columns:minmax(0,1fr)} }
+.cabeza h2{font-size:clamp(38px,5vw,68px); line-height:1.02; letter-spacing:-.025em; margin-top:22px}
+.cabeza > p{color:var(--muted); font-size:18px; max-width:48ch}
+
+.perfiles{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); border-top:1px solid var(--ink)}
+.perfil{padding-block:36px 8px; display:grid; gap:14px; align-content:start}
+.perfil:first-child{padding-right:clamp(28px,4vw,56px)}
+.perfil + .perfil{border-left:1px solid var(--rule); padding-left:clamp(28px,4vw,56px)}
+@media (max-width:760px){
+  .perfiles{grid-template-columns:minmax(0,1fr)}
+  .perfil:first-child{padding-right:0}
+  .perfil + .perfil{border-left:0; border-top:1px solid var(--rule); padding-left:0; margin-top:28px}
+}
+.perfil h3{font-size:clamp(28px,3vw,38px); line-height:1.1; letter-spacing:-.015em}
+.perfil p:not(.mono){color:var(--muted); max-width:50ch}
+
+.margen{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); border-top:1px solid var(--ink)}
+@media (max-width:980px){ .margen{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:620px){ .margen{grid-template-columns:minmax(0,1fr)} }
+.margen article{padding:34px clamp(20px,2.6vw,36px) 44px 0; border-bottom:1px solid var(--rule); display:grid; gap:14px; align-content:start}
+.margen h3{font-size:clamp(25px,2.3vw,31px); line-height:1.12; letter-spacing:-.012em}
+.margen p:not(.mono){color:var(--muted); font-size:16px}
+
+/* — Diagnóstico — */
+.diag-in{display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); gap:48px clamp(40px,7vw,112px); align-items:start}
+@media (max-width:900px){ .diag-in{grid-template-columns:minmax(0,1fr)} }
+.diag .texto{display:grid; gap:24px}
+.diag h2{font-size:clamp(38px,5vw,66px); line-height:1.02; letter-spacing:-.025em}
+.diag .texto > p:not(.mono){color:var(--muted); font-size:18px; max-width:48ch}
+.sintomas{list-style:none; margin:18px 0 0; padding:0; border-top:1px solid var(--ink)}
+.sintomas li{display:grid; grid-template-columns:18px minmax(0,1fr); gap:14px; padding:18px 0; border-bottom:1px solid var(--rule); font-family:var(--font-display); font-size:clamp(20px,1.9vw,24px); line-height:1.3}
+.sintomas li::before{content:""; width:9px; height:9px; margin-top:.5em; border:1.5px solid var(--accent); border-radius:50%}
+.veredicto{margin-top:clamp(56px,7vw,96px); padding-top:clamp(36px,4vw,52px); border-top:1px solid var(--ink); display:flex; flex-wrap:wrap; justify-content:space-between; align-items:end; gap:28px 48px}
+.veredicto .grande{font-family:var(--font-display); font-size:clamp(34px,4.4vw,60px); line-height:1.04; letter-spacing:-.025em; max-width:20ch; text-wrap:balance}
+.veredicto .grande span{color:var(--accent)}
+
+/* — Franja tezontle — */
+.franja .wrap{padding-block:clamp(72px,10vw,130px); display:grid; grid-template-columns:minmax(0,1.4fr) minmax(0,1fr); gap:40px clamp(40px,6vw,96px); align-items:end}
+@media (max-width:860px){ .franja .wrap{grid-template-columns:minmax(0,1fr)} }
+.franja h2{font-size:clamp(40px,5.6vw,76px); line-height:1; letter-spacing:-.028em}
+.franja p{color:var(--muted); font-size:18px; max-width:44ch}
+
+/* — Hoja de términos — */
+.modelo{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.15fr); gap:48px clamp(40px,7vw,112px); align-items:start}
+@media (max-width:900px){ .modelo{grid-template-columns:minmax(0,1fr)} }
+.modelo h2{font-size:clamp(38px,5vw,64px); line-height:1.02; letter-spacing:-.025em}
+.modelo .texto{display:grid; gap:22px; align-content:start}
+.modelo .texto > p:not(.mono){color:var(--muted); font-size:18px; max-width:46ch}
+.terminos{background:var(--paper-2); border:1px solid var(--rule); border-radius:4px}
+.terminos .cab{display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:20px 26px; border-bottom:1px solid var(--ink)}
+.terminos .cab h3{font-size:24px}
+.terminos dl{margin:0}
+.terminos dl div{display:grid; grid-template-columns:minmax(0,170px) minmax(0,1fr); gap:6px 24px; padding:18px 26px; border-bottom:1px solid var(--rule-2)}
+.terminos dl div:last-child{border-bottom:0}
+@media (max-width:520px){ .terminos dl div{grid-template-columns:minmax(0,1fr)} }
+.terminos dt{font-family:var(--font-data); font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); padding-top:3px}
+.terminos dd{margin:0; font-size:16px}
+.terminos dd b{font-family:var(--font-display); font-weight:500; font-size:20px; display:block; line-height:1.25}
+.terminos dd span{color:var(--muted); font-size:15px}
+
+/* — Contacto — */
+.contacto .wrap{padding-block:clamp(80px,11vw,140px); display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:56px clamp(40px,7vw,112px); align-items:start}
+@media (max-width:900px){ .contacto .wrap{grid-template-columns:minmax(0,1fr)} }
+.contacto h2{font-size:clamp(42px,5.8vw,80px); line-height:.98; letter-spacing:-.03em; margin-top:22px}
+.contacto .lede{color:var(--muted); font-size:18px; max-width:44ch; margin-top:26px}
+.vias{list-style:none; margin:40px 0 0; padding:0; border-top:1px solid var(--rule)}
+.vias li{display:grid; grid-template-columns:120px minmax(0,1fr); gap:12px; padding:18px 0; border-bottom:1px solid var(--rule)}
+@media (max-width:420px){ .vias li{grid-template-columns:minmax(0,1fr)} }
+.vias li > span:first-child{font-family:var(--font-data); font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); padding-top:4px}
+.vias a{text-decoration:none; font-size:18px; border-bottom:1px solid var(--rule); transition:border-color .2s; overflow-wrap:anywhere}
+.vias a:hover{border-color:var(--accent)}
+.forma{display:grid; gap:6px; background:var(--paper-2); border:1px solid var(--rule); border-radius:4px; padding:32px clamp(22px,3vw,36px)}
+.forma h3{font-size:28px; margin-bottom:10px}
+.forma label{font-size:13px; font-weight:500; color:var(--muted); margin-top:14px}
+.forma input,.forma textarea{font:inherit; font-size:16px; color:var(--ink); background:transparent; border:0; border-bottom:1px solid var(--rule); border-radius:0; padding:10px 0; width:100%; min-width:0; transition:border-color .2s}
+.forma textarea{resize:vertical; min-height:96px}
+.forma input::placeholder,.forma textarea::placeholder{color:var(--muted); opacity:.7}
+.forma input:focus,.forma textarea:focus{outline:none; border-bottom-color:var(--accent); box-shadow:0 1px 0 0 var(--accent)}
+.forma [aria-invalid="true"]{border-bottom-color:var(--accent)}
+.forma .aviso{font-size:13px; line-height:1.5; color:var(--muted); margin-top:18px}
+.forma .aviso a{color:var(--ink)}
+.forma .error{color:var(--accent); font-size:14px; margin-top:10px}
+.forma .acciones{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:28px}
+@media (max-width:460px){ .forma .acciones{grid-template-columns:minmax(0,1fr)} }
+
+/* — Pie — */
+.pie .wrap{padding-block:0 44px}
+.pie .fila{border-top:1px solid var(--rule); padding-top:36px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:18px 40px; font-size:14px; color:var(--muted)}
+.pie .marca{display:block; width:150px}
+.pie .marca svg{display:block; width:100%; height:auto}
+.pie .legal a{text-decoration:none; border-bottom:1px solid var(--rule)}
+.pie .legal a:hover{color:var(--ink)}
+.pie .slogan{font-family:var(--font-display); font-size:18px; color:var(--ink)}
+</style>
+</head>
+<body>
+
+<div class="barra noche">
+  <div class="wrap">
+    <nav class="nav" aria-label="Principal">
+      <a class="logo" href="#" aria-label="Ollin Soluciones, inicio"><svg viewBox="0 0 9261 2617" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ollin Soluciones y Automatización"><defs><mask id="mirada" maskUnits="userSpaceOnUse" x="0" y="0" width="9261" height="2617"><rect width="9261" height="2617" fill="#fff"/><circle class="pupila" cx="1254.88" cy="1336.47" r="301.40" fill="#000"/></mask></defs><circle class="sim" cx="1010" cy="1506" r="810" mask="url(#mirada)"/><path class="let" fill-rule="nonzero" d="M3146.0 234.0Q3301.0 234.0 3431.5 287.0Q3562.0 340.0 3658.5 437.5Q3755.0 535.0 3807.5 668.5Q3860.0 802.0 3860.0 963.0Q3860.0 1127.0 3806.5 1263.0Q3753.0 1399.0 3655.5 1499.0Q3558.0 1599.0 3425.5 1653.5Q3293.0 1708.0 3136.0 1708.0Q2980.0 1708.0 2849.0 1655.0Q2718.0 1602.0 2621.5 1504.5Q2525.0 1407.0 2472.5 1273.0Q2420.0 1139.0 2420.0 977.0Q2420.0 815.0 2473.5 678.5Q2527.0 542.0 2624.5 442.5Q2722.0 343.0 2854.5 288.5Q2987.0 234.0 3146.0 234.0ZM3150.0 1652.0Q3285.0 1652.0 3383.0 1578.0Q3481.0 1504.0 3535.0 1361.5Q3589.0 1219.0 3589.0 1014.0Q3589.0 782.0 3531.0 620.0Q3473.0 458.0 3369.5 373.5Q3266.0 289.0 3129.0 289.0Q2995.0 289.0 2896.5 363.0Q2798.0 437.0 2744.0 579.5Q2690.0 722.0 2690.0 928.0Q2690.0 1159.0 2748.0 1321.0Q2806.0 1483.0 2909.5 1567.5Q3013.0 1652.0 3150.0 1652.0Z M4350.0 1627.0 4482.0 1658.0V1686.0H3984.0V1658.0L4115.0 1627.0V400.0Q4102.0 393.0 4078.5 380.0Q4055.0 367.0 4023.0 348.5Q3991.0 330.0 3952.0 308.0V287.0L4341.0 200.0H4350.0V383.0Z M4919.0 1627.0 5051.0 1658.0V1686.0H4553.0V1658.0L4684.0 1627.0V400.0Q4671.0 393.0 4647.5 380.0Q4624.0 367.0 4592.0 348.5Q4560.0 330.0 4521.0 308.0V287.0L4910.0 200.0H4919.0V383.0Z M5371.0 500.0Q5302.0 500.0 5262.5 454.5Q5223.0 409.0 5223.0 351.0Q5223.0 294.0 5262.5 252.5Q5302.0 211.0 5371.0 211.0Q5440.0 211.0 5477.5 252.5Q5515.0 294.0 5515.0 351.0Q5515.0 409.0 5477.5 454.5Q5440.0 500.0 5371.0 500.0ZM5503.0 631.0V831.0V1627.0L5632.0 1658.0V1686.0H5136.0V1658.0L5268.0 1627.0V854.0Q5257.0 845.0 5236.5 830.0Q5216.0 815.0 5189.0 795.5Q5162.0 776.0 5131.0 753.0V732.0L5494.0 631.0Z M6081.0 841.0V1627.0L6211.0 1658.0V1686.0H5715.0V1658.0L5846.0 1627.0V854.0Q5830.0 841.0 5800.0 818.0Q5770.0 795.0 5710.0 753.0V732.0L6073.0 631.0H6081.0ZM6367.0 1658.0 6497.0 1627.0V994.0Q6497.0 931.0 6476.0 890.0Q6455.0 849.0 6411.5 828.5Q6368.0 808.0 6299.0 808.0Q6230.0 808.0 6165.5 827.0Q6101.0 846.0 6053.0 869.0L6043.0 849.0Q6121.0 783.0 6177.5 742.0Q6234.0 701.0 6279.0 679.5Q6324.0 658.0 6365.0 650.0Q6406.0 642.0 6454.0 642.0Q6599.0 642.0 6665.5 720.0Q6732.0 798.0 6732.0 961.0V1627.0L6864.0 1658.0V1686.0H6367.0Z M2513.1640625 2420.74609375Q2489.580078125 2420.74609375 2469.7314453125 2413.568359375Q2449.8828125 2406.390625 2436.7724609375 2391.595703125Q2423.662109375 2376.80078125 2420.0 2354.095703125L2467.16796875 2344.57421875Q2468.33984375 2364.49609375 2479.6923828125 2374.2373046875Q2491.044921875 2383.978515625 2512.138671875 2383.978515625Q2526.0546875 2383.978515625 2534.3310546875 2380.31640625Q2542.607421875 2376.654296875 2546.26953125 2370.5751953125Q2549.931640625 2364.49609375 2549.931640625 2357.171875Q2549.931640625 2345.453125 2541.2158203125 2339.2275390625Q2532.5 2333.001953125 2518.4375 2330.21875L2497.197265625 2326.1171875Q2486.2109375 2324.06640625 2474.4921875 2320.4775390625Q2462.7734375 2316.888671875 2452.7392578125 2310.2236328125Q2442.705078125 2303.55859375 2436.4794921875 2292.7919921875Q2430.25390625 2282.025390625 2430.25390625 2265.765625Q2430.25390625 2245.111328125 2440.8740234375 2230.90234375Q2451.494140625 2216.693359375 2469.7314453125 2209.4423828125Q2487.96875 2202.19140625 2511.11328125 2202.19140625Q2533.671875 2202.19140625 2551.6162109375 2209.076171875Q2569.560546875 2215.9609375 2581.279296875 2229.0712890625Q2592.998046875 2242.181640625 2596.806640625 2261.078125L2550.517578125 2270.599609375Q2549.19921875 2260.931640625 2545.1708984375 2253.8271484375Q2541.142578125 2246.72265625 2533.37890625 2242.8408203125Q2525.615234375 2238.958984375 2512.724609375 2238.958984375Q2501.298828125 2238.958984375 2493.4619140625 2242.03515625Q2485.625 2245.111328125 2481.5966796875 2250.4580078125Q2477.568359375 2255.8046875 2477.568359375 2262.982421875Q2477.568359375 2273.3828125 2487.6025390625 2279.0224609375Q2497.63671875 2284.662109375 2515.21484375 2288.03125L2537.041015625 2292.42578125Q2552.275390625 2295.35546875 2566.337890625 2302.1669921875Q2580.400390625 2308.978515625 2589.3359375 2321.576171875Q2598.271484375 2334.173828125 2598.271484375 2354.53515625Q2598.271484375 2375.921875 2587.431640625 2390.716796875Q2576.591796875 2405.51171875 2557.4755859375 2413.12890625Q2538.359375 2420.74609375 2513.1640625 2420.74609375Z M2777.076171875 2420.74609375Q2744.703125 2420.74609375 2721.119140625 2407.4892578125Q2697.53515625 2394.232421875 2684.791015625 2369.6962890625Q2672.046875 2345.16015625 2672.046875 2311.46875Q2672.046875 2277.630859375 2684.791015625 2253.16796875Q2697.53515625 2228.705078125 2721.119140625 2215.4482421875Q2744.703125 2202.19140625 2777.22265625 2202.19140625Q2809.595703125 2202.19140625 2833.1796875 2215.4482421875Q2856.763671875 2228.705078125 2869.5078125 2253.16796875Q2882.251953125 2277.630859375 2882.251953125 2311.46875Q2882.251953125 2345.16015625 2869.5078125 2369.6962890625Q2856.763671875 2394.232421875 2833.1796875 2407.4892578125Q2809.595703125 2420.74609375 2777.076171875 2420.74609375ZM2777.076171875 2382.513671875Q2795.240234375 2382.513671875 2808.130859375 2374.017578125Q2821.021484375 2365.521484375 2827.90625 2349.6279296875Q2834.791015625 2333.734375 2834.791015625 2311.46875Q2834.791015625 2289.056640625 2827.90625 2273.236328125Q2821.021484375 2257.416015625 2808.130859375 2248.919921875Q2795.240234375 2240.423828125 2777.076171875 2240.423828125Q2759.05859375 2240.423828125 2746.16796875 2248.919921875Q2733.27734375 2257.416015625 2726.392578125 2273.236328125Q2719.5078125 2289.056640625 2719.5078125 2311.46875Q2719.5078125 2333.734375 2726.392578125 2349.6279296875Q2733.27734375 2365.521484375 2746.16796875 2374.017578125Q2759.05859375 2382.513671875 2777.076171875 2382.513671875Z M2967.16015625 2416.9375V2206.0H3012.423828125V2378.705078125H3114.083984375V2416.9375Z M3281.755859375 2420.74609375Q3253.19140625 2420.74609375 3232.9033203125 2411.0048828125Q3212.615234375 2401.263671875 3201.8486328125 2382.7333984375Q3191.08203125 2364.203125 3191.08203125 2338.275390625V2206.0H3236.345703125V2336.810546875Q3236.345703125 2358.63671875 3248.1376953125 2370.5751953125Q3259.9296875 2382.513671875 3281.755859375 2382.513671875Q3303.58203125 2382.513671875 3315.3740234375 2370.35546875Q3327.166015625 2358.197265625 3327.166015625 2334.466796875V2206.0H3372.4296875V2338.275390625Q3372.4296875 2364.203125 3361.6630859375 2382.7333984375Q3350.896484375 2401.263671875 3330.6083984375 2411.0048828125Q3310.3203125 2420.74609375 3281.755859375 2420.74609375Z M3556.80078125 2420.74609375Q3525.306640625 2420.74609375 3502.0888671875 2407.123046875Q3478.87109375 2393.5 3466.2001953125 2368.8173828125Q3453.529296875 2344.134765625 3453.529296875 2311.029296875Q3453.529296875 2278.36328125 3465.98046875 2253.900390625Q3478.431640625 2229.4375 3501.576171875 2215.814453125Q3524.720703125 2202.19140625 3556.654296875 2202.19140625Q3592.54296875 2202.19140625 3617.6650390625 2220.1357421875Q3642.787109375 2238.080078125 3650.697265625 2272.064453125L3604.701171875 2282.7578125Q3600.306640625 2261.517578125 3587.6357421875 2250.970703125Q3574.96484375 2240.423828125 3556.5078125 2240.423828125Q3538.783203125 2240.423828125 3526.4052734375 2249.212890625Q3514.02734375 2258.001953125 3507.5087890625 2273.8955078125Q3500.990234375 2289.7890625 3500.990234375 2311.46875Q3500.990234375 2333.1484375 3507.58203125 2349.1884765625Q3514.173828125 2365.228515625 3526.478515625 2373.9443359375Q3538.783203125 2382.66015625 3555.921875 2382.66015625Q3574.37890625 2382.66015625 3586.9765625 2372.11328125Q3599.57421875 2361.56640625 3604.115234375 2342.376953125L3651.13671875 2351.8984375Q3642.640625 2385.00390625 3617.591796875 2402.875Q3592.54296875 2420.74609375 3556.80078125 2420.74609375Z M3724.765625 2416.9375V2379.583984375H3753.916015625V2243.353515625H3724.765625V2206.0H3828.330078125V2243.353515625H3799.1796875V2379.583984375H3828.330078125V2416.9375Z M4009.625 2420.74609375Q3977.251953125 2420.74609375 3953.66796875 2407.4892578125Q3930.083984375 2394.232421875 3917.33984375 2369.6962890625Q3904.595703125 2345.16015625 3904.595703125 2311.46875Q3904.595703125 2277.630859375 3917.33984375 2253.16796875Q3930.083984375 2228.705078125 3953.66796875 2215.4482421875Q3977.251953125 2202.19140625 4009.771484375 2202.19140625Q4042.14453125 2202.19140625 4065.728515625 2215.4482421875Q4089.3125 2228.705078125 4102.056640625 2253.16796875Q4114.80078125 2277.630859375 4114.80078125 2311.46875Q4114.80078125 2345.16015625 4102.056640625 2369.6962890625Q4089.3125 2394.232421875 4065.728515625 2407.4892578125Q4042.14453125 2420.74609375 4009.625 2420.74609375ZM4009.625 2382.513671875Q4027.7890625 2382.513671875 4040.6796875 2374.017578125Q4053.5703125 2365.521484375 4060.455078125 2349.6279296875Q4067.33984375 2333.734375 4067.33984375 2311.46875Q4067.33984375 2289.056640625 4060.455078125 2273.236328125Q4053.5703125 2257.416015625 4040.6796875 2248.919921875Q4027.7890625 2240.423828125 4009.625 2240.423828125Q3991.607421875 2240.423828125 3978.716796875 2248.919921875Q3965.826171875 2257.416015625 3958.94140625 2273.236328125Q3952.056640625 2289.056640625 3952.056640625 2311.46875Q3952.056640625 2333.734375 3958.94140625 2349.6279296875Q3965.826171875 2365.521484375 3978.716796875 2374.017578125Q3991.607421875 2382.513671875 4009.625 2382.513671875Z M4199.708984375 2416.9375V2206.0H4264.6015625L4359.083984375 2394.525390625L4345.021484375 2395.404296875V2206.0H4388.234375V2416.9375H4324.953125L4228.126953125 2227.38671875L4242.921875 2226.361328125V2416.9375Z M4483.982421875 2416.9375V2206.0H4632.810546875V2244.232421875H4529.24609375V2287.73828125H4617.13671875V2324.359375H4529.24609375V2378.705078125H4634.861328125V2416.9375Z M4798.578125 2420.74609375Q4774.994140625 2420.74609375 4755.1455078125 2413.568359375Q4735.296875 2406.390625 4722.1865234375 2391.595703125Q4709.076171875 2376.80078125 4705.4140625 2354.095703125L4752.58203125 2344.57421875Q4753.75390625 2364.49609375 4765.1064453125 2374.2373046875Q4776.458984375 2383.978515625 4797.552734375 2383.978515625Q4811.46875 2383.978515625 4819.7451171875 2380.31640625Q4828.021484375 2376.654296875 4831.68359375 2370.5751953125Q4835.345703125 2364.49609375 4835.345703125 2357.171875Q4835.345703125 2345.453125 4826.6298828125 2339.2275390625Q4817.9140625 2333.001953125 4803.8515625 2330.21875L4782.611328125 2326.1171875Q4771.625 2324.06640625 4759.90625 2320.4775390625Q4748.1875 2316.888671875 4738.1533203125 2310.2236328125Q4728.119140625 2303.55859375 4721.8935546875 2292.7919921875Q4715.66796875 2282.025390625 4715.66796875 2265.765625Q4715.66796875 2245.111328125 4726.2880859375 2230.90234375Q4736.908203125 2216.693359375 4755.1455078125 2209.4423828125Q4773.3828125 2202.19140625 4796.52734375 2202.19140625Q4819.0859375 2202.19140625 4837.0302734375 2209.076171875Q4854.974609375 2215.9609375 4866.693359375 2229.0712890625Q4878.412109375 2242.181640625 4882.220703125 2261.078125L4835.931640625 2270.599609375Q4834.61328125 2260.931640625 4830.5849609375 2253.8271484375Q4826.556640625 2246.72265625 4818.79296875 2242.8408203125Q4811.029296875 2238.958984375 4798.138671875 2238.958984375Q4786.712890625 2238.958984375 4778.8759765625 2242.03515625Q4771.0390625 2245.111328125 4767.0107421875 2250.4580078125Q4762.982421875 2255.8046875 4762.982421875 2262.982421875Q4762.982421875 2273.3828125 4773.0166015625 2279.0224609375Q4783.05078125 2284.662109375 4800.62890625 2288.03125L4822.455078125 2292.42578125Q4837.689453125 2295.35546875 4851.751953125 2302.1669921875Q4865.814453125 2308.978515625 4874.75 2321.576171875Q4883.685546875 2334.173828125 4883.685546875 2354.53515625Q4883.685546875 2375.921875 4872.845703125 2390.716796875Q4862.005859375 2405.51171875 4842.8896484375 2413.12890625Q4823.7734375 2420.74609375 4798.578125 2420.74609375Z M5140.66015625 2416.9375V2337.689453125L5067.7109375 2206.0H5115.46484375L5166.587890625 2307.953125H5159.849609375L5210.97265625 2206.0H5258.7265625L5185.923828125 2337.396484375V2416.9375Z M5434.255859375 2416.9375 5515.115234375 2206.0H5572.68359375L5653.25 2416.9375H5604.6171875L5543.6796875 2238.8125L5482.888671875 2416.9375ZM5487.13671875 2359.22265625V2323.041015625H5599.9296875V2359.22265625Z M5816.087890625 2420.74609375Q5787.5234375 2420.74609375 5767.2353515625 2411.0048828125Q5746.947265625 2401.263671875 5736.1806640625 2382.7333984375Q5725.4140625 2364.203125 5725.4140625 2338.275390625V2206.0H5770.677734375V2336.810546875Q5770.677734375 2358.63671875 5782.4697265625 2370.5751953125Q5794.26171875 2382.513671875 5816.087890625 2382.513671875Q5837.9140625 2382.513671875 5849.7060546875 2370.35546875Q5861.498046875 2358.197265625 5861.498046875 2334.466796875V2206.0H5906.76171875V2338.275390625Q5906.76171875 2364.203125 5895.9951171875 2382.7333984375Q5885.228515625 2401.263671875 5864.9404296875 2411.0048828125Q5844.65234375 2420.74609375 5816.087890625 2420.74609375Z M6058.3203125 2416.9375V2244.232421875H5983.759765625V2206.0H6178.4375V2244.232421875H6103.583984375V2416.9375Z M6353.580078125 2420.74609375Q6321.20703125 2420.74609375 6297.623046875 2407.4892578125Q6274.0390625 2394.232421875 6261.294921875 2369.6962890625Q6248.55078125 2345.16015625 6248.55078125 2311.46875Q6248.55078125 2277.630859375 6261.294921875 2253.16796875Q6274.0390625 2228.705078125 6297.623046875 2215.4482421875Q6321.20703125 2202.19140625 6353.7265625 2202.19140625Q6386.099609375 2202.19140625 6409.68359375 2215.4482421875Q6433.267578125 2228.705078125 6446.01171875 2253.16796875Q6458.755859375 2277.630859375 6458.755859375 2311.46875Q6458.755859375 2345.16015625 6446.01171875 2369.6962890625Q6433.267578125 2394.232421875 6409.68359375 2407.4892578125Q6386.099609375 2420.74609375 6353.580078125 2420.74609375ZM6353.580078125 2382.513671875Q6371.744140625 2382.513671875 6384.634765625 2374.017578125Q6397.525390625 2365.521484375 6404.41015625 2349.6279296875Q6411.294921875 2333.734375 6411.294921875 2311.46875Q6411.294921875 2289.056640625 6404.41015625 2273.236328125Q6397.525390625 2257.416015625 6384.634765625 2248.919921875Q6371.744140625 2240.423828125 6353.580078125 2240.423828125Q6335.5625 2240.423828125 6322.671875 2248.919921875Q6309.78125 2257.416015625 6302.896484375 2273.236328125Q6296.01171875 2289.056640625 6296.01171875 2311.46875Q6296.01171875 2333.734375 6302.896484375 2349.6279296875Q6309.78125 2365.521484375 6322.671875 2374.017578125Q6335.5625 2382.513671875 6353.580078125 2382.513671875Z M6537.8046875 2416.9375 6549.5234375 2206.0H6623.05859375L6665.685546875 2386.46875H6660.412109375L6703.33203125 2206.0H6776.8671875L6788.5859375 2416.9375H6744.494140625L6735.119140625 2238.2265625H6735.55859375L6690.880859375 2416.9375H6635.509765625L6590.83203125 2238.2265625H6591.271484375L6581.896484375 2416.9375Z M6858.845703125 2416.9375 6939.705078125 2206.0H6997.2734375L7077.83984375 2416.9375H7029.20703125L6968.26953125 2238.8125L6907.478515625 2416.9375ZM6911.7265625 2359.22265625V2323.041015625H7024.51953125V2359.22265625Z M7213.578125 2416.9375V2244.232421875H7139.017578125V2206.0H7333.6953125V2244.232421875H7258.841796875V2416.9375Z M7405.859375 2416.9375V2379.583984375H7435.009765625V2243.353515625H7405.859375V2206.0H7509.423828125V2243.353515625H7480.2734375V2379.583984375H7509.423828125V2416.9375Z M7583.052734375 2416.9375V2389.251953125L7696.87109375 2244.671875H7592.28125V2206.0H7754.146484375V2234.125L7640.9140625 2378.265625H7756.9296875V2416.9375Z M7821.18359375 2416.9375 7902.04296875 2206.0H7959.611328125L8040.177734375 2416.9375H7991.544921875L7930.607421875 2238.8125L7869.81640625 2416.9375ZM7874.064453125 2359.22265625V2323.041015625H7986.857421875V2359.22265625Z M8208.728515625 2420.74609375Q8177.234375 2420.74609375 8154.0166015625 2407.123046875Q8130.798828125 2393.5 8118.1279296875 2368.8173828125Q8105.45703125 2344.134765625 8105.45703125 2311.029296875Q8105.45703125 2278.36328125 8117.908203125 2253.900390625Q8130.359375 2229.4375 8153.50390625 2215.814453125Q8176.6484375 2202.19140625 8208.58203125 2202.19140625Q8244.470703125 2202.19140625 8269.5927734375 2220.1357421875Q8294.71484375 2238.080078125 8302.625 2272.064453125L8256.62890625 2282.7578125Q8252.234375 2261.517578125 8239.5634765625 2250.970703125Q8226.892578125 2240.423828125 8208.435546875 2240.423828125Q8190.7109375 2240.423828125 8178.3330078125 2249.212890625Q8165.955078125 2258.001953125 8159.4365234375 2273.8955078125Q8152.91796875 2289.7890625 8152.91796875 2311.46875Q8152.91796875 2333.1484375 8159.509765625 2349.1884765625Q8166.1015625 2365.228515625 8178.40625 2373.9443359375Q8190.7109375 2382.66015625 8207.849609375 2382.66015625Q8226.306640625 2382.66015625 8238.904296875 2372.11328125Q8251.501953125 2361.56640625 8256.04296875 2342.376953125L8303.064453125 2351.8984375Q8294.568359375 2385.00390625 8269.51953125 2402.875Q8244.470703125 2420.74609375 8208.728515625 2420.74609375Z M8376.693359375 2416.9375V2379.583984375H8405.84375V2243.353515625H8376.693359375V2206.0H8480.2578125V2243.353515625H8451.107421875V2379.583984375H8480.2578125V2416.9375Z M8661.552734375 2420.74609375Q8629.1796875 2420.74609375 8605.595703125 2407.4892578125Q8582.01171875 2394.232421875 8569.267578125 2369.6962890625Q8556.5234375 2345.16015625 8556.5234375 2311.46875Q8556.5234375 2277.630859375 8569.267578125 2253.16796875Q8582.01171875 2228.705078125 8605.595703125 2215.4482421875Q8629.1796875 2202.19140625 8661.69921875 2202.19140625Q8694.072265625 2202.19140625 8717.65625 2215.4482421875Q8741.240234375 2228.705078125 8753.984375 2253.16796875Q8766.728515625 2277.630859375 8766.728515625 2311.46875Q8766.728515625 2345.16015625 8753.984375 2369.6962890625Q8741.240234375 2394.232421875 8717.65625 2407.4892578125Q8694.072265625 2420.74609375 8661.552734375 2420.74609375ZM8661.552734375 2382.513671875Q8679.716796875 2382.513671875 8692.607421875 2374.017578125Q8705.498046875 2365.521484375 8712.3828125 2349.6279296875Q8719.267578125 2333.734375 8719.267578125 2311.46875Q8719.267578125 2289.056640625 8712.3828125 2273.236328125Q8705.498046875 2257.416015625 8692.607421875 2248.919921875Q8679.716796875 2240.423828125 8661.552734375 2240.423828125Q8643.53515625 2240.423828125 8630.64453125 2248.919921875Q8617.75390625 2257.416015625 8610.869140625 2273.236328125Q8603.984375 2289.056640625 8603.984375 2311.46875Q8603.984375 2333.734375 8610.869140625 2349.6279296875Q8617.75390625 2365.521484375 8630.64453125 2374.017578125Q8643.53515625 2382.513671875 8661.552734375 2382.513671875ZM8650.56640625 2194.28125 8634.16015625 2173.7734375 8682.646484375 2127.19140625 8706.962890625 2159.271484375Z M8851.63671875 2416.9375V2206.0H8916.529296875L9011.01171875 2394.525390625L8996.94921875 2395.404296875V2206.0H9040.162109375V2416.9375H8976.880859375L8880.0546875 2227.38671875L8894.849609375 2226.361328125V2416.9375Z"/></svg></a>
+      <ul>
+        <li><a href="#diagnostico">Diagnóstico</a></li>
+        <li><a href="#para-quien">Para quién</a></li>
+        <li><a href="#margen">Qué resolvemos</a></li>
+        <li><a href="#modelo">Modelo</a></li>
+        <li><a href="#seguridad">Seguridad</a></li>
+      </ul>
+      <a class="btn" href="#contacto">Contacto</a>
+    </nav>
+  </div>
+</div>
+
+<header class="banda noche hero">
+  <div class="rueda" aria-hidden="true"><svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ollin"><path class="sim" fill-rule="evenodd" d="M70.00 500.00 A430.00 430.00 0 1 0 930.00 500.00 A430.00 430.00 0 1 0 70.00 500.00 Z M470.00 410.00 A160.00 160.00 0 1 0 790.00 410.00 A160.00 160.00 0 1 0 470.00 410.00 Z"/></svg></div>
+  <div class="wrap">
+    <div class="hero-in">
+      <div>
+        <p class="mono"><span class="punto"></span>Soluciones y automatización a la medida</p>
+        <h1>Para empresas que <span>no se detienen.</span></h1>
+        <p class="lede">Diseñamos, construimos y operamos los sistemas que hacen crecer a tu empresa. Control total de tu operación, con lo repetitivo en automático, para que tu equipo deje de capturar y se dedique a hacer crecer el negocio.</p>
+        <div class="cta">
+          <a class="btn lleno" href="#contacto">Hablemos de tu operación</a>
+          <a class="btn" href="#modelo">Conoce el modelo</a>
+        </div>
+      </div>
+      <figure class="tablero" aria-label="Ejemplos de tareas que pasan de hacerse a mano a hacerse en automático">
+        <div class="cab"><span>Tareas de tu empresa</span><span>Ejemplos</span></div>
+        <ul class="tareas">
+          <li><span>Captura de pedidos</span><span class="estado"><s>a mano</s><b>automática</b></span></li>
+          <li><span>Conciliación bancaria</span><span class="estado"><s>a mano</s><b>automática</b></span></li>
+          <li><span>Reporte semanal para dirección</span><span class="estado"><s>a mano</s><b>automático</b></span></li>
+          <li><span>Recordatorios de cobro</span><span class="estado"><s>a mano</s><b>automáticos</b></span></li>
+          <li><span>Alertas de existencias</span><span class="estado"><s>a mano</s><b>automáticas</b></span></li>
+          <li><span>Cotizaciones a clientes</span><span class="estado"><s>a mano</s><b>automáticas</b></span></li>
+        </ul>
+        <figcaption class="pie-t"><b>Si se repite, se puede automatizar.</b></figcaption>
+      </figure>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="banda sec diag" id="diagnostico">
+  <div class="wrap">
+    <div class="diag-in">
+      <div class="texto">
+        <p class="mono"><span class="punto"></span>El diagnóstico</p>
+        <h2>Tu empresa lleva años estancada. No es el mercado: es la operación.</h2>
+        <p>Vendes, trabajas más horas que nunca y aun así los números no se mueven. Casi siempre la causa está adentro: procesos que dependen de una persona, información que no cuadra y decisiones que se toman a ciegas.</p>
+      </div>
+      <div>
+        <p class="mono">Señales de una empresa detenida</p>
+        <ul class="sintomas">
+          <li>Las ventas suben, pero la utilidad no.</li>
+          <li>Nadie tiene los números del negocio al día.</li>
+          <li>El dueño sigue resolviendo lo que un sistema debería resolver solo.</li>
+          <li>Cada cierre de mes es una carrera contra el reloj.</li>
+          <li>Crecer significa contratar más gente para capturar.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="veredicto">
+      <p class="grande">Nosotros lo solucionamos. <span>Ponemos tu empresa en movimiento otra vez.</span></p>
+      <a class="btn lleno" href="#contacto">Quiero un diagnóstico</a>
+    </div>
+  </div>
+</section>
+
+<section class="banda sec pegada" id="para-quien">
+  <div class="wrap">
+    <div class="cabeza">
+      <div>
+        <p class="mono"><span class="punto"></span>Para quién trabajamos</p>
+        <h2>Cualquier empresa. Cualquier proceso.</h2>
+      </div>
+      <p>No importa el giro ni el tamaño. Si un problema frena tu operación, tiene solución; si una tarea se repite, se puede automatizar.</p>
+    </div>
+    <div class="perfiles">
+      <div class="perfil">
+        <p class="mono">Automatización</p>
+        <h3>Si hoy se hace a mano, puede hacerse solo.</h3>
+        <p>Capturas, reportes, conciliaciones, seguimientos, avisos y cotizaciones: cualquier tarea repetitiva puede ejecutarse sin intervención de tu equipo, sin errores y a cualquier hora.</p>
+      </div>
+      <div class="perfil">
+        <p class="mono">Soluciones a la medida</p>
+        <h3>Si el sistema que necesitas no existe, lo construimos.</h3>
+        <p>No adaptamos tu empresa a un programa genérico. Diseñamos la solución alrededor de cómo trabajas hoy y de hacia dónde quieres llevar tu negocio.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="banda sec pegada" id="margen">
+  <div class="wrap">
+    <div class="cabeza">
+      <div>
+        <p class="mono"><span class="punto"></span>Qué resolvemos</p>
+        <h2>Tu margen está en los detalles de la operación.</h2>
+      </div>
+      <p>No vendemos módulos genéricos. Construimos exactamente lo que tu empresa necesita para ganar más con lo que ya tiene.</p>
+    </div>
+    <div class="margen">
+      <article><p class="mono">Inventario</p><h3>Ni un peso dormido en el anaquel.</h3><p>Existencias exactas por bodega, en tiempo real. Compras cuando hace falta y en la cantidad correcta, no por intuición.</p></article>
+      <article><p class="mono">Producción</p><h3>El costo real de cada pieza.</h3><p>Rendimiento por lote, merma medida y costo promedio al día. La rentabilidad de cada línea, a la vista.</p></article>
+      <article><p class="mono">Crédito y cobranza</p><h3>Lo que te deben, de vuelta en tu flujo.</h3><p>Saldos por cliente, antigüedad de la cartera y avisos de cobro oportunos. Vendes a crédito sin financiar a tus clientes.</p></article>
+      <article><p class="mono">Automatización</p><h3>Crecer sin que la nómina crezca igual.</h3><p>Capturas, conciliaciones y reportes que hoy consumen horas del equipo, resueltos por el sistema. La operación escala contigo.</p></article>
+      <article><p class="mono">Dirección</p><h3>Decisiones con números, no con corazonadas.</h3><p>Ventas, márgenes y flujo en un tablero claro, disponible cuando lo necesitas y desde donde estés.</p></article>
+      <article><p class="mono">Contabilidad</p><h3>Tu contador recibe todo en orden.</h3><p>Información limpia y trazable para el cierre de cada mes. No reemplazamos su sistema: le quitamos trabajo.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="banda tezontle franja" aria-label="Atención">
+  <div class="wrap">
+    <h2>Respuesta inmediata. Atención directa de quien construyó tu sistema.</h2>
+    <p>Cada cliente trabaja con el equipo que diseñó su solución. Sin intermediarios ni filas de solicitudes: cuando tu operación lo necesita, la respuesta llega de quien la conoce a fondo.</p>
+  </div>
+</section>
+
+<section class="banda sec" id="modelo">
+  <div class="wrap modelo">
+    <div class="texto">
+      <p class="mono"><span class="punto"></span>Modelo</p>
+      <h2>Sin inversión inicial. Tu capital, trabajando en tu negocio.</h2>
+      <p>Construimos tu solución sin costo de entrada. Una iguala mensual cubre la operación, el respaldo, la atención inmediata y la mejora continua de tu sistema. El alcance y el plazo se acuerdan por escrito, según tu proyecto.</p>
+      <div><a class="btn lleno" href="#contacto">Solicita una propuesta</a></div>
+    </div>
+    <div class="terminos">
+      <div class="cab"><h3>Términos</h3><span class="mono">Ollin Soluciones</span></div>
+      <dl>
+        <div><dt>Inversión inicial</dt><dd><b>Ninguna</b><span>La construcción de tu solución no tiene costo de entrada.</span></dd></div>
+        <div><dt>Iguala</dt><dd><b>Cuota mensual fija</b><span>Sin licencias ni cobros por usuario.</span></dd></div>
+        <div><dt>Entrega</dt><dd><b>En semanas</b><span>Empezamos por el proceso que más dinero te cuesta hoy.</span></dd></div>
+        <div><dt>Atención</dt><dd><b>Inmediata y directa</b><span>En horario hábil, con quien construyó tu sistema.</span></dd></div>
+        <div><dt>Mejora continua</dt><dd><b>Incluida</b><span>Nuevas automatizaciones conforme tu operación crece.</span></dd></div>
+        <div><dt>Tus datos</dt><dd><b>Siempre tuyos</b><span>Descargables en cualquier momento, con respaldo diario verificable.</span></dd></div>
+        <div><dt>Propiedad</dt><dd><b>La solución pasa a ser tuya</b><span>Al cumplir el plazo acordado, con documentación completa.</span></dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="banda sec pegada" id="seguridad">
+  <div class="wrap">
+    <div class="cabeza">
+      <div>
+        <p class="mono"><span class="punto"></span>Seguridad de datos</p>
+        <h2>La información de tu empresa es tuya. Nuestro trabajo es protegerla.</h2>
+      </div>
+      <p>Tus ventas, tus clientes y tus números son el activo más sensible de tu negocio. Cada sistema que construimos se diseña desde el primer día para resguardarlos.</p>
+    </div>
+    <div class="margen">
+      <article><p class="mono">Cifrado</p><h3>Conexiones protegidas.</h3><p>Toda la información entre tu equipo y tu sistema viaja cifrada por HTTPS.</p></article>
+      <article><p class="mono">Accesos</p><h3>Cada quien ve lo que le toca.</h3><p>Cuentas individuales y permisos por puesto. Nadie entra con una contraseña compartida.</p></article>
+      <article><p class="mono">Bitácora</p><h3>Quién hizo qué, y cuándo.</h3><p>Los movimientos importantes quedan registrados para que puedas auditarlos en cualquier momento.</p></article>
+      <article><p class="mono">Respaldo</p><h3>Copia diaria, verificable.</h3><p>Respaldamos tu información todos los días, y tú mismo puedes comprobar que el respaldo existe.</p></article>
+      <article><p class="mono">Propiedad</p><h3>Tus datos, siempre exportables.</h3><p>Puedes descargar tu información cuando quieras. Si la relación termina, te la entregamos completa.</p></article>
+      <article><p class="mono">Confidencialidad</p><h3>Por contrato, sin excepciones.</h3><p>Nunca vendemos ni compartimos tu información. El compromiso de confidencialidad queda firmado.</p></article>
+    </div>
+  </div>
+</section>
+</main>
+
+<section class="banda noche contacto" id="contacto">
+  <div class="wrap">
+    <div>
+      <p class="mono"><span class="punto"></span>Contacto</p>
+      <h2>Tu empresa está lista para el siguiente nivel.</h2>
+      <p class="lede">Cuéntanos cómo opera hoy tu negocio y qué te está frenando. Te respondemos de inmediato y, si hace falta, vamos a conocer tu operación en persona.</p>
+      <ul class="vias">
+        <li><span>WhatsApp</span><span><a href="https://wa.me/520000000000"><span class="pend">55 0000 0000</span></a></span></li>
+        <li><span>Correo</span><span><a href="mailto:contacto@ollinsoluciones.mx">contacto@ollinsoluciones.mx</a></span></li>
+      </ul>
+    </div>
+    <form class="forma" id="forma" novalidate>
+      <h3>Solicita una propuesta</h3>
+      <label for="f-nombre">Nombre</label>
+      <input id="f-nombre" name="nombre" autocomplete="name" required>
+      <label for="f-empresa">Empresa</label>
+      <input id="f-empresa" name="empresa" autocomplete="organization" required>
+      <label for="f-tel">Teléfono</label>
+      <input id="f-tel" name="telefono" type="tel" autocomplete="tel" inputmode="tel" required>
+      <label for="f-msg">¿Qué te gustaría resolver?</label>
+      <textarea id="f-msg" name="mensaje" rows="3" placeholder="Ej. no sabemos qué hay en bodega sin ir a contar"></textarea>
+      <p class="aviso">Usamos tus datos solo para responder tu solicitud y preparar tu propuesta. Consulta nuestro <a href="aviso-privacidad.html">aviso de privacidad</a>.</p>
+      <p class="error" id="f-error" hidden>Escribe tu nombre, tu empresa y tu teléfono para enviar.</p>
+      <div class="acciones">
+        <button class="btn lleno" type="submit" data-via="wa">Enviar por WhatsApp</button>
+        <button class="btn" type="submit" data-via="mail">Enviar por correo</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<footer class="banda noche pie">
+  <div class="wrap">
+    <div class="fila">
+      <a class="marca" href="#" aria-label="Ollin Soluciones, inicio"><svg viewBox="0 0 9261 2617" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ollin Soluciones y Automatización"><path class="sim" fill-rule="evenodd" d="M200.00 1506.00 A810.00 810.00 0 1 0 1820.00 1506.00 A810.00 810.00 0 1 0 200.00 1506.00 Z M953.49 1336.47 A301.40 301.40 0 1 0 1556.28 1336.47 A301.40 301.40 0 1 0 953.49 1336.47 Z"/><path class="let" fill-rule="nonzero" d="M3146.0 234.0Q3301.0 234.0 3431.5 287.0Q3562.0 340.0 3658.5 437.5Q3755.0 535.0 3807.5 668.5Q3860.0 802.0 3860.0 963.0Q3860.0 1127.0 3806.5 1263.0Q3753.0 1399.0 3655.5 1499.0Q3558.0 1599.0 3425.5 1653.5Q3293.0 1708.0 3136.0 1708.0Q2980.0 1708.0 2849.0 1655.0Q2718.0 1602.0 2621.5 1504.5Q2525.0 1407.0 2472.5 1273.0Q2420.0 1139.0 2420.0 977.0Q2420.0 815.0 2473.5 678.5Q2527.0 542.0 2624.5 442.5Q2722.0 343.0 2854.5 288.5Q2987.0 234.0 3146.0 234.0ZM3150.0 1652.0Q3285.0 1652.0 3383.0 1578.0Q3481.0 1504.0 3535.0 1361.5Q3589.0 1219.0 3589.0 1014.0Q3589.0 782.0 3531.0 620.0Q3473.0 458.0 3369.5 373.5Q3266.0 289.0 3129.0 289.0Q2995.0 289.0 2896.5 363.0Q2798.0 437.0 2744.0 579.5Q2690.0 722.0 2690.0 928.0Q2690.0 1159.0 2748.0 1321.0Q2806.0 1483.0 2909.5 1567.5Q3013.0 1652.0 3150.0 1652.0Z M4350.0 1627.0 4482.0 1658.0V1686.0H3984.0V1658.0L4115.0 1627.0V400.0Q4102.0 393.0 4078.5 380.0Q4055.0 367.0 4023.0 348.5Q3991.0 330.0 3952.0 308.0V287.0L4341.0 200.0H4350.0V383.0Z M4919.0 1627.0 5051.0 1658.0V1686.0H4553.0V1658.0L4684.0 1627.0V400.0Q4671.0 393.0 4647.5 380.0Q4624.0 367.0 4592.0 348.5Q4560.0 330.0 4521.0 308.0V287.0L4910.0 200.0H4919.0V383.0Z M5371.0 500.0Q5302.0 500.0 5262.5 454.5Q5223.0 409.0 5223.0 351.0Q5223.0 294.0 5262.5 252.5Q5302.0 211.0 5371.0 211.0Q5440.0 211.0 5477.5 252.5Q5515.0 294.0 5515.0 351.0Q5515.0 409.0 5477.5 454.5Q5440.0 500.0 5371.0 500.0ZM5503.0 631.0V831.0V1627.0L5632.0 1658.0V1686.0H5136.0V1658.0L5268.0 1627.0V854.0Q5257.0 845.0 5236.5 830.0Q5216.0 815.0 5189.0 795.5Q5162.0 776.0 5131.0 753.0V732.0L5494.0 631.0Z M6081.0 841.0V1627.0L6211.0 1658.0V1686.0H5715.0V1658.0L5846.0 1627.0V854.0Q5830.0 841.0 5800.0 818.0Q5770.0 795.0 5710.0 753.0V732.0L6073.0 631.0H6081.0ZM6367.0 1658.0 6497.0 1627.0V994.0Q6497.0 931.0 6476.0 890.0Q6455.0 849.0 6411.5 828.5Q6368.0 808.0 6299.0 808.0Q6230.0 808.0 6165.5 827.0Q6101.0 846.0 6053.0 869.0L6043.0 849.0Q6121.0 783.0 6177.5 742.0Q6234.0 701.0 6279.0 679.5Q6324.0 658.0 6365.0 650.0Q6406.0 642.0 6454.0 642.0Q6599.0 642.0 6665.5 720.0Q6732.0 798.0 6732.0 961.0V1627.0L6864.0 1658.0V1686.0H6367.0Z M2513.1640625 2420.74609375Q2489.580078125 2420.74609375 2469.7314453125 2413.568359375Q2449.8828125 2406.390625 2436.7724609375 2391.595703125Q2423.662109375 2376.80078125 2420.0 2354.095703125L2467.16796875 2344.57421875Q2468.33984375 2364.49609375 2479.6923828125 2374.2373046875Q2491.044921875 2383.978515625 2512.138671875 2383.978515625Q2526.0546875 2383.978515625 2534.3310546875 2380.31640625Q2542.607421875 2376.654296875 2546.26953125 2370.5751953125Q2549.931640625 2364.49609375 2549.931640625 2357.171875Q2549.931640625 2345.453125 2541.2158203125 2339.2275390625Q2532.5 2333.001953125 2518.4375 2330.21875L2497.197265625 2326.1171875Q2486.2109375 2324.06640625 2474.4921875 2320.4775390625Q2462.7734375 2316.888671875 2452.7392578125 2310.2236328125Q2442.705078125 2303.55859375 2436.4794921875 2292.7919921875Q2430.25390625 2282.025390625 2430.25390625 2265.765625Q2430.25390625 2245.111328125 2440.8740234375 2230.90234375Q2451.494140625 2216.693359375 2469.7314453125 2209.4423828125Q2487.96875 2202.19140625 2511.11328125 2202.19140625Q2533.671875 2202.19140625 2551.6162109375 2209.076171875Q2569.560546875 2215.9609375 2581.279296875 2229.0712890625Q2592.998046875 2242.181640625 2596.806640625 2261.078125L2550.517578125 2270.599609375Q2549.19921875 2260.931640625 2545.1708984375 2253.8271484375Q2541.142578125 2246.72265625 2533.37890625 2242.8408203125Q2525.615234375 2238.958984375 2512.724609375 2238.958984375Q2501.298828125 2238.958984375 2493.4619140625 2242.03515625Q2485.625 2245.111328125 2481.5966796875 2250.4580078125Q2477.568359375 2255.8046875 2477.568359375 2262.982421875Q2477.568359375 2273.3828125 2487.6025390625 2279.0224609375Q2497.63671875 2284.662109375 2515.21484375 2288.03125L2537.041015625 2292.42578125Q2552.275390625 2295.35546875 2566.337890625 2302.1669921875Q2580.400390625 2308.978515625 2589.3359375 2321.576171875Q2598.271484375 2334.173828125 2598.271484375 2354.53515625Q2598.271484375 2375.921875 2587.431640625 2390.716796875Q2576.591796875 2405.51171875 2557.4755859375 2413.12890625Q2538.359375 2420.74609375 2513.1640625 2420.74609375Z M2777.076171875 2420.74609375Q2744.703125 2420.74609375 2721.119140625 2407.4892578125Q2697.53515625 2394.232421875 2684.791015625 2369.6962890625Q2672.046875 2345.16015625 2672.046875 2311.46875Q2672.046875 2277.630859375 2684.791015625 2253.16796875Q2697.53515625 2228.705078125 2721.119140625 2215.4482421875Q2744.703125 2202.19140625 2777.22265625 2202.19140625Q2809.595703125 2202.19140625 2833.1796875 2215.4482421875Q2856.763671875 2228.705078125 2869.5078125 2253.16796875Q2882.251953125 2277.630859375 2882.251953125 2311.46875Q2882.251953125 2345.16015625 2869.5078125 2369.6962890625Q2856.763671875 2394.232421875 2833.1796875 2407.4892578125Q2809.595703125 2420.74609375 2777.076171875 2420.74609375ZM2777.076171875 2382.513671875Q2795.240234375 2382.513671875 2808.130859375 2374.017578125Q2821.021484375 2365.521484375 2827.90625 2349.6279296875Q2834.791015625 2333.734375 2834.791015625 2311.46875Q2834.791015625 2289.056640625 2827.90625 2273.236328125Q2821.021484375 2257.416015625 2808.130859375 2248.919921875Q2795.240234375 2240.423828125 2777.076171875 2240.423828125Q2759.05859375 2240.423828125 2746.16796875 2248.919921875Q2733.27734375 2257.416015625 2726.392578125 2273.236328125Q2719.5078125 2289.056640625 2719.5078125 2311.46875Q2719.5078125 2333.734375 2726.392578125 2349.6279296875Q2733.27734375 2365.521484375 2746.16796875 2374.017578125Q2759.05859375 2382.513671875 2777.076171875 2382.513671875Z M2967.16015625 2416.9375V2206.0H3012.423828125V2378.705078125H3114.083984375V2416.9375Z M3281.755859375 2420.74609375Q3253.19140625 2420.74609375 3232.9033203125 2411.0048828125Q3212.615234375 2401.263671875 3201.8486328125 2382.7333984375Q3191.08203125 2364.203125 3191.08203125 2338.275390625V2206.0H3236.345703125V2336.810546875Q3236.345703125 2358.63671875 3248.1376953125 2370.5751953125Q3259.9296875 2382.513671875 3281.755859375 2382.513671875Q3303.58203125 2382.513671875 3315.3740234375 2370.35546875Q3327.166015625 2358.197265625 3327.166015625 2334.466796875V2206.0H3372.4296875V2338.275390625Q3372.4296875 2364.203125 3361.6630859375 2382.7333984375Q3350.896484375 2401.263671875 3330.6083984375 2411.0048828125Q3310.3203125 2420.74609375 3281.755859375 2420.74609375Z M3556.80078125 2420.74609375Q3525.306640625 2420.74609375 3502.0888671875 2407.123046875Q3478.87109375 2393.5 3466.2001953125 2368.8173828125Q3453.529296875 2344.134765625 3453.529296875 2311.029296875Q3453.529296875 2278.36328125 3465.98046875 2253.900390625Q3478.431640625 2229.4375 3501.576171875 2215.814453125Q3524.720703125 2202.19140625 3556.654296875 2202.19140625Q3592.54296875 2202.19140625 3617.6650390625 2220.1357421875Q3642.787109375 2238.080078125 3650.697265625 2272.064453125L3604.701171875 2282.7578125Q3600.306640625 2261.517578125 3587.6357421875 2250.970703125Q3574.96484375 2240.423828125 3556.5078125 2240.423828125Q3538.783203125 2240.423828125 3526.4052734375 2249.212890625Q3514.02734375 2258.001953125 3507.5087890625 2273.8955078125Q3500.990234375 2289.7890625 3500.990234375 2311.46875Q3500.990234375 2333.1484375 3507.58203125 2349.1884765625Q3514.173828125 2365.228515625 3526.478515625 2373.9443359375Q3538.783203125 2382.66015625 3555.921875 2382.66015625Q3574.37890625 2382.66015625 3586.9765625 2372.11328125Q3599.57421875 2361.56640625 3604.115234375 2342.376953125L3651.13671875 2351.8984375Q3642.640625 2385.00390625 3617.591796875 2402.875Q3592.54296875 2420.74609375 3556.80078125 2420.74609375Z M3724.765625 2416.9375V2379.583984375H3753.916015625V2243.353515625H3724.765625V2206.0H3828.330078125V2243.353515625H3799.1796875V2379.583984375H3828.330078125V2416.9375Z M4009.625 2420.74609375Q3977.251953125 2420.74609375 3953.66796875 2407.4892578125Q3930.083984375 2394.232421875 3917.33984375 2369.6962890625Q3904.595703125 2345.16015625 3904.595703125 2311.46875Q3904.595703125 2277.630859375 3917.33984375 2253.16796875Q3930.083984375 2228.705078125 3953.66796875 2215.4482421875Q3977.251953125 2202.19140625 4009.771484375 2202.19140625Q4042.14453125 2202.19140625 4065.728515625 2215.4482421875Q4089.3125 2228.705078125 4102.056640625 2253.16796875Q4114.80078125 2277.630859375 4114.80078125 2311.46875Q4114.80078125 2345.16015625 4102.056640625 2369.6962890625Q4089.3125 2394.232421875 4065.728515625 2407.4892578125Q4042.14453125 2420.74609375 4009.625 2420.74609375ZM4009.625 2382.513671875Q4027.7890625 2382.513671875 4040.6796875 2374.017578125Q4053.5703125 2365.521484375 4060.455078125 2349.6279296875Q4067.33984375 2333.734375 4067.33984375 2311.46875Q4067.33984375 2289.056640625 4060.455078125 2273.236328125Q4053.5703125 2257.416015625 4040.6796875 2248.919921875Q4027.7890625 2240.423828125 4009.625 2240.423828125Q3991.607421875 2240.423828125 3978.716796875 2248.919921875Q3965.826171875 2257.416015625 3958.94140625 2273.236328125Q3952.056640625 2289.056640625 3952.056640625 2311.46875Q3952.056640625 2333.734375 3958.94140625 2349.6279296875Q3965.826171875 2365.521484375 3978.716796875 2374.017578125Q3991.607421875 2382.513671875 4009.625 2382.513671875Z M4199.708984375 2416.9375V2206.0H4264.6015625L4359.083984375 2394.525390625L4345.021484375 2395.404296875V2206.0H4388.234375V2416.9375H4324.953125L4228.126953125 2227.38671875L4242.921875 2226.361328125V2416.9375Z M4483.982421875 2416.9375V2206.0H4632.810546875V2244.232421875H4529.24609375V2287.73828125H4617.13671875V2324.359375H4529.24609375V2378.705078125H4634.861328125V2416.9375Z M4798.578125 2420.74609375Q4774.994140625 2420.74609375 4755.1455078125 2413.568359375Q4735.296875 2406.390625 4722.1865234375 2391.595703125Q4709.076171875 2376.80078125 4705.4140625 2354.095703125L4752.58203125 2344.57421875Q4753.75390625 2364.49609375 4765.1064453125 2374.2373046875Q4776.458984375 2383.978515625 4797.552734375 2383.978515625Q4811.46875 2383.978515625 4819.7451171875 2380.31640625Q4828.021484375 2376.654296875 4831.68359375 2370.5751953125Q4835.345703125 2364.49609375 4835.345703125 2357.171875Q4835.345703125 2345.453125 4826.6298828125 2339.2275390625Q4817.9140625 2333.001953125 4803.8515625 2330.21875L4782.611328125 2326.1171875Q4771.625 2324.06640625 4759.90625 2320.4775390625Q4748.1875 2316.888671875 4738.1533203125 2310.2236328125Q4728.119140625 2303.55859375 4721.8935546875 2292.7919921875Q4715.66796875 2282.025390625 4715.66796875 2265.765625Q4715.66796875 2245.111328125 4726.2880859375 2230.90234375Q4736.908203125 2216.693359375 4755.1455078125 2209.4423828125Q4773.3828125 2202.19140625 4796.52734375 2202.19140625Q4819.0859375 2202.19140625 4837.0302734375 2209.076171875Q4854.974609375 2215.9609375 4866.693359375 2229.0712890625Q4878.412109375 2242.181640625 4882.220703125 2261.078125L4835.931640625 2270.599609375Q4834.61328125 2260.931640625 4830.5849609375 2253.8271484375Q4826.556640625 2246.72265625 4818.79296875 2242.8408203125Q4811.029296875 2238.958984375 4798.138671875 2238.958984375Q4786.712890625 2238.958984375 4778.8759765625 2242.03515625Q4771.0390625 2245.111328125 4767.0107421875 2250.4580078125Q4762.982421875 2255.8046875 4762.982421875 2262.982421875Q4762.982421875 2273.3828125 4773.0166015625 2279.0224609375Q4783.05078125 2284.662109375 4800.62890625 2288.03125L4822.455078125 2292.42578125Q4837.689453125 2295.35546875 4851.751953125 2302.1669921875Q4865.814453125 2308.978515625 4874.75 2321.576171875Q4883.685546875 2334.173828125 4883.685546875 2354.53515625Q4883.685546875 2375.921875 4872.845703125 2390.716796875Q4862.005859375 2405.51171875 4842.8896484375 2413.12890625Q4823.7734375 2420.74609375 4798.578125 2420.74609375Z M5140.66015625 2416.9375V2337.689453125L5067.7109375 2206.0H5115.46484375L5166.587890625 2307.953125H5159.849609375L5210.97265625 2206.0H5258.7265625L5185.923828125 2337.396484375V2416.9375Z M5434.255859375 2416.9375 5515.115234375 2206.0H5572.68359375L5653.25 2416.9375H5604.6171875L5543.6796875 2238.8125L5482.888671875 2416.9375ZM5487.13671875 2359.22265625V2323.041015625H5599.9296875V2359.22265625Z M5816.087890625 2420.74609375Q5787.5234375 2420.74609375 5767.2353515625 2411.0048828125Q5746.947265625 2401.263671875 5736.1806640625 2382.7333984375Q5725.4140625 2364.203125 5725.4140625 2338.275390625V2206.0H5770.677734375V2336.810546875Q5770.677734375 2358.63671875 5782.4697265625 2370.5751953125Q5794.26171875 2382.513671875 5816.087890625 2382.513671875Q5837.9140625 2382.513671875 5849.7060546875 2370.35546875Q5861.498046875 2358.197265625 5861.498046875 2334.466796875V2206.0H5906.76171875V2338.275390625Q5906.76171875 2364.203125 5895.9951171875 2382.7333984375Q5885.228515625 2401.263671875 5864.9404296875 2411.0048828125Q5844.65234375 2420.74609375 5816.087890625 2420.74609375Z M6058.3203125 2416.9375V2244.232421875H5983.759765625V2206.0H6178.4375V2244.232421875H6103.583984375V2416.9375Z M6353.580078125 2420.74609375Q6321.20703125 2420.74609375 6297.623046875 2407.4892578125Q6274.0390625 2394.232421875 6261.294921875 2369.6962890625Q6248.55078125 2345.16015625 6248.55078125 2311.46875Q6248.55078125 2277.630859375 6261.294921875 2253.16796875Q6274.0390625 2228.705078125 6297.623046875 2215.4482421875Q6321.20703125 2202.19140625 6353.7265625 2202.19140625Q6386.099609375 2202.19140625 6409.68359375 2215.4482421875Q6433.267578125 2228.705078125 6446.01171875 2253.16796875Q6458.755859375 2277.630859375 6458.755859375 2311.46875Q6458.755859375 2345.16015625 6446.01171875 2369.6962890625Q6433.267578125 2394.232421875 6409.68359375 2407.4892578125Q6386.099609375 2420.74609375 6353.580078125 2420.74609375ZM6353.580078125 2382.513671875Q6371.744140625 2382.513671875 6384.634765625 2374.017578125Q6397.525390625 2365.521484375 6404.41015625 2349.6279296875Q6411.294921875 2333.734375 6411.294921875 2311.46875Q6411.294921875 2289.056640625 6404.41015625 2273.236328125Q6397.525390625 2257.416015625 6384.634765625 2248.919921875Q6371.744140625 2240.423828125 6353.580078125 2240.423828125Q6335.5625 2240.423828125 6322.671875 2248.919921875Q6309.78125 2257.416015625 6302.896484375 2273.236328125Q6296.01171875 2289.056640625 6296.01171875 2311.46875Q6296.01171875 2333.734375 6302.896484375 2349.6279296875Q6309.78125 2365.521484375 6322.671875 2374.017578125Q6335.5625 2382.513671875 6353.580078125 2382.513671875Z M6537.8046875 2416.9375 6549.5234375 2206.0H6623.05859375L6665.685546875 2386.46875H6660.412109375L6703.33203125 2206.0H6776.8671875L6788.5859375 2416.9375H6744.494140625L6735.119140625 2238.2265625H6735.55859375L6690.880859375 2416.9375H6635.509765625L6590.83203125 2238.2265625H6591.271484375L6581.896484375 2416.9375Z M6858.845703125 2416.9375 6939.705078125 2206.0H6997.2734375L7077.83984375 2416.9375H7029.20703125L6968.26953125 2238.8125L6907.478515625 2416.9375ZM6911.7265625 2359.22265625V2323.041015625H7024.51953125V2359.22265625Z M7213.578125 2416.9375V2244.232421875H7139.017578125V2206.0H7333.6953125V2244.232421875H7258.841796875V2416.9375Z M7405.859375 2416.9375V2379.583984375H7435.009765625V2243.353515625H7405.859375V2206.0H7509.423828125V2243.353515625H7480.2734375V2379.583984375H7509.423828125V2416.9375Z M7583.052734375 2416.9375V2389.251953125L7696.87109375 2244.671875H7592.28125V2206.0H7754.146484375V2234.125L7640.9140625 2378.265625H7756.9296875V2416.9375Z M7821.18359375 2416.9375 7902.04296875 2206.0H7959.611328125L8040.177734375 2416.9375H7991.544921875L7930.607421875 2238.8125L7869.81640625 2416.9375ZM7874.064453125 2359.22265625V2323.041015625H7986.857421875V2359.22265625Z M8208.728515625 2420.74609375Q8177.234375 2420.74609375 8154.0166015625 2407.123046875Q8130.798828125 2393.5 8118.1279296875 2368.8173828125Q8105.45703125 2344.134765625 8105.45703125 2311.029296875Q8105.45703125 2278.36328125 8117.908203125 2253.900390625Q8130.359375 2229.4375 8153.50390625 2215.814453125Q8176.6484375 2202.19140625 8208.58203125 2202.19140625Q8244.470703125 2202.19140625 8269.5927734375 2220.1357421875Q8294.71484375 2238.080078125 8302.625 2272.064453125L8256.62890625 2282.7578125Q8252.234375 2261.517578125 8239.5634765625 2250.970703125Q8226.892578125 2240.423828125 8208.435546875 2240.423828125Q8190.7109375 2240.423828125 8178.3330078125 2249.212890625Q8165.955078125 2258.001953125 8159.4365234375 2273.8955078125Q8152.91796875 2289.7890625 8152.91796875 2311.46875Q8152.91796875 2333.1484375 8159.509765625 2349.1884765625Q8166.1015625 2365.228515625 8178.40625 2373.9443359375Q8190.7109375 2382.66015625 8207.849609375 2382.66015625Q8226.306640625 2382.66015625 8238.904296875 2372.11328125Q8251.501953125 2361.56640625 8256.04296875 2342.376953125L8303.064453125 2351.8984375Q8294.568359375 2385.00390625 8269.51953125 2402.875Q8244.470703125 2420.74609375 8208.728515625 2420.74609375Z M8376.693359375 2416.9375V2379.583984375H8405.84375V2243.353515625H8376.693359375V2206.0H8480.2578125V2243.353515625H8451.107421875V2379.583984375H8480.2578125V2416.9375Z M8661.552734375 2420.74609375Q8629.1796875 2420.74609375 8605.595703125 2407.4892578125Q8582.01171875 2394.232421875 8569.267578125 2369.6962890625Q8556.5234375 2345.16015625 8556.5234375 2311.46875Q8556.5234375 2277.630859375 8569.267578125 2253.16796875Q8582.01171875 2228.705078125 8605.595703125 2215.4482421875Q8629.1796875 2202.19140625 8661.69921875 2202.19140625Q8694.072265625 2202.19140625 8717.65625 2215.4482421875Q8741.240234375 2228.705078125 8753.984375 2253.16796875Q8766.728515625 2277.630859375 8766.728515625 2311.46875Q8766.728515625 2345.16015625 8753.984375 2369.6962890625Q8741.240234375 2394.232421875 8717.65625 2407.4892578125Q8694.072265625 2420.74609375 8661.552734375 2420.74609375ZM8661.552734375 2382.513671875Q8679.716796875 2382.513671875 8692.607421875 2374.017578125Q8705.498046875 2365.521484375 8712.3828125 2349.6279296875Q8719.267578125 2333.734375 8719.267578125 2311.46875Q8719.267578125 2289.056640625 8712.3828125 2273.236328125Q8705.498046875 2257.416015625 8692.607421875 2248.919921875Q8679.716796875 2240.423828125 8661.552734375 2240.423828125Q8643.53515625 2240.423828125 8630.64453125 2248.919921875Q8617.75390625 2257.416015625 8610.869140625 2273.236328125Q8603.984375 2289.056640625 8603.984375 2311.46875Q8603.984375 2333.734375 8610.869140625 2349.6279296875Q8617.75390625 2365.521484375 8630.64453125 2374.017578125Q8643.53515625 2382.513671875 8661.552734375 2382.513671875ZM8650.56640625 2194.28125 8634.16015625 2173.7734375 8682.646484375 2127.19140625 8706.962890625 2159.271484375Z M8851.63671875 2416.9375V2206.0H8916.529296875L9011.01171875 2394.525390625L8996.94921875 2395.404296875V2206.0H9040.162109375V2416.9375H8976.880859375L8880.0546875 2227.38671875L8894.849609375 2226.361328125V2416.9375Z"/></svg></a>
+      <span class="slogan">Para empresas que no se detienen</span>
+      <span class="legal"><a href="aviso-privacidad.html">Aviso de privacidad</a> · <a href="#seguridad">Seguridad de datos</a> · © 2026 Ollin Soluciones</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var WA='520000000000';               // número de WhatsApp: 52 + 10 dígitos
+  var CORREO='contacto@ollinsoluciones.mx';
+  var f=document.getElementById('forma'), err=document.getElementById('f-error');
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    var via=(e.submitter&&e.submitter.dataset.via)||'wa', ok=true, d={};
+    ['nombre','empresa','telefono','mensaje'].forEach(function(n){
+      var el=f.elements[n]; d[n]=el.value.trim();
+      if(el.required){ var bad=!d[n]; el.setAttribute('aria-invalid',bad); if(bad) ok=false; }
+    });
+    err.hidden=ok; if(!ok) return;
+    var t='Hola, soy '+d.nombre+' de '+d.empresa+'. Mi teléfono: '+d.telefono+'.'+(d.mensaje?'\n\n'+d.mensaje:'');
+    if(via==='wa') window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(t),'_blank','noopener');
+    else location.href='mailto:'+CORREO+'?subject='+encodeURIComponent('Solicitud de propuesta: '+d.empresa)+'&body='+encodeURIComponent(t);
+  });
+})();
+</script>
+</body>
+</html>
