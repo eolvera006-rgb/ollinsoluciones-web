@@ -57,12 +57,12 @@ addEventListener('pagereveal',function(e){var v=e.viewTransition,a;if(!v||!v.typ
     </div>
     <form class="forma" id="f-forma" method="post" novalidate hidden>
       <h2>O escríbenos desde aquí</h2>
-      <label for="f-nombre">Nombre</label>
+      <label for="f-nombre">Nombre <span class="obl">(obligatorio)</span></label>
       <input id="f-nombre" name="nombre" autocomplete="name" required aria-describedby="f-error">
       <label for="f-negocio">Negocio <span class="opc">(si ya lo tienes)</span></label>
       <input id="f-negocio" name="negocio" autocomplete="organization">
-      <label for="f-tel">Teléfono <span class="opc">(10 dígitos)</span></label>
-      <input id="f-tel" name="telefono" type="tel" autocomplete="tel" inputmode="tel" required aria-describedby="f-error">
+      <label for="f-tel">Teléfono <span class="obl">(obligatorio si envías por correo)</span></label>
+      <input id="f-tel" name="telefono" type="tel" autocomplete="tel" inputmode="tel" aria-describedby="f-error">
       <label for="f-msg">¿Qué te quita tiempo hoy? <span class="opc">(opcional)</span></label>
       <textarea id="f-msg" name="mensaje" rows="3"></textarea>
       <p class="aviso">Usamos tus datos sólo para lo que explica nuestro <a href="/aviso-privacidad.html">aviso de privacidad</a>, empezando por responderte. No los vendemos.</p>

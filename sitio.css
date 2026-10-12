@@ -277,6 +277,7 @@ h2.t{font-size:var(--t-h2); line-height:1.02; letter-spacing:-.025em; max-width:
 .forma h2{font-size:clamp(26px,2.4vw,32px); line-height:1.15; margin-bottom:8px}
 .forma label{font-size:13px; font-weight:500; color:var(--muted); margin-top:16px}
 .forma label .opc{font-weight:400; opacity:.75}
+.forma label .obl{font-weight:500; color:var(--ink)}
 .forma input,.forma textarea{font:inherit; font-size:16px; color:var(--ink); background:transparent; border:0; border-bottom:1px solid var(--campo); border-radius:0; padding:10px 0; width:100%; min-width:0; transition:border-color .2s}
 .forma textarea{resize:vertical; min-height:96px}
 .forma input:focus,.forma textarea:focus{outline:none; border-bottom-color:var(--accent); box-shadow:0 1px 0 0 var(--accent)}
@@ -464,3 +465,9 @@ h2.t{font-size:var(--t-h2); line-height:1.02; letter-spacing:-.025em; max-width:
 .caso-capturas img{display:block; width:100%; height:auto; border-radius:2px}
 .caso-capturas figcaption{font-size:14px; color:var(--muted)}
 @media (max-width:920px){ .caso-cuerpo,.caso-num,.caso-capturas{grid-template-columns:minmax(0,1fr)} }
+/* Enlaces de contacto en celular: 44 px de alto como mínimo, sin cambiar el aspecto en escritorio */
+@media (max-width:760px){
+  .vias{gap:0}
+  .vias a{display:inline-flex; align-items:center; min-height:44px}
+  .pie-l a{min-height:44px}
+}

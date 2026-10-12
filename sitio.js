@@ -70,26 +70,30 @@
     f.hidden=false;
     var WA='525574086846', CORREO='proyectos@ollinsoluciones.com', err=document.getElementById('f-error'), estado=document.getElementById('f-estado');
     var MSJ={
-      falta:'Escribe tu nombre y un teléfono de 10 dígitos para enviar.',
+      nombre:'Escribe tu nombre para enviar.',
+      telCorreo:'Para enviar por correo, escribe tu teléfono a 10 dígitos.',
+      telMal:'Revisa el teléfono: deben quedar 10 dígitos, sin contar el 52 inicial.',
       wa:'Gracias. Para completar el envío, confirma el mensaje en WhatsApp. Te responderemos dentro de nuestro horario de atención, de lunes a sábado de 9:00 a 21:00 h, para acordar la primera reunión.',
       mail:'Gracias. Para completar el envío, confirma el mensaje en tu programa de correo. Te responderemos dentro de nuestro horario de atención, de lunes a sábado de 9:00 a 21:00 h, para acordar la primera reunión.'
     };
+    // Sólo dígitos y sin el 52 inicial: "55 7408 6846", "+52 55 7408 6846" y "(55) 7408-6846" dan los mismos 10.
     var digitos=function(v){ var n=v.replace(/\D/g,''); if(n.length===12&&n.indexOf('52')===0) n=n.slice(2); return n; };
     f.addEventListener('submit',function(e){
       e.preventDefault();
-      var via=(e.submitter&&e.submitter.dataset.via)||'wa', ok=true, d={};
-      ['nombre','negocio','telefono','mensaje'].forEach(function(n){
-        var el=f.elements[n]; d[n]=el.value.trim();
-        if(el.required){ var bad=!d[n]; el.setAttribute('aria-invalid',String(bad)); if(bad) ok=false; }
-      });
-      var tel=f.elements.telefono;
-      if(d.telefono&&digitos(d.telefono).length!==10){ tel.setAttribute('aria-invalid','true'); ok=false; }
+      var via=(e.submitter&&e.submitter.dataset.via)||'wa', d={}, faltas=[];
+      ['nombre','negocio','telefono','mensaje'].forEach(function(n){ d[n]=f.elements[n].value.trim(); });
+      var nombre=f.elements.nombre, tel=f.elements.telefono;
+      // El nombre siempre; el teléfono sólo por correo (WhatsApp ya trae el número), pero si se escribe, debe ser válido.
+      var malNombre=!d.nombre, malTel=d.telefono?digitos(d.telefono).length!==10:via==='mail';
+      nombre.setAttribute('aria-invalid',String(malNombre)); tel.setAttribute('aria-invalid',String(malTel));
+      if(malNombre) faltas.push(MSJ.nombre);
+      if(malTel) faltas.push(d.telefono?MSJ.telMal:MSJ.telCorreo);
       // vaciar y llenar en el siguiente cuadro: así role=status vuelve a anunciar aunque el texto sea el mismo
       var di=function(el,t){ el.textContent=''; if(t) requestAnimationFrame(function(){ el.textContent=t; }); };
       di(estado,'');
-      if(!ok){ di(err,MSJ.falta); f.querySelector('[aria-invalid="true"]').focus(); return; }
+      if(faltas.length){ di(err,faltas.join(' ')); f.querySelector('[aria-invalid="true"]').focus(); return; }
       di(err,'');
-      var t='Hola, soy '+d.nombre+(d.negocio?' de '+d.negocio:'')+'. Mi teléfono: '+d.telefono+'.'+(d.mensaje?'\n\n'+d.mensaje:'');
+      var t='Hola, soy '+d.nombre+(d.negocio?' de '+d.negocio:'')+'.'+(d.telefono?' Mi teléfono: '+d.telefono+'.':'')+(d.mensaje?'\n\n'+d.mensaje:'');
       evento(via==='wa'?'formulario_whatsapp':'formulario_correo','contacto');
       abrirDestino(via==='wa'
         ? 'https://wa.me/'+WA+'?text='+encodeURIComponent(t)
