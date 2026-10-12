@@ -447,3 +447,19 @@ h2.t{font-size:var(--t-h2); line-height:1.02; letter-spacing:-.025em; max-width:
 .senales ul{list-style:none; margin:0; padding:0; display:grid; gap:12px; font-size:18px; line-height:1.5; color:var(--muted)}
 .senales li{display:grid; grid-template-columns:7px minmax(0,1fr); gap:16px; align-items:baseline; text-wrap:pretty}
 .senales li::before{content:""; width:7px; height:7px; border-radius:50%; background:var(--accent); translate:0 -2px}
+/* Caso anonimizado (Nosotros; sólo existe en el HTML cuando datos/caso.json tiene "publicar": true) */
+.caso-cuerpo{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:40px clamp(40px,6vw,104px); max-width:64rem}
+.caso-cuerpo > div{display:grid; gap:14px; align-content:start}
+.caso-cuerpo h3{font-size:var(--t-h3); line-height:1.14; letter-spacing:-.012em}
+.caso-cuerpo p,.caso-cuerpo ul{color:var(--muted); text-wrap:pretty}
+.caso-cuerpo ul{margin:0; padding-left:1.1em; display:grid; gap:6px}
+.caso-num{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:32px clamp(32px,4.5vw,72px); margin:var(--tramo) 0 0}
+.caso-num div{display:grid; gap:8px; align-content:start}
+.caso-num dt{font-size:15px; font-weight:500; color:var(--muted)}
+.caso-num dd{margin:0; font-family:var(--font-display); font-size:clamp(24px,2.4vw,32px); line-height:1.15; letter-spacing:-.012em}
+.caso-num dd span{display:inline-block; min-width:4.6em; font-family:var(--font-body); font-size:14px; letter-spacing:0; color:var(--muted)}
+.caso-capturas{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:32px; margin-top:var(--tramo)}
+.caso-capturas figure{margin:0; display:grid; gap:10px}
+.caso-capturas img{display:block; width:100%; height:auto; border-radius:2px}
+.caso-capturas figcaption{font-size:14px; color:var(--muted)}
+@media (max-width:920px){ .caso-cuerpo,.caso-num,.caso-capturas{grid-template-columns:minmax(0,1fr)} }
