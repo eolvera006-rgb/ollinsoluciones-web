@@ -1,0 +1,432 @@
+/* Ollin Soluciones — generado por build.py a partir de base.css y componentes.css; no editar a mano */
+:root{
+  --niebla:#EFF5F5; --blanco:#FAFCFC; --tinta:#121A1C; --pizarra:#505A5D;
+  --noche:#0B1012; --noche-2:#141C1F; --niebla-noche:#E7ECED; --gris-noche:#A9B3B5;
+  --tezontle:#6C2B24; --tezontle-claro:#BF6B5E; --tez-muted:#E4CFCB;
+
+  --paper:var(--niebla); --paper-2:var(--blanco); --ink:var(--tinta); --muted:var(--pizarra);
+  --accent:var(--tezontle); --accent-ink:var(--blanco);
+
+  --font-display:"Newsreader","Iowan Old Style",Georgia,serif;
+  --font-body:"Schibsted Grotesk","Helvetica Neue",Arial,sans-serif;
+  --font-data:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --gutter:clamp(20px,4.5vw,64px); --max:1200px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#101719; --paper-2:var(--noche-2); --ink:var(--niebla-noche); --muted:var(--gris-noche);
+  --accent:var(--tezontle-claro); --accent-ink:var(--noche); color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#101719; --paper-2:var(--noche-2); --ink:var(--niebla-noche); --muted:var(--gris-noche);
+  --accent:var(--tezontle-claro); --accent-ink:var(--noche); color-scheme:dark;
+}
+/* Franjas: redefinen los tokens localmente, así todo lo de adentro (logo incluido) se adapta solo */
+.noche{--paper:var(--noche); --paper-2:var(--noche-2); --ink:var(--niebla-noche); --muted:var(--gris-noche); --accent:var(--tezontle-claro); --accent-ink:var(--noche)}
+.tezontle{--paper:var(--tezontle); --ink:var(--niebla); --muted:var(--tez-muted); --accent:var(--niebla); --accent-ink:var(--tezontle)}
+
+*{box-sizing:border-box}
+html,body{overflow-x:clip}
+html{scroll-behavior:smooth}
+html{scroll-padding-top:calc(var(--barra-h,79px) + env(safe-area-inset-top,0px))}   /* anclas, scrollIntoView y foco con teclado */
+body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased}
+.banda{background:var(--paper); color:var(--ink)}
+.wrap{max-width:var(--max); margin:0 auto; padding-inline:var(--gutter)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
+main:focus{outline:none}   /* destino de "Saltar al contenido": no es interactivo */
+h1,h2,h3{font-family:var(--font-display); font-weight:400; font-style:normal; margin:0; text-wrap:balance; overflow-wrap:anywhere; min-width:0}
+p{margin:0}
+.saltar{position:absolute; left:16px; top:-100px; z-index:20; background:var(--paper); color:var(--ink); padding:10px 16px; font-weight:500}
+.saltar:focus{top:12px}
+
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:10px; font-family:var(--font-body); font-weight:700; font-size:15px; letter-spacing:.01em; text-decoration:none; white-space:nowrap; min-height:50px; padding:0 26px; border-radius:2px; border:1px solid var(--ink); color:var(--ink); background:transparent; cursor:pointer; transition:background .2s, color .2s, border-color .2s}
+.btn:hover{background:var(--ink); color:var(--paper)}
+.btn.lleno{background:var(--accent); border-color:var(--accent); color:var(--accent-ink)}
+.btn.lleno:hover{background:var(--ink); border-color:var(--ink); color:var(--paper)}
+.sim{fill:var(--accent)} .let{fill:var(--ink)}
+
+/* — Ritmo: el espacio separa, no las rayas — */
+:root{
+  --sec:clamp(96px,12vw,168px);      /* entre capítulos */
+  --tramo:clamp(56px,7vw,104px);     /* entre bloques del mismo capítulo */
+  --t-h2:clamp(40px,5vw,68px);
+  --t-cita:clamp(32px,4.2vw,58px);
+  --t-h3:clamp(25px,2.3vw,31px);
+  --t-relato:clamp(19px,1.75vw,23px);
+}
+
+/* Flechas y enlaces de texto */
+.u-fl{width:30px; height:12px; flex:none; fill:none; stroke:currentColor; stroke-width:1.4; stroke-linecap:round; stroke-linejoin:round; color:var(--muted); transition:transform .3s cubic-bezier(.2,.7,.1,1), color .25s}
+.enlace{display:inline-flex; align-items:center; gap:12px; min-height:44px; font-size:16px; font-weight:500; text-decoration:none; color:var(--ink)}
+.enlace .u-fl{width:24px}
+.enlace:hover .u-fl,.enlace:focus-visible .u-fl{transform:translateX(6px); color:var(--accent)}
+.acento{color:var(--accent)}
+
+/* — Movimiento: tokens — */
+:root{
+  --ease-marcha:cubic-bezier(.2,.7,.1,1);   /* la curva que ya usan la rueda y las flechas: arranca y se asienta */
+  --ease-salida:cubic-bezier(.4,0,1,1);
+  --dur-revela:700ms; --dur-marcha:900ms; --paso:90ms;
+  --viaje:24px; --empuje:48px;
+}
+@media (max-width:620px){ :root{ --viaje:16px; --empuje:24px } }
+
+html{background:var(--noche)}   /* lienzo: rebote del scroll arriba/abajo y fondo entre páginas, igual a barra y pie */
+
+/* — Barra — */
+.barra{position:sticky; top:0; z-index:10; background:var(--paper)}
+.nav{display:flex; align-items:center; gap:clamp(18px,3vw,40px); padding-block:18px}
+.nav .logo{display:block; width:clamp(148px,16vw,196px); margin-right:auto}
+.nav .logo svg{display:block; width:100%; height:auto}
+.menu{display:contents}
+.nav-l{list-style:none; margin:0; padding:0; display:flex; gap:clamp(22px,2.6vw,36px); font-size:15px}
+.nav-l a{display:inline-flex; align-items:center; min-height:44px; text-decoration:none; color:var(--muted); white-space:nowrap; transition:color .2s}
+.nav-l a:hover{color:var(--ink)}
+.nav-l a[aria-current="page"]{color:var(--ink)}
+/* El punto de "estás aquí" es un elemento propio para que viaje de una página a otra */
+.aqui{display:inline-block; flex:none; width:6px; height:6px; border-radius:50%; background:var(--accent); margin-right:9px; view-transition-name:aqui}
+.nav .btn{min-height:44px; padding:0 18px; font-size:14px}
+.nav .btn[aria-current="page"]{background:var(--accent); border-color:var(--accent); color:var(--accent-ink)}
+.nav .btn .aqui{background:currentColor; margin-right:2px}
+.solo-movil,.menu-btn,.menu-pie{display:none}
+.nav .pupila{animation:mirar 30s ease-in-out infinite}
+@keyframes mirar{
+  0%,1.5%{transform:translate(0,0)}
+  3%,6.5%{transform:translate(-509px,57px)}
+  8%,11%{transform:translate(-358px,396px)}
+  12.5%,16%{transform:translate(38px,320px)}
+  18%,100%{transform:translate(0,0)}
+}
+
+@media (max-width:759px){
+  .nav{gap:4px; padding-block:14px}
+  .nav .logo{width:clamp(100px,32vw,148px); flex:0 1 auto; min-width:92px}
+  .nav .btn{padding:0 14px}
+  /* sin JS: los enlaces bajan a un renglón propio */
+  html:not(.js) .nav{flex-wrap:wrap}
+  html:not(.js) .nav-l{order:3; width:100%; flex-wrap:wrap; gap:0 22px}
+  /* con JS: botón "≡ Menú" / "✕ Cerrar" + hoja que cubre la página */
+  html.js .nav-l{display:none}
+  html.js .menu-btn{display:inline-flex; align-items:center; gap:9px; min-height:44px; padding:0 10px; background:none; border:0; border-radius:2px; font:500 15px/1 var(--font-body); color:var(--ink); cursor:pointer}
+  .menu-ico{position:relative; width:16px; height:11px; flex:none; background:linear-gradient(currentColor,currentColor) 0 50%/100% 1.5px no-repeat}
+  .menu-ico::before,.menu-ico::after{content:""; position:absolute; left:0; right:0; height:1.5px; background:currentColor; transition:transform 220ms var(--ease-marcha)}
+  .menu-ico::before{top:0} .menu-ico::after{bottom:0}
+  html.menu-abierto .menu-ico{background-size:0 1.5px}
+  html.menu-abierto .menu-ico::before{transform:translateY(4.75px) rotate(45deg)}
+  html.menu-abierto .menu-ico::after{transform:translateY(-4.75px) rotate(-45deg)}
+  html.js .menu{display:none; position:fixed; inset:var(--barra-h,72px) 0 0 0; z-index:9; background:var(--paper); overflow-y:auto; overscroll-behavior:contain;
+    padding:clamp(20px,6vw,40px) var(--gutter) calc(32px + env(safe-area-inset-bottom,0px))}
+  html.menu-abierto{overflow:hidden}
+  html.menu-abierto .menu{display:flex; flex-direction:column; justify-content:space-between; gap:40px; animation:menu-entra 220ms var(--ease-marcha) both}
+  html.js .menu .nav-l{display:flex; flex-direction:column; gap:2px; font-size:inherit}
+  html.js .menu .solo-movil{display:block}
+  html.js .nav-l a{font-family:var(--font-display); font-size:clamp(30px,9vw,40px); line-height:1.15; letter-spacing:-.015em; color:var(--ink); min-height:58px}
+  html.js .nav-l a[aria-current="page"]{color:var(--accent)}
+  html.js .nav-l .aqui{display:none}
+  html.js .nav-l a[aria-current="page"]::before{content:""; flex:none; width:8px; height:8px; border-radius:50%; background:var(--accent); margin-right:14px}
+  html.js .menu-pie{display:grid; gap:20px}
+  html.js .menu-cta{width:100%; min-height:54px; font-size:16px}
+  html.js .menu-cta[aria-current="page"]::before{content:""; width:7px; height:7px; border-radius:50%; background:currentColor}
+  html.js .menu-contacto{display:grid; gap:2px; font-family:var(--font-body); font-size:16px}
+  html.js .menu-contacto a{display:inline-flex; align-items:center; min-height:44px; color:var(--muted); text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:.25em; text-decoration-color:color-mix(in srgb, currentColor 40%, transparent); overflow-wrap:anywhere}
+}
+@media (max-width:359px){
+  .nav .btn{padding:0 11px; font-size:13.5px}
+  html.js .menu-btn{padding:0 7px; gap:7px}
+}
+@keyframes menu-entra{from{opacity:0; transform:translateY(-8px)}}
+
+/* — Hero (inicio) — */
+.hero{position:relative; overflow:hidden; overflow:clip}
+.rueda{position:absolute; width:clamp(200px,20vw,340px); aspect-ratio:1; right:max(-6vw,-90px); top:clamp(20px,2vw,40px); pointer-events:none}
+.rueda svg{display:block; width:100%; height:100%; transform:rotate(var(--giro,0deg))}
+.rueda .sim{fill:var(--tezontle)}
+@media (prefers-reduced-motion:no-preference){
+  .hero .rueda svg{animation:rodar 1.8s var(--ease-marcha) both}
+  .apertura .rueda svg{animation:cuarto 1.2s var(--ease-marcha) both}
+}
+@keyframes rodar{from{transform:translateX(22%) rotate(-150deg)} to{transform:none}}
+@keyframes cuarto{from{transform:rotate(calc(var(--giro) - 72deg))} to{transform:rotate(var(--giro))}}
+@media (min-width:921px) and (max-width:1439px){ .rueda{width:clamp(150px,13vw,190px); right:-64px; top:clamp(16px,2vw,32px)} }
+@media (min-width:921px) and (max-width:1079px){ .rueda{width:128px; right:-56px} }
+/* Hasta 920 px el disco baja a la esquina inferior derecha (portada e interiores) y la banda le deja su espacio: nunca toca texto */
+@media (max-width:920px){
+  .hero,.apertura{--d:clamp(150px,30vw,230px)}
+  .rueda{width:var(--d); top:auto; bottom:calc(var(--d) * -.2); right:calc(var(--d) * -.3); opacity:1}
+}
+@media (min-width:921px) and (max-width:1079px){ .gancho-t{padding-right:40px} }
+
+.hero-in{position:relative; z-index:1; display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); gap:56px clamp(40px,6vw,96px); align-items:end; padding-block:clamp(48px,6vw,88px) clamp(80px,9vw,128px)}
+.hero h1{font-size:clamp(52px,6.4vw,92px); line-height:.94; letter-spacing:-.03em}
+.hero h1 span{color:var(--accent)}
+.lede{font-size:clamp(18px,1.55vw,21px); line-height:1.55; color:var(--muted); max-width:52ch; margin-top:32px; text-wrap:pretty}
+/* Gancho: la invitación a recorrer el sitio, con un solo botón */
+.gancho{display:grid; gap:0; max-width:27rem; padding-bottom:6px}
+.gancho-t{font-family:var(--font-display); font-size:clamp(26px,2.4vw,34px); line-height:1.16; letter-spacing:-.016em; text-wrap:pretty}
+.acciones-h{display:flex; flex-wrap:wrap; align-items:center; gap:10px 26px; margin-top:32px}
+@media (max-width:920px){ .hero-in{grid-template-columns:minmax(0,1fr)} .gancho{max-width:34rem} }
+@media (max-width:420px){ .hero h1 span{white-space:nowrap} .acciones-h{flex-direction:column; align-items:flex-start} }
+@media (max-width:359px){ .hero h1{font-size:46px} }
+
+/* — Apertura (páginas interiores) — */
+.apertura{position:relative; overflow:hidden; overflow:clip}
+.apertura .wrap{position:relative; z-index:1; padding-block:clamp(48px,6vw,96px) clamp(72px,8vw,120px)}
+.apertura h1{font-size:clamp(44px,5.6vw,80px); line-height:.98; letter-spacing:-.03em; max-width:17ch}
+.apertura .lede{margin-top:28px; max-width:46ch}
+
+/* — Secciones — */
+.sec{padding-block:var(--sec)}
+.sec.pegada{padding-top:0}
+.banda.alt{background:var(--paper-2)}
+h2.t{font-size:var(--t-h2); line-height:1.02; letter-spacing:-.025em; max-width:20ch}
+.cita{font-family:var(--font-display); font-size:var(--t-cita); line-height:1.08; letter-spacing:-.022em; max-width:20ch}
+.cita span{color:var(--accent)}
+.relato{display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:32px clamp(48px,7vw,120px); align-items:start}
+.relato-txt{display:grid; gap:1.1em; font-size:var(--t-relato); line-height:1.55; max-width:34em; text-wrap:pretty; padding-top:clamp(0px,1.4vw,18px)}
+.golpe{font-size:var(--t-cita); line-height:1.08; letter-spacing:-.022em}
+
+/* Puerta: enlace a otra página del recorrido (Newsreader + flecha larga) */
+.puerta{display:inline-block; padding-block:10px; font-family:var(--font-display); font-size:clamp(21px,1.9vw,26px); line-height:1.2; letter-spacing:-.01em; text-decoration:none; color:var(--ink)}
+.puerta .u-fl{display:inline-block; vertical-align:middle; width:36px; margin-left:16px; color:var(--ink)}
+.puerta:hover,.puerta:focus-visible{color:var(--accent)}
+.puerta:hover .u-fl,.puerta:focus-visible .u-fl{transform:translateX(8px); color:var(--accent)}
+.relato-txt .puerta{margin-top:.5em}
+@media (max-width:420px){ .puerta{font-size:20px} .puerta .u-fl{width:30px; margin-left:14px} }
+
+/* Trío */
+.trio{list-style:none; margin:var(--tramo) 0 0; padding:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:48px clamp(32px,4.5vw,72px)}
+.trio li{display:grid; gap:14px; align-content:start}
+.trio h3{font-size:var(--t-h3); line-height:1.14; letter-spacing:-.012em}
+.trio h3::before{content:""; display:block; width:7px; height:7px; border-radius:50%; background:var(--accent); margin-bottom:22px}
+.trio p{color:var(--muted); max-width:34ch}
+.sigue-txt{margin-top:clamp(40px,5vw,64px)}
+
+/* Verbos en escalón (firma) */
+.verbos{list-style:none; margin:clamp(48px,6vw,88px) 0 0; padding:0; display:grid; gap:clamp(16px,2vw,28px)}
+.verbos li{font-family:var(--font-display); font-size:clamp(26px,3vw,42px); line-height:1.12; letter-spacing:-.018em; max-width:28ch; text-wrap:balance}
+.verbos b{font-weight:400; color:var(--accent)}
+.escalon-fin{margin-top:clamp(40px,5vw,64px); display:grid; gap:22px; justify-items:start; max-width:46ch}
+.escalon-fin p{font-size:var(--t-relato); line-height:1.5; color:var(--muted)}
+@media (min-width:921px){
+  .verbos li:nth-child(2){margin-left:calc(100% / 12 * 2)}
+  .verbos li:nth-child(3){margin-left:calc(100% / 12 * 4)}
+  .escalon-fin{margin-left:calc(100% / 12 * 4)}
+}
+
+/* Dicho (parada tezontle del inicio) */
+.dicho-g{font-size:clamp(48px,7.2vw,108px); line-height:.96; letter-spacing:-.032em; max-width:12ch}
+.dicho-txt{display:grid; gap:20px; justify-items:start; max-width:40ch; margin-top:clamp(36px,4vw,56px); font-size:var(--t-relato); line-height:1.5; color:var(--muted)}
+@media (min-width:921px){ .dicho-txt{margin-left:calc(100% / 12 * 5)} }
+
+/* Cierre (parada noche del inicio y contacto) */
+.cierre{display:grid; grid-template-columns:minmax(0,7fr) minmax(0,5fr); gap:56px clamp(48px,7vw,120px); align-items:end}
+.cierre h2{font-size:clamp(36px,4.4vw,60px); line-height:1.02; letter-spacing:-.026em; max-width:18ch}
+.cierre .vias a{font-size:clamp(20px,2vw,28px)}
+.cierre .lede{margin-top:24px}
+.cierre .btn{margin-top:36px}
+.vias{--subraya:color-mix(in srgb, var(--ink) 35%, transparent); list-style:none; margin:0; padding:0; display:grid; gap:18px}
+.vias a{font-family:var(--font-display); font-size:clamp(22px,2.4vw,32px); line-height:1.2; letter-spacing:-.01em; text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:.22em; text-decoration-color:var(--subraya); overflow-wrap:anywhere; transition:text-decoration-color .2s}
+.vias a:hover{text-decoration-color:var(--accent)}
+@media (max-width:920px){ .cierre{grid-template-columns:minmax(0,1fr); align-items:start} }
+@media (max-width:420px){ .vias a{font-size:clamp(20px,6vw,24px)} }
+
+/* Valores en zigzag */
+.valores-z{list-style:none; margin:0; padding:0 0 clamp(48px,6vw,96px); display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:clamp(48px,5vw,72px) clamp(48px,8vw,128px)}
+.valores-z li{display:grid; gap:12px; align-content:start; max-width:30rem}
+.valores-z li:nth-child(even){translate:0 clamp(48px,6vw,96px)}
+.valores-z h2{font-size:clamp(28px,2.7vw,38px); line-height:1.1; letter-spacing:-.015em}
+.valores-z p{color:var(--muted); font-size:18px}
+@media (max-width:920px){ .valores-z{grid-template-columns:minmax(0,1fr); padding-bottom:0} .valores-z li:nth-child(even){translate:none} }
+
+/* Compromisos */
+.encabezado{display:grid; gap:20px; max-width:44rem; margin-bottom:var(--tramo)}
+.encabezado > p{font-size:var(--t-relato); line-height:1.5; color:var(--muted); max-width:40ch}
+.compromisos{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:clamp(40px,5vw,72px) clamp(40px,6vw,104px); max-width:64rem}
+.compromisos li{color:var(--muted); max-width:24rem}
+.compromisos b{display:block; font-family:var(--font-display); font-weight:400; font-size:clamp(25px,2.5vw,34px); line-height:1.15; letter-spacing:-.015em; color:var(--ink); margin-bottom:14px; text-wrap:balance}
+.compromisos b:only-child{margin-bottom:0}
+.tras{margin-top:var(--tramo)}
+
+/* Nombre + misión/visión (tezontle) */
+.nombre-t{font-size:clamp(40px,5.6vw,80px); line-height:1; letter-spacing:-.028em; max-width:15ch}
+.nombre-s{margin-top:24px; font-size:var(--t-relato); line-height:1.5; max-width:34ch}
+.mv{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:56px clamp(48px,7vw,120px); margin-top:var(--tramo)}
+.mv > div{display:grid; gap:18px; align-content:start}
+.mv h3{font-size:clamp(26px,2.8vw,38px); line-height:1.14; letter-spacing:-.018em; max-width:22ch}
+.mv p{color:var(--muted); max-width:42ch}
+@media (min-width:921px){ .mv > div + div{margin-top:clamp(72px,8vw,128px)} }
+
+/* Sigue */
+.sigue{padding-block:var(--sec) clamp(72px,8vw,120px)}
+.sigue a{display:inline-grid; gap:12px; text-decoration:none; color:var(--ink)}
+.sigue-l{font-size:15px; font-weight:500; color:var(--muted)}
+.sigue-t{display:block; font-family:var(--font-display); font-size:clamp(44px,6.4vw,92px); line-height:1; letter-spacing:-.03em; transition:color .3s}
+.sigue-t .u-fl{display:inline-block; vertical-align:middle; margin-left:clamp(14px,2vw,28px); width:clamp(44px,4.6vw,72px); height:auto; color:var(--ink)}
+.sigue-t .u-fl path{vector-effect:non-scaling-stroke; stroke-width:1.5}
+.sigue-d{font-size:var(--t-relato); line-height:1.5; color:var(--muted); max-width:40ch}
+.sigue a:hover .sigue-t,.sigue a:focus-visible .sigue-t{color:var(--accent)}
+.sigue a:hover .u-fl,.sigue a:focus-visible .u-fl{transform:translateX(10px); color:var(--accent)}
+
+/* — Contacto — */
+.c-grid{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:64px clamp(48px,8vw,128px); align-items:start; padding-bottom:clamp(64px,7vw,104px)}
+.c-grid .vias{margin-top:6px}
+.c-grid .lazo{margin-top:40px; color:var(--muted)}
+@media (max-width:900px){ .c-grid{grid-template-columns:minmax(0,1fr)} }
+.forma{--campo:color-mix(in srgb, var(--ink) 50%, var(--paper)); display:grid; gap:6px}
+.forma h2{font-size:clamp(26px,2.4vw,32px); line-height:1.15; margin-bottom:8px}
+.forma label{font-size:13px; font-weight:500; color:var(--muted); margin-top:16px}
+.forma label .opc{font-weight:400; opacity:.75}
+.forma input,.forma textarea{font:inherit; font-size:16px; color:var(--ink); background:transparent; border:0; border-bottom:1px solid var(--campo); border-radius:0; padding:10px 0; width:100%; min-width:0; transition:border-color .2s}
+.forma textarea{resize:vertical; min-height:96px}
+.forma input:focus,.forma textarea:focus{outline:none; border-bottom-color:var(--accent); box-shadow:0 1px 0 0 var(--accent)}
+.forma [aria-invalid="true"]{border-bottom-color:var(--accent)}
+.forma .aviso{font-size:13px; line-height:1.5; color:var(--muted); margin-top:18px}
+.forma .aviso a{color:var(--ink); text-underline-offset:.2em}
+.forma .error{color:var(--accent); font-size:14px; margin-top:10px}
+.forma .acciones{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:28px}
+@media (max-width:460px){ .forma .acciones{grid-template-columns:minmax(0,1fr)} }
+
+/* — Pie — */
+.pie .wrap{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:28px 48px; align-items:center; padding-block:0 44px; font-size:14px; color:var(--muted)}
+.pie-a{display:flex; flex-wrap:wrap; align-items:center; gap:14px 28px}
+.pie .marca{display:block; width:150px}
+.pie .marca svg{display:block; width:100%; height:auto}
+.pie .slogan{font-family:var(--font-display); font-size:18px; color:var(--ink); white-space:nowrap}
+.pie-r{display:flex; flex-wrap:wrap; gap:0 22px; justify-content:flex-end}
+.pie-r a{display:inline-flex; align-items:center; min-height:44px; text-decoration:none; color:var(--muted); white-space:nowrap}
+.pie-r a:hover,.pie-r a[aria-current="page"]{color:var(--ink)}
+.pie-r a[aria-current="page"]::before{content:""; width:5px; height:5px; border-radius:50%; background:var(--accent); margin-right:8px}
+.pie-c{display:flex; flex-wrap:wrap; gap:0 24px; font-size:16px}
+.pie-c a,.pie-l a{color:var(--muted); text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:.25em; text-decoration-color:color-mix(in srgb, currentColor 40%, transparent)}
+.pie-c a{display:inline-flex; align-items:center; min-height:44px; white-space:nowrap}
+.pie-c a:hover,.pie-l a:hover{color:var(--ink)}
+.pie-l{text-align:right}
+.pie-l .n{white-space:nowrap}
+@media (max-width:620px){ .pie-l{display:grid; gap:2px; justify-items:start} .pie-l .sep{display:none} .pie-l a,.pie-l .n{display:inline-flex; align-items:center; min-height:36px} }
+@media (max-width:760px){ .pie .wrap{grid-template-columns:minmax(0,1fr)} .pie-r{justify-content:flex-start} .pie-l{text-align:left} }
+
+/* — Responsivo general — */
+@media (max-width:920px){
+  .relato{grid-template-columns:minmax(0,1fr)}
+  .relato-txt{padding-top:0}
+  .trio{grid-template-columns:minmax(0,1fr); gap:44px; max-width:40rem}
+  .trio h3::before{margin-bottom:16px}
+  .mv{grid-template-columns:minmax(0,1fr); gap:48px}
+}
+@media (max-width:620px){
+  .compromisos{grid-template-columns:minmax(0,1fr); gap:36px}
+  .compromisos li{max-width:none}
+  .valores-z p,.mv p{font-size:17px}
+}
+@media (max-width:420px){ .verbos li{font-size:26px} }
+
+/* — Revelado al bajar: "lo que se lee sube; lo que se pone en marcha avanza" —
+   html.revela lo pone el script del final del <body> después de marcar como .visto todo lo que ya está arriba del 90 %
+   de la ventana: la primera pantalla nunca se anima. Sin JS, con #ancla o con movimiento reducido no hay .revela. */
+@media (prefers-reduced-motion:no-preference){
+  html.revela [data-revela]:not(.visto){opacity:0; transform:translateY(var(--viaje))}
+  html.revela [data-revela="marcha"]:not(.visto){transform:translateX(calc(var(--empuje) * -1))}
+  html.revela.listo [data-revela]{transition:opacity var(--dur-revela) var(--ease-marcha), transform var(--dur-revela) var(--ease-marcha); transition-delay:min(calc(var(--i,0) * var(--paso)), 270ms)}
+  html.revela.listo [data-revela="marcha"]{transition-duration:var(--dur-marcha); transition-delay:min(calc(var(--i,0) * 135ms), 270ms)}
+  /* Microgesto: la flecha de las puertas y del "Sigue" se estira después del texto */
+  html.revela [data-revela] .u-fl{transform-origin:0 50%}
+  html.revela.listo [data-revela] .u-fl{transition:scale 420ms var(--ease-marcha) calc(min(calc(var(--i,0) * var(--paso)), 270ms) + 300ms), transform .3s var(--ease-marcha), color .25s}
+  html.revela [data-revela]:not(.visto) .u-fl{scale:.15 1}
+  /* Red de seguridad: si sitio.js no llega, todo aparece a los 2.5 s */
+  html.revela:not(.listo) [data-revela]:not(.visto){animation:red-seguridad 400ms ease-out 2.5s forwards}
+  html.revela:not(.listo) [data-revela]:not(.visto) .u-fl{animation:red-seguridad 400ms ease-out 2.5s forwards}
+}
+@keyframes red-seguridad{to{opacity:1; transform:none; scale:1}}
+
+/* — Transición entre páginas (View Transitions entre documentos) —
+   Raíz: sale corto y entra después (no se enciman titulares); la dirección la pone el <head> según el paso del recorrido.
+   La barra no se anima; el punto de "estás aquí" viaja de un enlace a otro (receta que funciona también en WebKit). */
+@media (prefers-reduced-motion:no-preference){
+  @view-transition{navigation:auto}
+  .barra{view-transition-name:barra}
+  ::view-transition-group(barra){animation:none}
+  ::view-transition-old(barra),::view-transition-new(barra),
+  ::view-transition-old(aqui),::view-transition-new(aqui){animation:none; mix-blend-mode:normal}
+  ::view-transition-group(aqui){animation-duration:420ms; animation-timing-function:cubic-bezier(.65,0,.35,1)}
+  ::view-transition-old(aqui):only-child{animation:vt-sale 200ms var(--ease-salida) both}
+  ::view-transition-new(aqui):only-child{animation:vt-entra 300ms var(--ease-marcha) 120ms both}
+  ::view-transition-old(root){animation:140ms var(--ease-salida) both vt-sale}
+  ::view-transition-new(root){animation:300ms var(--ease-marcha) 140ms both vt-entra}
+  html:active-view-transition-type(adelante)::view-transition-new(root){animation-name:vt-adelante}
+  html:active-view-transition-type(atras)::view-transition-new(root){animation-name:vt-atras}
+}
+@keyframes vt-sale{to{opacity:0}}
+@keyframes vt-entra{from{opacity:0}}
+@keyframes vt-adelante{from{opacity:0; transform:translateX(16px)}}
+@keyframes vt-atras{from{opacity:0; transform:translateX(-16px)}}
+
+/* — Movimiento reducido — */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none!important; animation:none!important}
+}
+
+/* — Tramo 2: páginas interiores — */
+[hidden]{display:none!important}
+
+/* Qué hacemos: los tres verbos en escalón son el h1. Al abrir se ponen en marcha uno tras otro
+   (70 ms entre verbos, completo a los 440 ms; nunca arranca vacío). Con movimiento reducido, quietos. */
+.apertura-v h1{font-size:clamp(34px,4.2vw,62px); line-height:1.06; letter-spacing:-.024em; max-width:none; display:grid; gap:.32em}
+.apertura-v h1 .v{display:block; color:var(--ink); max-width:21ch; text-wrap:balance}
+.apertura-v h1 .v .acento{color:var(--accent)}
+.apertura-v .lede{margin-top:clamp(32px,4vw,48px)}
+@media (min-width:921px){
+  .apertura-v h1 .v:nth-child(2){margin-left:calc(100% / 12 * 2)}
+  .apertura-v h1 .v:nth-child(3){margin-left:calc(100% / 12 * 4); max-width:24ch}
+  .apertura-v .lede{margin-left:calc(100% / 12 * 4)}
+}
+@media (max-width:420px){ .apertura-v h1{font-size:31px} }
+@media (prefers-reduced-motion:no-preference){
+  .apertura-v h1 .v{animation:verbo-marcha 300ms var(--ease-marcha) both}
+  .apertura-v h1 .v:nth-child(2){animation-delay:70ms}
+  .apertura-v h1 .v:nth-child(3){animation-delay:140ms}
+  /* Si se llega con transición entre páginas, la marcha espera a que la página empiece a verse (entra a los 140 ms) */
+  html:active-view-transition .apertura-v h1 .v{animation-delay:140ms}
+  html:active-view-transition .apertura-v h1 .v:nth-child(2){animation-delay:210ms}
+  html:active-view-transition .apertura-v h1 .v:nth-child(3){animation-delay:280ms}
+}
+@keyframes verbo-marcha{from{opacity:.2; transform:translateX(-28px)}}
+
+/* Rueda de cada portada: además del paso de giro al abrir, gira un poco al bajar (sólo donde hay view()) */
+@supports (animation-timeline: view()){
+  @media (prefers-reduced-motion:no-preference){
+    .apertura .rueda{animation:rueda-baja linear both; animation-timeline:view(); animation-range:exit 0% exit 100%}
+  }
+}
+@keyframes rueda-baja{to{rotate:54deg}}
+
+/* Contacto: avisos del formulario */
+.forma .error:empty,.forma .estado:empty{margin:0}   /* vacíos miden 0 pero siguen en el árbol de accesibilidad: el anuncio sale al llenarse */
+.forma .estado{font-size:15px; line-height:1.5; color:var(--ink); margin-top:16px; max-width:40ch}
+
+/* — Correcciones de la revisión — */
+/* Sin viudas en el texto corrido (igual que .relato-txt y .lede) */
+.dicho-txt,.escalon-fin p,.trio p,.valores-z p,.mv p,.sigue-d,.forma .aviso,.nombre-s,.compromisos li{text-wrap:pretty}
+/* "Sigue" en móvil: la flecha va pegada a la última palabra aunque el nombre ocupe dos renglones */
+@media (max-width:620px){ .sigue-t{font-size:clamp(34px,10.5vw,44px)} }
+/* Puertas que ahora viven dentro de párrafos (atajo a Hablemos y lazo de Contacto) */
+.sigue-txt .puerta,.lazo .puerta{margin-top:4px}
+.c-grid .lazo{display:grid; gap:4px; justify-items:start}
+/* 404: el recorrido completo como enlaces grandes */
+.vias.recorrido{gap:10px}
+.vias.recorrido a{font-size:clamp(26px,3.2vw,40px)}
+/* El espacio para el disco va al final para ganarle a padding-block de .hero-in y .apertura .wrap (mismo peso, después) */
+@media (max-width:920px){
+  .hero-in{padding-bottom:calc(var(--d) * .8 + 28px)}
+  .apertura .wrap{padding-bottom:calc(var(--d) * .8 + 28px)}
+}
+/* Portadas que siguen en otra banda noche (Contacto, 404): en ≤920 el corte del disco se vería en medio del negro → sin disco */
+@media (max-width:920px){
+  .apertura.continua .rueda{display:none}
+  .apertura.continua .wrap{padding-bottom:clamp(56px,8vw,96px)}
+}
+/* La última palabra viaja con su flecha (puertas y "Sigue") */
+.nw{white-space:nowrap}
+/* Portadas a ≤380 px: sin palabra sola en el último renglón del h1 (Qué hacemos tiene su propio tamaño) */
+@media (max-width:380px){ .apertura:not(.apertura-v) h1{font-size:40px} }
