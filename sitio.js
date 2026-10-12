@@ -46,6 +46,24 @@
   // Dirección del recorrido para la transición entre páginas (la lee el script del <head> en la página nueva)
   window.addEventListener('pageswap',function(){ try{ sessionStorage.setItem('ollin-paso',raiz.dataset.paso); }catch(_){} });
 
+  // Analítica: un solo escuchador delegado para los enlaces marcados con data-evento (WhatsApp, correo y "Hablemos").
+  // Sólo manda el nombre del evento y su ubicación; nunca datos del formulario. Sin GA4_ID no existe gtag y no hace nada.
+  function evento(nombre,ubicacion){
+    if(typeof window.gtag==='function') window.gtag('event',nombre,{ubicacion:ubicacion,transport_type:'beacon'});
+  }
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('[data-evento]');
+    if(a) evento(a.dataset.evento,a.dataset.ubicacion);
+  });
+
+  // Abre WhatsApp o el correo ya armados. Todo pasa por aquí, así las pruebas pueden sustituirla (window.__abrirDestino)
+  // sin abrir nada de verdad.
+  function abrirDestino(url){
+    if(typeof window.__abrirDestino==='function') return window.__abrirDestino(url);
+    if(url.indexOf('https://wa.me/')===0) window.open(url,'_blank','noopener');
+    else location.href=url;
+  }
+
   // Formulario (sólo en /contacto/): sin JS queda oculto y sólo se ven los enlaces directos.
   var f=document.getElementById('f-forma');
   if(f){
@@ -72,8 +90,10 @@
       if(!ok){ di(err,MSJ.falta); f.querySelector('[aria-invalid="true"]').focus(); return; }
       di(err,'');
       var t='Hola, soy '+d.nombre+(d.negocio?' de '+d.negocio:'')+'. Mi teléfono: '+d.telefono+'.'+(d.mensaje?'\n\n'+d.mensaje:'');
-      if(via==='wa') window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(t),'_blank','noopener');
-      else location.href='mailto:'+CORREO+'?subject='+encodeURIComponent('Quiero platicar de mi negocio'+(d.negocio?': '+d.negocio:''))+'&body='+encodeURIComponent(t);
+      evento(via==='wa'?'formulario_whatsapp':'formulario_correo','contacto');
+      abrirDestino(via==='wa'
+        ? 'https://wa.me/'+WA+'?text='+encodeURIComponent(t)
+        : 'mailto:'+CORREO+'?subject='+encodeURIComponent('Quiero platicar de mi negocio'+(d.negocio?': '+d.negocio:''))+'&body='+encodeURIComponent(t));
       di(estado,MSJ[via==='wa'?'wa':'mail']);
     });
   }
