@@ -307,6 +307,7 @@ h2.t{font-size:var(--t-h2); line-height:1.02; letter-spacing:-.025em; max-width:
 .pie-n{grid-column:1/-1; font-size:13px; line-height:1.5; color:var(--muted)}
 .pie-n a{color:inherit; text-underline-offset:.25em}
 .pie-l + .pie-n{margin-top:-8px}
+.pie-n + .pie-n{margin-top:-24px}
 @media (max-width:620px){ .pie-l{display:grid; gap:2px; justify-items:start} .pie-l .sep{display:none} .pie-l a,.pie-l .n{display:inline-flex; align-items:center; min-height:36px} }
 @media (max-width:760px){ .pie .wrap{grid-template-columns:minmax(0,1fr)} .pie-r{justify-content:flex-start} .pie-l{text-align:left} }
 
