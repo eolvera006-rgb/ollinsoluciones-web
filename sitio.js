@@ -71,8 +71,8 @@
     var WA='525574086846', CORREO='proyectos@ollinsoluciones.com', err=document.getElementById('f-error'), estado=document.getElementById('f-estado');
     var MSJ={
       falta:'Escribe tu nombre y un teléfono de 10 dígitos para enviar.',
-      wa:'Envía el mensaje desde WhatsApp para que nos llegue. Si no se abrió, escríbenos al 55 7408 6846.',
-      mail:'Envía el correo desde tu programa de correo para que nos llegue. Si no se abrió, escríbenos a proyectos@ollinsoluciones.com.'
+      wa:'Gracias. Para completar el envío, confirma el mensaje en WhatsApp. Te responderemos dentro de nuestro horario de atención, de lunes a sábado de 9:00 a 21:00 h, para acordar la primera reunión.',
+      mail:'Gracias. Para completar el envío, confirma el mensaje en tu programa de correo. Te responderemos dentro de nuestro horario de atención, de lunes a sábado de 9:00 a 21:00 h, para acordar la primera reunión.'
     };
     var digitos=function(v){ var n=v.replace(/\D/g,''); if(n.length===12&&n.indexOf('52')===0) n=n.slice(2); return n; };
     f.addEventListener('submit',function(e){
@@ -93,7 +93,7 @@
       evento(via==='wa'?'formulario_whatsapp':'formulario_correo','contacto');
       abrirDestino(via==='wa'
         ? 'https://wa.me/'+WA+'?text='+encodeURIComponent(t)
-        : 'mailto:'+CORREO+'?subject='+encodeURIComponent('Quiero platicar de mi negocio'+(d.negocio?': '+d.negocio:''))+'&body='+encodeURIComponent(t));
+        : 'mailto:'+CORREO+'?subject='+encodeURIComponent('Quiero hablar de mi negocio'+(d.negocio?': '+d.negocio:''))+'&body='+encodeURIComponent(t));
       di(estado,MSJ[via==='wa'?'wa':'mail']);
     });
   }

@@ -437,3 +437,13 @@ h2.t{font-size:var(--t-h2); line-height:1.02; letter-spacing:-.025em; max-width:
 /* Qué hacemos: las seis áreas reutilizan el trío (tres por renglón; dos en tableta) */
 .areas .enunciado{color:var(--ink); font-size:18px; line-height:1.45}
 @media (min-width:621px) and (max-width:920px){ .trio.areas{grid-template-columns:repeat(2,minmax(0,1fr)); max-width:none} }
+/* Primera reunión: línea bajo los botones del hero, microlínea junto a "Hablemos" y señales en Contacto */
+.hero-nota{margin-top:20px; font-size:15px; line-height:1.4; color:var(--muted)}
+.hero-nota a{display:inline-block; padding-block:12px; margin-block:-12px; color:var(--ink); text-underline-offset:.25em; text-decoration-thickness:1px}
+.hero-nota a:hover{color:var(--accent)}
+.micro{margin-top:14px; font-size:14px; line-height:1.4; color:var(--muted)}
+.senales{margin-top:clamp(28px,3vw,40px); display:grid; gap:18px}
+.senales h3{font-size:var(--t-h3); line-height:1.14; letter-spacing:-.012em}
+.senales ul{list-style:none; margin:0; padding:0; display:grid; gap:12px; font-size:18px; line-height:1.5; color:var(--muted)}
+.senales li{display:grid; grid-template-columns:7px minmax(0,1fr); gap:16px; align-items:baseline; text-wrap:pretty}
+.senales li::before{content:""; width:7px; height:7px; border-radius:50%; background:var(--accent); translate:0 -2px}
