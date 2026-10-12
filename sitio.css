@@ -434,3 +434,6 @@ h2.t{font-size:var(--t-h2); line-height:1.02; letter-spacing:-.025em; max-width:
 .nw{white-space:nowrap}
 /* Portadas a ≤380 px: sin palabra sola en el último renglón del h1 (Qué hacemos tiene su propio tamaño) */
 @media (max-width:380px){ .apertura:not(.apertura-v) h1{font-size:40px} }
+/* Qué hacemos: las seis áreas reutilizan el trío (tres por renglón; dos en tableta) */
+.areas .enunciado{color:var(--ink); font-size:18px; line-height:1.45}
+@media (min-width:621px) and (max-width:920px){ .trio.areas{grid-template-columns:repeat(2,minmax(0,1fr)); max-width:none} }
