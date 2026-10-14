@@ -480,12 +480,12 @@ h2.t{font-size:var(--t-h2); line-height:1.02; letter-spacing:-.025em; max-width:
 }
 
 /* Proceso paso a paso (Cómo trabajamos) */
-.pasos{list-style:none; margin:clamp(32px,4vw,56px) 0 0; padding:0; counter-reset:paso; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(32px,4vw,56px) clamp(28px,4vw,64px)}
+.pasos{list-style:none; margin:clamp(32px,4vw,56px) 0 0; padding:0; counter-reset:paso; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:clamp(32px,4vw,56px) clamp(28px,4vw,64px)}
 .pasos li{counter-increment:paso; display:grid; gap:12px; align-content:start}
 .pasos li::before{content:counter(paso,decimal-leading-zero); font-family:var(--font-display); font-size:clamp(28px,2.6vw,36px); line-height:1; color:var(--accent)}
 .pasos h3{font-size:var(--t-h3); line-height:1.14; letter-spacing:-.012em}
 .pasos p{color:var(--muted); text-wrap:pretty}
-@media (max-width:920px){ .pasos{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:1079px){ .pasos{grid-template-columns:repeat(2,minmax(0,1fr))} }
 @media (max-width:600px){ .pasos{grid-template-columns:minmax(0,1fr)} }
 
 /* Preguntas frecuentes (Cómo trabajamos): <details> nativo, sin JS */
