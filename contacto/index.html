@@ -56,22 +56,14 @@ addEventListener('pagereveal',function(e){var v=e.viewTransition,a;if(!v||!v.typ
       <p class="micro">Respondemos el mismo día, de lunes a sábado.</p>
       <p class="lazo">¿Prefieres conocernos primero?<br><a class="puerta" href="/nosotros/">Empieza por quiénes <span class="nw">somos<svg class="u-fl" viewBox="0 0 32 12" aria-hidden="true"><path d="M0 6h30M25 1l5 5-5 5"/></svg></span></a></p>
     </div>
-    <form class="forma" id="f-forma" method="post" novalidate hidden>
+    <form class="forma" id="f-forma" method="post" novalidate hidden data-destino="" data-captcha="">
       <h2>O escríbenos desde aquí</h2>
-      <label for="f-nombre">Nombre <span class="obl">(obligatorio)</span></label>
-      <input id="f-nombre" name="nombre" autocomplete="name" required aria-describedby="f-error">
-      <label for="f-negocio">Negocio <span class="opc">(si ya lo tienes)</span></label>
-      <input id="f-negocio" name="negocio" autocomplete="organization">
-      <label for="f-tel">Teléfono <span class="obl">(obligatorio si envías por correo)</span></label>
-      <input id="f-tel" name="telefono" type="tel" autocomplete="tel" inputmode="tel" aria-describedby="f-error">
-      <label for="f-msg">¿Qué te quita tiempo hoy? <span class="opc">(opcional)</span></label>
-      <textarea id="f-msg" name="mensaje" rows="3"></textarea>
+      <p class="forma-nota">Los campos marcados con * son obligatorios.</p>
+      <label for="f-nombre">Nombre<span class="obl" aria-hidden="true">*</span></label><input id="f-nombre" name="nombre" aria-describedby="f-nombre-e" required autocomplete="name" type="text" maxlength="160"><p class="campo-e" id="f-nombre-e"></p><label for="f-correo">Correo<span class="obl" aria-hidden="true">*</span></label><p class="campo-n" id="f-correo-n">De preferencia, el de tu negocio.</p><input id="f-correo" name="correo" aria-describedby="f-correo-n f-correo-e" required autocomplete="email" type="email" maxlength="254" inputmode="email" autocapitalize="off" spellcheck="false"><p class="campo-e" id="f-correo-e"></p><label for="f-puesto">Puesto</label><input id="f-puesto" name="puesto" aria-describedby="f-puesto-e" autocomplete="organization-title" type="text" maxlength="160"><p class="campo-e" id="f-puesto-e"></p><label for="f-negocio">Negocio</label><input id="f-negocio" name="negocio" aria-describedby="f-negocio-e" autocomplete="organization" type="text" maxlength="160"><p class="campo-e" id="f-negocio-e"></p><label for="f-asunto">Asunto<span class="obl" aria-hidden="true">*</span></label><input id="f-asunto" name="asunto" aria-describedby="f-asunto-e" required type="text" maxlength="160"><p class="campo-e" id="f-asunto-e"></p><label for="f-mensaje">Mensaje</label><textarea id="f-mensaje" name="mensaje" aria-describedby="f-mensaje-e" rows="4" maxlength="5000"></textarea><p class="campo-e" id="f-mensaje-e"></p>
+      <div class="trampa" aria-hidden="true"><label for="f-sitio">No llenes este campo</label><input id="f-sitio" name="sitio_web" tabindex="-1" autocomplete="off"></div>
       <p class="aviso">Usamos tus datos sólo para lo que explica nuestro <a href="/aviso-privacidad.html">aviso de privacidad</a>, empezando por responderte. No los vendemos.</p>
       <p class="error" id="f-error" role="status"></p>
-      <div class="acciones">
-        <button class="btn lleno" type="submit" data-via="wa">Enviar por WhatsApp</button>
-        <button class="btn" type="submit" data-via="mail">Enviar por correo</button>
-      </div>
+      <div class="acciones"><button class="btn lleno" type="submit">Enviar</button></div>
       <p class="estado" id="f-estado" role="status"></p>
     </form>
   </div>

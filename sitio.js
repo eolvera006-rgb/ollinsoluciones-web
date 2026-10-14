@@ -56,49 +56,83 @@
     if(a) evento(a.dataset.evento,a.dataset.ubicacion);
   });
 
-  // Abre WhatsApp o el correo ya armados. Todo pasa por aquí, así las pruebas pueden sustituirla (window.__abrirDestino)
-  // sin abrir nada de verdad.
+  // Abre el correo ya armado (modo local, sin FORMULARIO_URL). Pasa por aquí para que las pruebas puedan sustituirla
+  // (window.__abrirDestino) sin abrir nada de verdad.
   function abrirDestino(url){
     if(typeof window.__abrirDestino==='function') return window.__abrirDestino(url);
-    if(url.indexOf('https://wa.me/')===0) window.open(url,'_blank','noopener');
-    else location.href=url;
+    location.href=url;
   }
 
   // Formulario (sólo en /contacto/): sin JS queda oculto y sólo se ven los enlaces directos.
+  // Publicado, lo manda la aplicación web de Apps Script (Google Workspace) a proyectos@ después de validar reCAPTCHA.
   var f=document.getElementById('f-forma');
   if(f){
     f.hidden=false;
-    var WA='525574086846', CORREO='proyectos@ollinsoluciones.com', err=document.getElementById('f-error'), estado=document.getElementById('f-estado');
+    var CORREO='proyectos@ollinsoluciones.com', destino=f.dataset.destino, clave=f.dataset.captcha;
+    var err=document.getElementById('f-error'), estado=document.getElementById('f-estado'), boton=f.querySelector('button[type="submit"]');
     var MSJ={
-      nombre:'Escribe tu nombre para enviar.',
-      telCorreo:'Para enviar por correo, escribe tu teléfono a 10 dígitos.',
-      telMal:'Revisa el teléfono: deben quedar 10 dígitos, sin contar el 52 inicial.',
-      wa:'Gracias. Para completar el envío, confirma el mensaje en WhatsApp. Te responderemos dentro de nuestro horario de atención, de lunes a sábado de 9:00 a 21:00 h, para acordar la primera reunión.',
-      mail:'Gracias. Para completar el envío, confirma el mensaje en tu programa de correo. Te responderemos dentro de nuestro horario de atención, de lunes a sábado de 9:00 a 21:00 h, para acordar la primera reunión.'
+      nombre:'Escribe tu nombre.',
+      correo:'Escribe tu correo.',
+      correoMal:'Revisa tu correo: debe tener la forma nombre@dominio.com.',
+      asunto:'Escribe el asunto.',
+      captcha:'Marca la casilla «No soy un robot».',
+      enviando:'Enviando…',
+      ok:'Gracias. Recibimos tu mensaje y te respondemos el mismo día, de lunes a sábado, de 9:00 a 21:00 h, para acordar la primera reunión.',
+      falla:'No pudimos enviar tu mensaje. Inténtalo de nuevo en unos minutos o escríbenos a '+CORREO+'.',
+      local:'Para completar el envío, confirma el mensaje en tu programa de correo. Te respondemos el mismo día, de lunes a sábado, de 9:00 a 21:00 h.'
     };
-    // Sólo dígitos y sin el 52 inicial: "55 7408 6846", "+52 55 7408 6846" y "(55) 7408-6846" dan los mismos 10.
-    var digitos=function(v){ var n=v.replace(/\D/g,''); if(n.length===12&&n.indexOf('52')===0) n=n.slice(2); return n; };
+    // vaciar y llenar en el siguiente cuadro: así role=status vuelve a anunciar aunque el texto sea el mismo
+    // (el último texto pedido manda: un cuadro pendiente no pisa un mensaje más nuevo)
+    var di=function(el,t){ el.__t=t; el.textContent=''; if(t) requestAnimationFrame(function(){ if(el.__t===t) el.textContent=t; }); };
+    var marca=function(id,t){ var c=document.getElementById(id), e=document.getElementById(id+'-e'); if(c&&c.setAttribute) c.setAttribute('aria-invalid',String(!!t)); if(e) e.textContent=t||''; return !!t; };
+
+    // reCAPTCHA se carga sólo cuando el formulario está por verse o alguien lo usa: el resto del sitio no se conecta a Google.
+    var widget=null, cargado=false;
+    function cargaCaptcha(){
+      if(cargado||!clave) return; cargado=true;
+      window.__ollinCaptcha=function(){ widget=window.grecaptcha.render('f-captcha',{sitekey:clave,theme:'dark'}); };
+      var sc=document.createElement('script'); sc.async=true;
+      sc.src='https://www.google.com/recaptcha/api.js?onload=__ollinCaptcha&render=explicit&hl=es-419';
+      document.head.appendChild(sc);
+    }
+    if(clave){
+      f.addEventListener('focusin',cargaCaptcha);
+      if('IntersectionObserver' in window){ var vi=new IntersectionObserver(function(es){ if(es[0].isIntersecting){ cargaCaptcha(); vi.disconnect(); } },{rootMargin:'300px 0px'}); vi.observe(f); }
+      else cargaCaptcha();
+    }
+
     f.addEventListener('submit',function(e){
       e.preventDefault();
-      var via=(e.submitter&&e.submitter.dataset.via)||'wa', d={}, faltas=[];
-      ['nombre','negocio','telefono','mensaje'].forEach(function(n){ d[n]=f.elements[n].value.trim(); });
-      var nombre=f.elements.nombre, tel=f.elements.telefono;
-      // El nombre siempre; el teléfono sólo por correo (WhatsApp ya trae el número), pero si se escribe, debe ser válido.
-      var malNombre=!d.nombre, malTel=d.telefono?digitos(d.telefono).length!==10:via==='mail';
-      nombre.setAttribute('aria-invalid',String(malNombre)); tel.setAttribute('aria-invalid',String(malTel));
-      if(malNombre) faltas.push(MSJ.nombre);
-      if(malTel) faltas.push(d.telefono?MSJ.telMal:MSJ.telCorreo);
-      // vaciar y llenar en el siguiente cuadro: así role=status vuelve a anunciar aunque el texto sea el mismo
-      var di=function(el,t){ el.textContent=''; if(t) requestAnimationFrame(function(){ el.textContent=t; }); };
-      di(estado,'');
-      if(faltas.length){ di(err,faltas.join(' ')); f.querySelector('[aria-invalid="true"]').focus(); return; }
-      di(err,'');
-      var t='Hola, soy '+d.nombre+(d.negocio?' de '+d.negocio:'')+'.'+(d.telefono?' Mi teléfono: '+d.telefono+'.':'')+(d.mensaje?'\n\n'+d.mensaje:'');
-      evento(via==='wa'?'formulario_whatsapp':'formulario_correo','contacto');
-      abrirDestino(via==='wa'
-        ? 'https://wa.me/'+WA+'?text='+encodeURIComponent(t)
-        : 'mailto:'+CORREO+'?subject='+encodeURIComponent('Quiero hablar de mi negocio'+(d.negocio?': '+d.negocio:''))+'&body='+encodeURIComponent(t));
-      di(estado,MSJ[via==='wa'?'wa':'mail']);
+      var d={};
+      ['nombre','correo','puesto','negocio','asunto','mensaje'].forEach(function(n){ d[n]=f.elements[n].value.trim(); });
+      var token=clave&&widget!==null&&window.grecaptcha?window.grecaptcha.getResponse(widget):'';
+      var malas=[
+        marca('f-nombre',d.nombre?'':MSJ.nombre),
+        marca('f-correo',!d.correo?MSJ.correo:/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.correo)?'':MSJ.correoMal),
+        marca('f-asunto',d.asunto?'':MSJ.asunto),
+        clave?marca('f-captcha',token?'':MSJ.captcha):false
+      ];
+      di(estado,''); di(err,'');
+      if(malas.some(Boolean)){
+        var primero=f.querySelector('[aria-invalid="true"]');
+        if(primero&&primero.id!=='f-captcha') primero.focus(); else if(primero) primero.scrollIntoView({block:'center'});
+        di(err,'Revisa los campos marcados.');
+        return;
+      }
+      var cuerpo='Nombre: '+d.nombre+'\nCorreo: '+d.correo+(d.puesto?'\nPuesto: '+d.puesto:'')+(d.negocio?'\nNegocio: '+d.negocio:'')+(d.mensaje?'\n\n'+d.mensaje:'');
+      if(!destino){   // modo local: sin aplicación web, se arma el correo
+        evento('formulario_correo','contacto');
+        abrirDestino('mailto:'+CORREO+'?subject='+encodeURIComponent(d.asunto)+'&body='+encodeURIComponent(cuerpo));
+        di(estado,MSJ.local); return;
+      }
+      var datos=new URLSearchParams(d); datos.append('g-recaptcha-response',token); datos.append('sitio_web',f.elements.sitio_web.value);
+      boton.disabled=true; di(estado,MSJ.enviando);
+      fetch(destino,{method:'POST',body:datos}).then(function(r){ return r.json(); }).then(function(r){
+        if(!r||!r.ok) throw new Error((r&&r.error)||'sin respuesta');
+        evento('formulario_enviado','contacto');   // sólo el nombre del evento y su ubicación, nunca lo que se escribió
+        f.reset(); di(estado,MSJ.ok);
+      }).catch(function(){ di(err,MSJ.falla); di(estado,''); })
+        .then(function(){ boton.disabled=false; if(widget!==null&&window.grecaptcha) window.grecaptcha.reset(widget); });
     });
   }
 
