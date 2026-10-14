@@ -160,6 +160,8 @@ html{background:var(--noche)}   /* lienzo: rebote del scroll arriba/abajo y fond
 .hero-in{position:relative; z-index:1; display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); gap:56px clamp(40px,6vw,96px); align-items:end; padding-block:clamp(48px,6vw,88px) clamp(80px,9vw,128px)}
 .hero h1{font-size:clamp(52px,6.4vw,92px); line-height:.94; letter-spacing:-.03em}
 .hero h1 span{color:var(--accent)}
+/* Segunda línea del H1: dice qué hacemos sin quitarle el lugar al eslogan */
+.hero h1 .h1-sub{display:block; margin-top:clamp(22px,2.4vw,32px); max-width:30ch; font-family:var(--font-body); font-weight:500; font-size:clamp(18px,1.55vw,22px); line-height:1.4; letter-spacing:0; color:var(--ink); white-space:normal; text-wrap:pretty}
 .lede{font-size:clamp(18px,1.55vw,21px); line-height:1.55; color:var(--muted); max-width:52ch; margin-top:32px; text-wrap:pretty}
 /* Gancho: la invitación a recorrer el sitio, con un solo botón */
 .gancho{display:grid; gap:0; max-width:27rem; padding-bottom:6px}
