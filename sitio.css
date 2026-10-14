@@ -443,6 +443,7 @@ h2.t{font-size:var(--t-h2); line-height:1.02; letter-spacing:-.025em; max-width:
 .hero-nota{margin-top:20px; font-size:15px; line-height:1.4; color:var(--muted)}
 .hero-nota a{display:inline-block; padding-block:12px; margin-block:-12px; color:var(--ink); text-underline-offset:.25em; text-decoration-thickness:1px}
 .hero-nota a:hover{color:var(--accent)}
+.hero-nota + .hero-nota{margin-top:10px}
 .micro{margin-top:14px; font-size:14px; line-height:1.4; color:var(--muted)}
 .senales{margin-top:clamp(28px,3vw,40px); display:grid; gap:18px}
 .senales h3{font-size:var(--t-h3); line-height:1.14; letter-spacing:-.012em}
