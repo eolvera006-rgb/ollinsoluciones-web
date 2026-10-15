@@ -217,7 +217,6 @@ html{background:var(--paper)}   /* lienzo: rebote del scroll arriba y fondo entr
 .nota-margen p + p{margin-top:.5em}
 @media (min-width:1024px){
   .prosa > .nota-margen{float:left; clear:left; width:var(--col-margen); margin:.35em 0 1em calc(-1 * (var(--col-margen) + var(--col-gap))); padding-left:0; border-left:0; border-top:1px solid var(--regla); padding-top:10px}
-  .prosa > .nota-margen + *{margin-top:0}
 }
 
 /* Índice lateral (textos largos): fijo en escritorio */
