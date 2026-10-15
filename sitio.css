@@ -184,7 +184,8 @@ html{background:var(--paper)}   /* lienzo: rebote del scroll arriba y fondo entr
 
 /* Títulos de sección y texto corrido */
 .cuerpo > h2,.h2{font-size:var(--t-h2); line-height:1.12; max-width:24ch}
-.cuerpo > * + *{margin-top:var(--tramo)}
+.ed > .cuerpo > * + *{margin-top:var(--tramo)}
+@media (min-width:1024px){ .c-grid > * + *{margin-top:0} }
 .prosa{max-width:var(--col-texto)}
 .prosa > * + *{margin-top:1em}
 .prosa h2{font-size:var(--t-h2); line-height:1.12; margin-top:1.6em; max-width:26ch}
@@ -523,3 +524,6 @@ html.js .grupos-cat{display:none}
 .historia h2:first-child{margin-top:0}
 .nota-lazo{font-style:italic; font-size:var(--t-nota); line-height:1.5; color:var(--muted)}
 .prosa > p.nota-lazo{margin-top:.5em}
+/* Ámbitos: el perfil del dueño (texto del sitio anterior) cierra las señales */
+.perfil{padding-top:var(--tramo); border-top:1px solid var(--regla)}
+.perfil b{font-weight:500}
