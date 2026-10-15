@@ -432,10 +432,6 @@ h2.t{font-size:var(--t-h2); line-height:1.02; letter-spacing:-.025em; max-width:
 .trio .enunciado{color:var(--ink); font-size:18px; line-height:1.45}   /* áreas y síntomas de Con quién */
 @media (min-width:621px) and (max-width:920px){ .trio.areas{grid-template-columns:repeat(2,minmax(0,1fr)); max-width:none} }
 /* Primera reunión: línea bajo los botones del hero, microlínea junto a "Hablemos" y señales en Contacto */
-.hero-nota{margin-top:20px; font-size:15px; line-height:1.4; color:var(--muted)}
-.hero-nota a{display:inline-block; padding-block:12px; margin-block:-12px; color:var(--ink); text-underline-offset:.25em; text-decoration-thickness:1px}
-.hero-nota a:hover{color:var(--accent)}
-.hero-nota + .hero-nota{margin-top:10px}
 .micro{margin-top:14px; font-size:14px; line-height:1.4; color:var(--muted)}
 .senales{margin-top:clamp(28px,3vw,40px); display:grid; gap:18px}
 .senales h3{font-size:var(--t-h3); line-height:1.14; letter-spacing:-.012em}
@@ -502,22 +498,21 @@ h2.t{font-size:var(--t-h2); line-height:1.02; letter-spacing:-.025em; max-width:
 .forma .acciones{grid-template-columns:minmax(0,max-content)}
 .forma button[disabled]{opacity:.6; cursor:progress}
 
-/* — Portada del inicio: oficina con vista a la ciudad. Panel claro con el título en los tonos de la foto
-   (madera oscura del escritorio y verde del bosque, sobre el cielo pálido); la foto ocupa la mitad derecha — */
-.hero{--madera:#231D1A; --bosque:#4E5D38; --luz:#A3B57E;
+/* — Portada del inicio: la oficina con vista a la ciudad a todo lo ancho. Arriba a la izquierda, sobre el cielo, un velo claro
+   sostiene el título (madera oscura del escritorio y verde del bosque), el pitch y el recuadro de contacto — */
+.hero{--madera:#231D1A; --bosque:#4E5D38; --luz:#9DB07A; --velo:238,242,243;
   --paper:#EEF2F3; --ink:var(--madera); --muted:#5E5F59; --accent:var(--bosque); --accent-ink:#F6F3EC;
   position:relative; overflow:hidden; overflow:clip; background:var(--paper); color:var(--ink)}
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .hero{
-  --bosque:#B5C596; --luz:#EEF3E2; --paper:#161B1A; --ink:#F1EEE7; --muted:#B4B8AF; --accent:var(--bosque); --accent-ink:#161B1A}}
-:root[data-theme="dark"] .hero{
-  --bosque:#B5C596; --luz:#EEF3E2; --paper:#161B1A; --ink:#F1EEE7; --muted:#B4B8AF; --accent:var(--bosque); --accent-ink:#161B1A}
-.portada{position:absolute; top:0; bottom:0; right:0; left:52%; z-index:0; overflow:hidden}
+.portada{position:absolute; inset:0; z-index:0; overflow:hidden}
 .portada picture{position:absolute; inset:0; display:block}
-.portada img{position:absolute; left:0; top:-10%; width:100%; height:110%; object-fit:cover; object-position:22% 50%}
-.portada::after{content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(90deg, var(--paper) 0, transparent 10%)}
-.hero-in{position:relative; z-index:1; display:flex; flex-direction:column; justify-content:center; max-width:min(38rem, 44vw);
-  min-height:clamp(560px, calc(100svh - var(--barra-h, 88px)), 820px); padding-block:clamp(48px,6vw,88px)}
-.hero h1{font-size:clamp(46px,4.6vw,74px); line-height:1; letter-spacing:-.024em; color:var(--ink)}
+.portada img{position:absolute; left:0; top:-10%; width:100%; height:110%; object-fit:cover; object-position:40% 36%}
+.portada::after{content:""; position:absolute; inset:0; pointer-events:none;
+  --x0:calc(max(0px, (100% - var(--max)) / 2) + var(--gutter));
+  background:linear-gradient(180deg, rgba(var(--velo),.8) 0%, rgba(var(--velo),.5) 36%, rgba(var(--velo),0) 60%),
+             linear-gradient(90deg, rgba(var(--velo),.55) 0, rgba(var(--velo),0) calc(var(--x0) + 40rem))}
+.hero-in{position:relative; z-index:1; display:flex; flex-direction:column; justify-content:flex-start; max-width:42rem;
+  min-height:clamp(560px, calc(100svh - var(--barra-h, 88px)), 860px); padding-block:clamp(40px,6vw,84px) clamp(48px,6vw,80px)}
+.hero h1{font-size:clamp(46px,5vw,78px); line-height:1; letter-spacing:-.024em; color:var(--ink)}
 .hero h1 .l1,.hero h1 .acento{display:block}
 .hero h1 .acento{color:var(--bosque)}
 @supports ((-webkit-background-clip:text) or (background-clip:text)){
@@ -526,27 +521,28 @@ h2.t{font-size:var(--t-h2); line-height:1.02; letter-spacing:-.025em; max-width:
     -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; padding-bottom:.08em}
 }
 @media (forced-colors:active){ .hero h1 .acento{background:none; -webkit-text-fill-color:currentColor} }
-.hero h1 .h1-sub{color:var(--ink); max-width:32ch}
-.hero .lede{color:var(--muted); max-width:42ch; margin-top:24px}
-.hero .acciones-h{margin-top:36px}
-.hero .hero-nota{color:var(--muted)}
-@media (max-width:420px){ .hero .acciones-h{flex-direction:column; align-items:flex-start} }
+.hero h1 .h1-sub{color:var(--ink); max-width:34ch; margin-top:clamp(18px,2vw,26px); text-shadow:0 0 18px rgba(var(--velo),.9), 0 0 4px rgba(var(--velo),.8)}
+.hero .acciones-h{margin-top:clamp(26px,3vw,36px)}
+/* Recuadro de contacto: borde fino, fondo claro translúcido y el sobre de correo */
+.btn.recuadro{min-height:56px; padding:0 26px 0 22px; gap:12px; font-size:16px; border-color:var(--ink); color:var(--ink);
+  background:rgba(var(--velo),.62); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px)}
+.btn.recuadro:hover{background:var(--ink); border-color:var(--ink); color:var(--paper)}
+.sobre{width:22px; height:22px; flex:none; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round}
 
-/* Hasta 920 px la foto va arriba, a todo el ancho, y se funde con el panel; el texto va debajo */
+/* Hasta 920 px: la foto sigue a todo lo ancho, centrada en el escritorio; el velo claro baja un poco más para el texto */
 @media (max-width:920px){
-  .portada{position:relative; inset:auto; height:clamp(220px,37svh,440px)}
-  .portada img{object-position:30% 55%}
-  .portada::after{background:linear-gradient(180deg, transparent 40%, var(--paper) 94%)}
-  .hero-in{max-width:none; min-height:0; justify-content:flex-start; margin-top:clamp(-40px,-4svh,-24px); padding-block:0 clamp(48px,8vw,72px)}
+  .portada img{object-position:21% 50%}
+  .portada::after{background:linear-gradient(180deg, rgba(var(--velo),.86) 0%, rgba(var(--velo),.72) 40%, rgba(var(--velo),0) 68%)}
+  .hero-in{min-height:clamp(520px, calc(100svh - var(--barra-h, 72px)), 760px)}
 }
 
-/* Secuencia de entrada: la foto se descubre de izquierda a derecha y se acerca despacio, las líneas suben una tras otra
-   y un reflejo cruza "no se detienen."; al bajar, la foto va más lento que el texto */
+/* Secuencia de entrada: la foto se descubre de izquierda a derecha y se acerca despacio, el título, el pitch y el recuadro
+   suben uno tras otro y un reflejo cruza "no se detienen."; al bajar, la foto va más lento que el texto */
 @media (prefers-reduced-motion:no-preference){
   .portada picture{animation:portada-abre 1.3s cubic-bezier(.65,0,.25,1) both}
   .portada img{animation:portada-acerca 9s cubic-bezier(.2,.6,.2,1) both}
-  .hero .entra{animation:portada-entra .95s var(--ease-marcha) both; animation-delay:calc(var(--n) * 130ms + 260ms)}
-  .hero h1 .acento{animation:portada-entra .95s var(--ease-marcha) both, portada-luz 2.6s cubic-bezier(.45,0,.25,1) both; animation-delay:calc(var(--n) * 130ms + 260ms), 1.2s}
+  .hero .entra{animation:portada-entra .95s var(--ease-marcha) both; animation-delay:calc(var(--n) * 140ms + 260ms)}
+  .hero h1 .acento{animation:portada-entra .95s var(--ease-marcha) both, portada-luz 2.6s cubic-bezier(.45,0,.25,1) both; animation-delay:calc(var(--n) * 140ms + 260ms), 1.2s}
   @supports (animation-timeline: view()){
     .portada{animation:portada-paralaje linear both; animation-timeline:view(); animation-range:exit 0% exit 100%}
   }
