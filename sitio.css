@@ -498,51 +498,45 @@ h2.t{font-size:var(--t-h2); line-height:1.02; letter-spacing:-.025em; max-width:
 .forma .acciones{grid-template-columns:minmax(0,max-content)}
 .forma button[disabled]{opacity:.6; cursor:progress}
 
-/* — Portada del inicio: la oficina con vista a la ciudad a todo lo ancho. Arriba a la izquierda, sobre el cielo, un velo claro
-   sostiene el título (madera oscura del escritorio y verde del bosque), el pitch y el recuadro de contacto — */
-.hero{--madera:#231D1A; --bosque:#4E5D38; --luz:#9DB07A; --velo:238,242,243;
-  --paper:#EEF2F3; --ink:var(--madera); --muted:#5E5F59; --accent:var(--bosque); --accent-ink:#F6F3EC;
+/* Hallmark · component: portada (hero) · genre: editorial · legibilidad: cartela sólida, sin velo ni degradados
+ * pre-emit critique: P4 H4 E4 S4 R5 V4 */
+/* — Portada del inicio: la oficina con vista a la ciudad a todo lo ancho y en su proporción (no se recorta en laptop).
+   El texto va en una cartela sólida del color del cielo, arriba a la izquierda; el resto de la foto queda limpio.
+   "Contáctanos" va a la derecha, en un recuadro con el sobre de correo — */
+.hero{--madera:#231D1A; --bosque:#4E5D38; --cielo:#EEF2F3;
+  --paper:var(--cielo); --ink:var(--madera); --muted:#5E5F59; --accent:var(--bosque); --accent-ink:#F6F3EC;
   position:relative; overflow:hidden; overflow:clip; background:var(--paper); color:var(--ink)}
 .portada{position:absolute; inset:0; z-index:0; overflow:hidden}
 .portada picture{position:absolute; inset:0; display:block}
-.portada img{position:absolute; left:0; top:-10%; width:100%; height:110%; object-fit:cover; object-position:40% 36%}
-.portada::after{content:""; position:absolute; inset:0; pointer-events:none;
-  --x0:calc(max(0px, (100% - var(--max)) / 2) + var(--gutter));
-  background:linear-gradient(180deg, rgba(var(--velo),.8) 0%, rgba(var(--velo),.5) 36%, rgba(var(--velo),0) 60%),
-             linear-gradient(90deg, rgba(var(--velo),.55) 0, rgba(var(--velo),0) calc(var(--x0) + 40rem))}
-.hero-in{position:relative; z-index:1; display:flex; flex-direction:column; justify-content:flex-start; max-width:42rem;
-  min-height:clamp(560px, calc(100svh - var(--barra-h, 88px)), 860px); padding-block:clamp(40px,6vw,84px) clamp(48px,6vw,80px)}
-.hero h1{font-size:clamp(46px,5vw,78px); line-height:1; letter-spacing:-.024em; color:var(--ink)}
+.portada img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:40% 45%}
+.hero-in{position:relative; z-index:1; display:grid; grid-template-columns:minmax(0,48rem) minmax(0,1fr) auto; align-items:end; gap:24px;
+  /* la portada toma la proporción de la foto (1672 × 940) hasta 900 px de alto: en laptop se ve completa */
+  min-height:clamp(560px, calc(100vw * 940 / 1672), 900px); padding-block:clamp(32px,5vw,72px); align-content:start}
+.cartela{grid-column:1; align-self:start; width:fit-content; max-width:100%; background:var(--paper); padding:clamp(24px,3vw,40px) clamp(24px,3vw,44px) clamp(26px,3.2vw,42px)}
+.hero h1{font-size:clamp(44px,4.8vw,76px); line-height:1; letter-spacing:-.024em; color:var(--ink)}
 .hero h1 .l1,.hero h1 .acento{display:block}
 .hero h1 .acento{color:var(--bosque)}
-@supports ((-webkit-background-clip:text) or (background-clip:text)){
-  /* tres tramos: verde | reflejo | verde; en reposo se ve el primero y la animación hace pasar el reflejo una vez */
-  .hero h1 .acento{background:linear-gradient(100deg, var(--bosque) 0%, var(--bosque) 36%, var(--luz) 50%, var(--bosque) 64%, var(--bosque) 100%) 0 0 / 300% 100%;
-    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; padding-bottom:.08em}
-}
-@media (forced-colors:active){ .hero h1 .acento{background:none; -webkit-text-fill-color:currentColor} }
-.hero h1 .h1-sub{color:var(--ink); max-width:34ch; margin-top:clamp(18px,2vw,26px); text-shadow:0 0 18px rgba(var(--velo),.9), 0 0 4px rgba(var(--velo),.8)}
-.hero .acciones-h{margin-top:clamp(26px,3vw,36px)}
-/* Recuadro de contacto: borde fino, fondo claro translúcido y el sobre de correo */
-.btn.recuadro{min-height:56px; padding:0 26px 0 22px; gap:12px; font-size:16px; border-color:var(--ink); color:var(--ink);
-  background:rgba(var(--velo),.62); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px)}
+.hero h1 .h1-sub{color:var(--ink); max-width:34ch; margin-top:clamp(18px,2vw,26px)}
+/* Recuadro de contacto: sólido, borde fino y el sobre de correo; alineado con la base de la cartela */
+.btn.recuadro{grid-column:3; align-self:end; min-height:56px; padding:0 26px 0 22px; gap:12px; font-size:16px; border-color:var(--ink); color:var(--ink); background:var(--paper)}
 .btn.recuadro:hover{background:var(--ink); border-color:var(--ink); color:var(--paper)}
 .sobre{width:22px; height:22px; flex:none; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round}
 
-/* Hasta 920 px: la foto sigue a todo lo ancho, centrada en el escritorio; el velo claro baja un poco más para el texto */
+/* Hasta 920 px: la cartela ocupa el ancho arriba y el recuadro queda debajo, a la derecha; la foto se centra en el escritorio */
 @media (max-width:920px){
   .portada img{object-position:21% 50%}
-  .portada::after{background:linear-gradient(180deg, rgba(var(--velo),.86) 0%, rgba(var(--velo),.72) 40%, rgba(var(--velo),0) 68%)}
-  .hero-in{min-height:clamp(520px, calc(100svh - var(--barra-h, 72px)), 760px)}
+  .hero-in{grid-template-columns:minmax(0,1fr); gap:16px; min-height:clamp(560px, calc(100svh - var(--barra-h, 72px)), 820px); padding-block:0 clamp(28px,6vw,48px)}
+  .cartela{width:auto; max-width:none; margin-inline:calc(var(--gutter) * -1); padding:clamp(24px,6vw,40px) var(--gutter) clamp(26px,6vw,40px)}
+  .btn.recuadro{grid-column:1; justify-self:end; align-self:start}
 }
 
-/* Secuencia de entrada: la foto se descubre de izquierda a derecha y se acerca despacio, el título, el pitch y el recuadro
-   suben uno tras otro y un reflejo cruza "no se detienen."; al bajar, la foto va más lento que el texto */
+/* Secuencia de entrada: la foto se descubre de izquierda a derecha y se acerca despacio; la cartela aparece y
+   el título, el pitch y el recuadro suben uno tras otro; al bajar, la foto va más lento que el texto */
 @media (prefers-reduced-motion:no-preference){
   .portada picture{animation:portada-abre 1.3s cubic-bezier(.65,0,.25,1) both}
   .portada img{animation:portada-acerca 9s cubic-bezier(.2,.6,.2,1) both}
-  .hero .entra{animation:portada-entra .95s var(--ease-marcha) both; animation-delay:calc(var(--n) * 140ms + 260ms)}
-  .hero h1 .acento{animation:portada-entra .95s var(--ease-marcha) both, portada-luz 2.6s cubic-bezier(.45,0,.25,1) both; animation-delay:calc(var(--n) * 140ms + 260ms), 1.2s}
+  .hero .entra{animation:portada-entra .95s var(--ease-marcha) both; animation-delay:calc(var(--n) * 140ms + 200ms)}
+  .hero .cartela.entra{animation-name:portada-aparece}
   @supports (animation-timeline: view()){
     .portada{animation:portada-paralaje linear both; animation-timeline:view(); animation-range:exit 0% exit 100%}
   }
@@ -550,5 +544,5 @@ h2.t{font-size:var(--t-h2); line-height:1.02; letter-spacing:-.025em; max-width:
 @keyframes portada-abre{from{clip-path:inset(0 100% 0 0)}}
 @keyframes portada-acerca{from{scale:1.08}}
 @keyframes portada-entra{from{opacity:0; translate:0 24px}}
-@keyframes portada-luz{from{background-position:100% 0} to{background-position:0 0}}   /* el reflejo entra por la izquierda y sale por la derecha */
+@keyframes portada-aparece{from{opacity:0}}
 @keyframes portada-paralaje{to{translate:0 14%}}
