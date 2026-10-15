@@ -57,7 +57,7 @@
     var pinta=function(){
       var n=marcadas().length;
       ir.hidden=n<2;
-      cuenta.textContent=n===0?'':n===1?'Reconoces una.':'Reconoces '+n+'.';
+      cuenta.textContent=n===0?'Marca las que reconozcas en tu negocio.':n===1?'Reconoces una. Si reconoces dos o más, platiquemos de ellas.':'Reconoces '+n+'.';
     };
     cajas.forEach(function(c){ c.addEventListener('change',pinta); });
     ir.addEventListener('click',function(){ try{ sessionStorage.setItem('ollin-senales',JSON.stringify(marcadas())); }catch(_){} });

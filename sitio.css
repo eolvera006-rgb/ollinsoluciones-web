@@ -308,8 +308,8 @@ html{background:var(--paper)}   /* lienzo: rebote del scroll arriba y fondo entr
 
 /* Señales: el único bloque con borde tezontle y fondo propio */
 .lista-senales{margin:0; padding:clamp(22px,3vw,40px); border:1px solid var(--accent); border-left-width:3px; background:var(--paper-2)}
-.lista-senales legend{float:left; width:100%; padding:0; margin-bottom:var(--tramo); font-size:var(--t-h2); line-height:1.12; font-weight:500; letter-spacing:-.01em}
-.lista-senales legend + *{clear:both}
+.lista-senales h2{font-size:var(--t-h2); line-height:1.12; margin-bottom:calc(var(--tramo) * .7)}
+.lista-senales fieldset{border:0; margin:0; padding:0; min-width:0}
 .lista-senales ul{list-style:none; margin:0; padding:0; display:grid; gap:2px}
 .lista-senales label{display:grid; grid-template-columns:28px minmax(0,1fr); gap:14px; align-items:start; padding-block:10px; cursor:pointer; text-wrap:pretty}
 .lista-senales input{appearance:none; -webkit-appearance:none; width:22px; height:22px; margin:.22em 0 0; border:1.5px solid var(--muted); border-radius:2px; background:var(--paper); display:grid; place-content:center; cursor:pointer}
@@ -323,7 +323,7 @@ html.js .senales-sinjs{display:none}
 
 /* Proceso en línea (inicio) y paso a paso (Cómo trabajamos) */
 .pasos{list-style:none; margin:0; padding:0; counter-reset:paso; display:grid; grid-template-columns:minmax(0,1fr); gap:0; border-top:1px solid var(--regla)}
-.pasos li{counter-increment:paso; display:grid; grid-template-columns:2.6em minmax(0,1fr); gap:4px 12px; padding-block:18px; border-bottom:1px solid var(--regla)}
+.pasos li{counter-increment:paso; display:grid; align-content:start; grid-template-columns:2.6em minmax(0,1fr); gap:4px 12px; padding-block:18px; border-bottom:1px solid var(--regla)}
 .pasos li::before{content:counter(paso,decimal-leading-zero); grid-row:1 / span 2; font-family:var(--font-body); font-weight:600; font-size:var(--t-rotulo); letter-spacing:.1em; font-variant-numeric:tabular-nums lining-nums; color:var(--accent); padding-top:.35em}
 .pasos h3{font-size:var(--t-h3); line-height:1.2}
 .pasos p{text-wrap:pretty}
