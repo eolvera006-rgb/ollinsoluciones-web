@@ -496,26 +496,27 @@ h2.t{font-size:var(--t-h2); line-height:1.02; letter-spacing:-.025em; max-width:
 /* — Portada del inicio: la oficina con vista a la ciudad a todo lo ancho y en su proporción (no se recorta en laptop).
    Un degradado oscuro entra desde la izquierda (desde abajo en móvil) y sostiene el título en marfil y salvia;
    el resto de la foto queda limpio. "Contáctanos" va a la derecha, alineado con la base del texto, en un recuadro translúcido — */
-.hero{--madera:#231D1A; --bosque:#4E5D38; --sombra:16,14,12; --marfil:#F4F1EA; --salvia:#BFCE9F;
+.hero{--madera:#231D1A; --bosque:#4E5D38; --sombra:16,14,12; --marfil:#F4F1EA; --blanco:#FFFFFF; --salvia:#BFCE9F;
   --paper:rgb(var(--sombra)); --ink:var(--marfil); --muted:rgba(244,241,234,.86); --accent:var(--salvia); --accent-ink:var(--madera);
   position:relative; overflow:hidden; overflow:clip; background:var(--paper); color:var(--ink)}
 .portada{position:absolute; inset:0; z-index:0; overflow:hidden}
 .portada picture{position:absolute; inset:0; display:block}
-.portada img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:40% 45%}
+/* la foto va completa (1672 × 940, con techo): si la pantalla es más ancha que la foto, se recorta primero el techo */
+.portada img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:40% 100%}
 .portada::after{content:""; position:absolute; inset:0; pointer-events:none;
   background:
-    linear-gradient(90deg, rgba(var(--sombra),.56) 0%, rgba(var(--sombra),.45) 30%, rgba(var(--sombra),.23) 50%, rgba(var(--sombra),.04) 66%, rgba(var(--sombra),0) 76%),
+    linear-gradient(90deg, rgba(var(--sombra),.52) 0%, rgba(var(--sombra),.46) 40%, rgba(var(--sombra),.38) 58%, rgba(var(--sombra),.24) 72%, rgba(var(--sombra),.08) 84%, rgba(var(--sombra),0) 92%),
     linear-gradient(180deg, rgba(var(--sombra),.12) 0%, rgba(var(--sombra),0) 22%)}
 .hero-in{position:relative; z-index:1; display:grid; grid-template-columns:minmax(0,52rem) minmax(0,1fr) auto; align-content:end; align-items:end; gap:24px;
-  /* la portada toma exactamente la proporción de la foto (1672 × 870): se ve completa en cualquier pantalla de escritorio */
-  min-height:calc(100vw * 870 / 1672); padding-block:clamp(48px,6vw,88px) clamp(80px,10vw,144px)}
+  /* la portada llena la pantalla bajo la barra; la foto la cubre recortando lo mínimo */
+  min-height:max(560px, calc(100svh - var(--barra-h, 72px))); padding-block:clamp(48px,6vw,88px) clamp(80px,10vw,144px)}
 /* Barra y portada comparten un contenedor más ancho: el logo y el título arrancan en la misma vertical, cerca de la orilla */
 .barra .wrap,.hero .wrap{max-width:1520px}
 .cartela{grid-column:1}
-.hero h1{font-size:clamp(42px,5.9vw,94px); line-height:1.02; letter-spacing:-.024em; color:var(--marfil); text-shadow:0 2px 28px rgba(var(--sombra),.35)}
+.hero h1{font-size:clamp(42px,5.9vw,94px); line-height:1.02; letter-spacing:-.024em; color:var(--blanco); text-shadow:0 2px 28px rgba(var(--sombra),.35)}
 .hero h1 .l1,.hero h1 .acento{display:block}
-.hero h1 .acento{color:var(--salvia)}
-.hero h1 .h1-sub{color:var(--muted); max-width:64ch; text-wrap:balance; margin-top:clamp(20px,2.2vw,28px); text-shadow:0 1px 16px rgba(var(--sombra),.5)}
+.hero h1 .acento{color:var(--blanco)}
+.hero h1 .h1-sub{color:var(--blanco); font-weight:600; font-size:clamp(19px,1.7vw,24px); letter-spacing:-.005em; max-width:60ch; text-wrap:balance; margin-top:clamp(20px,2.2vw,28px); text-shadow:0 1px 16px rgba(var(--sombra),.5)}
 /* Recuadro de contacto: oscuro translúcido (va sobre la parte clara de la foto), borde marfil tenue y el sobre de correo */
 .btn.recuadro{grid-column:3; min-height:54px; padding:0 26px 0 22px; gap:12px; font-size:16px; border-radius:4px;
   border-color:rgba(244,241,234,.5); color:var(--marfil); background:rgba(var(--sombra),.42)}
@@ -528,7 +529,7 @@ h2.t{font-size:var(--t-h2); line-height:1.02; letter-spacing:-.025em; max-width:
 @media (max-width:920px){
   .portada img{object-position:21% 50%}
   .portada::after{background:
-    linear-gradient(0deg, rgba(var(--sombra),.67) 0%, rgba(var(--sombra),.5) 36%, rgba(var(--sombra),.18) 62%, rgba(var(--sombra),0) 80%)}
+    linear-gradient(0deg, rgba(var(--sombra),.62) 0%, rgba(var(--sombra),.52) 36%, rgba(var(--sombra),.4) 50%, rgba(var(--sombra),.22) 64%, rgba(var(--sombra),.08) 76%, rgba(var(--sombra),0) 86%)}
   .hero-in{grid-template-columns:minmax(0,1fr); align-content:end; gap:clamp(24px,6vw,32px); min-height:clamp(560px, calc(100svh - var(--barra-h, 72px)), 820px); padding-block:clamp(48px,10vw,80px) clamp(32px,7vw,56px)}
   .hero h1 .h1-sub{max-width:none; text-wrap:pretty}
   .btn.recuadro{grid-column:1; justify-self:end}
