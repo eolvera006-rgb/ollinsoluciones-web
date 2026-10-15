@@ -502,52 +502,56 @@ h2.t{font-size:var(--t-h2); line-height:1.02; letter-spacing:-.025em; max-width:
 .forma .acciones{grid-template-columns:minmax(0,max-content)}
 .forma button[disabled]{opacity:.6; cursor:progress}
 
-/* — Portada del inicio: fotografía del velero al atardecer; el título toma sus tonos (marfil, oro y ámbar sobre el azul del mar) — */
-.hero{--mar:#081B2A; --sol:#FBF1DF; --oro:#F6CF95; --ambar:#E4A867;
-  --paper:var(--mar); --ink:var(--sol); --muted:rgba(251,241,223,.76); --accent:var(--oro); --accent-ink:var(--mar);
-  position:relative; overflow:hidden; overflow:clip; background:var(--mar); color:var(--ink)}
-.portada{position:absolute; inset:0; z-index:0; overflow:hidden}
-.portada picture{display:contents}
-.portada img{position:absolute; left:0; top:-10%; width:100%; height:110%; object-fit:cover; object-position:62% 45%}
-.portada::after{content:""; position:absolute; inset:0;
-  --x0:calc(max(0px, (100% - var(--max)) / 2) + var(--gutter));   /* borde izquierdo del texto: el velo oscuro sigue al texto en pantallas anchas */
-  background:linear-gradient(90deg, rgba(8,27,42,.88) 0, rgba(8,27,42,.72) calc(var(--x0) + 18rem), rgba(8,27,42,.3) calc(var(--x0) + 38rem), rgba(8,27,42,0) calc(var(--x0) + 52rem)),
-             linear-gradient(0deg, rgba(8,27,42,.6) 0%, rgba(8,27,42,0) 34%)}
-.hero-in{position:relative; z-index:1; display:flex; flex-direction:column; justify-content:flex-end; max-width:50rem;
-  min-height:clamp(560px, calc(100svh - var(--barra-h, 88px)), 860px); padding-block:clamp(48px,6vw,88px) clamp(56px,7vw,96px)}
-.hero h1{font-size:clamp(50px,5.8vw,86px); line-height:.98; letter-spacing:-.026em; color:var(--sol); text-shadow:0 2px 28px rgba(8,27,42,.45)}
+/* — Portada del inicio: oficina con vista a la ciudad. Panel claro con el título en los tonos de la foto
+   (madera oscura del escritorio y verde del bosque, sobre el cielo pálido); la foto ocupa la mitad derecha — */
+.hero{--madera:#231D1A; --bosque:#4E5D38; --luz:#A3B57E;
+  --paper:#EEF2F3; --ink:var(--madera); --muted:#5E5F59; --accent:var(--bosque); --accent-ink:#F6F3EC;
+  position:relative; overflow:hidden; overflow:clip; background:var(--paper); color:var(--ink)}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .hero{
+  --bosque:#B5C596; --luz:#EEF3E2; --paper:#161B1A; --ink:#F1EEE7; --muted:#B4B8AF; --accent:var(--bosque); --accent-ink:#161B1A}}
+:root[data-theme="dark"] .hero{
+  --bosque:#B5C596; --luz:#EEF3E2; --paper:#161B1A; --ink:#F1EEE7; --muted:#B4B8AF; --accent:var(--bosque); --accent-ink:#161B1A}
+.portada{position:absolute; top:0; bottom:0; right:0; left:52%; z-index:0; overflow:hidden}
+.portada picture{position:absolute; inset:0; display:block}
+.portada img{position:absolute; left:0; top:-10%; width:100%; height:110%; object-fit:cover; object-position:22% 50%}
+.portada::after{content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(90deg, var(--paper) 0, transparent 10%)}
+.hero-in{position:relative; z-index:1; display:flex; flex-direction:column; justify-content:center; max-width:min(38rem, 44vw);
+  min-height:clamp(560px, calc(100svh - var(--barra-h, 88px)), 820px); padding-block:clamp(48px,6vw,88px)}
+.hero h1{font-size:clamp(46px,4.6vw,74px); line-height:1; letter-spacing:-.024em; color:var(--ink)}
 .hero h1 .l1,.hero h1 .acento{display:block}
-.hero h1 .acento{color:var(--oro)}
+.hero h1 .acento{color:var(--bosque)}
 @supports ((-webkit-background-clip:text) or (background-clip:text)){
-  /* tres tramos: oro→ámbar | reflejo | ámbar→oro; en reposo se ve el primero y la animación hace pasar el reflejo una vez */
-  .hero h1 .acento{background:linear-gradient(100deg, var(--oro) 0%, #EDB574 33.3%, #F2C27F 42%, #FFF4DC 50%, #F2C27F 58%, #EDB574 66.6%, var(--oro) 100%) 0 0 / 300% 100%;
-    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; text-shadow:none; padding-bottom:.08em}
+  /* tres tramos: verde | reflejo | verde; en reposo se ve el primero y la animación hace pasar el reflejo una vez */
+  .hero h1 .acento{background:linear-gradient(100deg, var(--bosque) 0%, var(--bosque) 36%, var(--luz) 50%, var(--bosque) 64%, var(--bosque) 100%) 0 0 / 300% 100%;
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; padding-bottom:.08em}
 }
 @media (forced-colors:active){ .hero h1 .acento{background:none; -webkit-text-fill-color:currentColor} }
-.hero h1 .h1-sub{color:var(--sol); text-shadow:none; max-width:34ch}
-.hero .lede{color:var(--muted); max-width:44ch; margin-top:24px}
+.hero h1 .h1-sub{color:var(--ink); max-width:32ch}
+.hero .lede{color:var(--muted); max-width:42ch; margin-top:24px}
 .hero .acciones-h{margin-top:36px}
 .hero .hero-nota{color:var(--muted)}
-.hero .btn.lleno:hover{background:var(--sol); border-color:var(--sol); color:var(--mar)}
 @media (max-width:420px){ .hero .acciones-h{flex-direction:column; align-items:flex-start} }
 
-/* Hasta 920 px la fotografía va arriba, como franja, y el texto debajo sobre el azul del mar: el velero nunca queda detrás del texto */
+/* Hasta 920 px la foto va arriba, a todo el ancho, y se funde con el panel; el texto va debajo */
 @media (max-width:920px){
-  .portada{position:relative; inset:auto; height:clamp(240px,42svh,420px)}
-  .portada img{object-position:78% 50%}
-  .portada::after{background:linear-gradient(180deg, rgba(8,27,42,0) 40%, rgba(8,27,42,.7) 78%, var(--mar) 100%)}
-  .hero-in{min-height:0; margin-top:clamp(-110px,-11svh,-56px); padding-top:0; padding-bottom:clamp(48px,8vw,72px)}
+  .portada{position:relative; inset:auto; height:clamp(220px,37svh,440px)}
+  .portada img{object-position:30% 55%}
+  .portada::after{background:linear-gradient(180deg, transparent 40%, var(--paper) 94%)}
+  .hero-in{max-width:none; min-height:0; justify-content:flex-start; margin-top:clamp(-40px,-4svh,-24px); padding-block:0 clamp(48px,8vw,72px)}
 }
 
-/* Secuencia de entrada: la foto se acerca despacio, las líneas suben una tras otra y una luz cruza "no se detienen."; al bajar, la foto va más lento que el texto */
+/* Secuencia de entrada: la foto se descubre de izquierda a derecha y se acerca despacio, las líneas suben una tras otra
+   y un reflejo cruza "no se detienen."; al bajar, la foto va más lento que el texto */
 @media (prefers-reduced-motion:no-preference){
+  .portada picture{animation:portada-abre 1.3s cubic-bezier(.65,0,.25,1) both}
   .portada img{animation:portada-acerca 9s cubic-bezier(.2,.6,.2,1) both}
-  .hero .entra{animation:portada-entra .95s var(--ease-marcha) both; animation-delay:calc(var(--n) * 130ms + 220ms)}
-  .hero h1 .acento{animation:portada-entra .95s var(--ease-marcha) both, portada-luz 2.6s cubic-bezier(.45,0,.25,1) both; animation-delay:calc(var(--n) * 130ms + 220ms), 1.1s}
+  .hero .entra{animation:portada-entra .95s var(--ease-marcha) both; animation-delay:calc(var(--n) * 130ms + 260ms)}
+  .hero h1 .acento{animation:portada-entra .95s var(--ease-marcha) both, portada-luz 2.6s cubic-bezier(.45,0,.25,1) both; animation-delay:calc(var(--n) * 130ms + 260ms), 1.2s}
   @supports (animation-timeline: view()){
     .portada{animation:portada-paralaje linear both; animation-timeline:view(); animation-range:exit 0% exit 100%}
   }
 }
+@keyframes portada-abre{from{clip-path:inset(0 100% 0 0)}}
 @keyframes portada-acerca{from{scale:1.08}}
 @keyframes portada-entra{from{opacity:0; translate:0 24px}}
 @keyframes portada-luz{from{background-position:100% 0} to{background-position:0 0}}   /* el reflejo entra por la izquierda y sale por la derecha */
