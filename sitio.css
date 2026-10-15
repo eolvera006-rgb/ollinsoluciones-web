@@ -516,3 +516,10 @@ html.js .grupos-cat{display:none}
 @keyframes portada-acerca{from{scale:1.08}}
 @keyframes portada-entra{from{opacity:0; translate:0 24px}}
 @keyframes portada-paralaje{to{translate:0 14%}}
+
+/* Nuestra historia: número de capítulo y línea que ata cada valor a la historia */
+.num-cap{color:var(--accent); font-weight:400; margin-right:.15em}
+.historia h2{scroll-margin-top:calc(var(--barra-h,62px) + 24px)}
+.historia h2:first-child{margin-top:0}
+.nota-lazo{font-style:italic; font-size:var(--t-nota); line-height:1.5; color:var(--muted)}
+.prosa > p.nota-lazo{margin-top:.5em}
