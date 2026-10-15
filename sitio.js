@@ -1,84 +1,126 @@
 (function(){
   var raiz=document.documentElement;
   // Fuera del dominio publicado (revisión en local) se ven los avisos de borrador
-  if(!/(^|\.)ollinsoluciones\.com$/.test(location.hostname)) raiz.classList.add('local');
+  var local=!/(^|\.)ollinsoluciones\.com$/.test(location.hostname);
+  if(local) raiz.classList.add('local');
 
-  // Alto de la barra: anclas (scroll-padding) y panel del menú móvil
+  // Alto de la barra: anclas (scroll-padding), paneles, velo y cajón
   var barra=document.querySelector('.barra');
   function medir(){ raiz.style.setProperty('--barra-h', barra.getBoundingClientRect().height+'px'); }
   if(barra){ medir(); if(window.ResizeObserver) new ResizeObserver(medir).observe(barra); else window.addEventListener('resize',medir); }
+  var fuera=[document.querySelector('.saltar'),document.querySelector('main'),document.querySelector('footer')];
+  var inerte=function(si){ fuera.forEach(function(el){ if(el) el.inert=si; }); };
 
-  // Menú móvil: botón de despliegue (patrón disclosure) que cubre la página
-  var btn=document.querySelector('.menu-btn'), menu=document.getElementById('menu');
-  if(btn&&menu){
-    btn.hidden=false;
-    var etiqueta=btn.querySelector('.menu-t');
-    var fuera=[document.querySelector('.saltar'),document.querySelector('main'),document.querySelector('footer')];
-    var abrir=function(si){
-      raiz.classList.toggle('menu-abierto',si);
-      btn.setAttribute('aria-expanded',String(si));
-      if(etiqueta) etiqueta.textContent=si?'Cerrar':'Menú';
-      fuera.forEach(function(el){ if(el) el.inert=si; });
-    };
-    btn.addEventListener('click',function(){ abrir(btn.getAttribute('aria-expanded')!=='true'); });
-    document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&raiz.classList.contains('menu-abierto')){ abrir(false); btn.focus(); } });
-    menu.addEventListener('click',function(e){ if(e.target.closest('a')) abrir(false); });
-    var ancho=window.matchMedia('(min-width:1024px)');
-    (ancho.addEventListener?ancho.addEventListener('change',function(e){ if(e.matches) abrir(false); }):ancho.addListener(function(e){ if(e.matches) abrir(false); }));
-    window.addEventListener('pagehide',function(){ abrir(false); });
+  // Menús desplegables (escritorio): se abren con clic, Enter o espacio; Esc, clic fuera o abrir otro los cierra.
+  // El foco pasa al panel al abrir y vuelve al botón al cerrar.
+  var velo=document.querySelector('.velo');
+  var desps=[].map.call(document.querySelectorAll('.desp-b'),function(b){ return {b:b, p:document.getElementById(b.getAttribute('aria-controls'))}; });
+  var abierto=null;
+  function cierra(devolver){
+    if(!abierto) return;
+    var d=abierto; abierto=null;
+    d.b.setAttribute('aria-expanded','false'); d.p.classList.remove('abierto');
+    if(velo) velo.hidden=true;
+    if(devolver) d.b.focus();
   }
+  function abre(d){
+    if(abierto===d) return cierra(true);
+    cierra(false);
+    abierto=d; d.b.setAttribute('aria-expanded','true'); d.p.classList.add('abierto');
+    if(velo) velo.hidden=false;
+    d.p.focus({preventScroll:true});
+  }
+  desps.forEach(function(d){
+    if(!d.p) return;
+    d.b.addEventListener('click',function(){ abre(d); });
+    d.p.addEventListener('click',function(e){ if(e.target.closest('a')) cierra(false); });
+    // salir del panel con Tab (o Mayús+Tab) lo cierra sin robar el foco
+    d.p.addEventListener('focusout',function(e){ if(abierto===d&&e.relatedTarget&&!d.p.contains(e.relatedTarget)&&e.relatedTarget!==d.b) cierra(false); });
+  });
+  if(velo) velo.addEventListener('click',function(){ cierra(false); });
+  document.addEventListener('click',function(e){ if(abierto&&!abierto.p.contains(e.target)&&!abierto.b.contains(e.target)) cierra(false); });
 
-  // Submenú de Ámbitos (escritorio): botón de despliegue junto al enlace; se cierra con Esc, al salir con el foco o con un clic fuera
-  [].forEach.call(document.querySelectorAll('.con-sub'),function(li){
-    var b=li.querySelector('.sub-btn'); if(!b) return;
-    b.hidden=false;
-    var pon=function(si){ li.classList.toggle('abierto',si); b.setAttribute('aria-expanded',String(si)); };
-    b.addEventListener('click',function(){ pon(b.getAttribute('aria-expanded')!=='true'); });
-    li.addEventListener('keydown',function(e){ if(e.key==='Escape'&&li.classList.contains('abierto')){ pon(false); b.focus(); } });
-    li.addEventListener('focusout',function(e){ if(!li.contains(e.relatedTarget)) pon(false); });
-    document.addEventListener('click',function(e){ if(!li.contains(e.target)) pon(false); });
+  // Cajón móvil (menos de 900 px): pantalla completa, acordeones, fondo sin desplazamiento
+  var btn=document.querySelector('.menu-btn'), cajon=document.getElementById('cajon');
+  function cajonAbierto(si){
+    if(!btn||!cajon) return;
+    cajon.hidden=!si; raiz.classList.toggle('cajon-abierto',si);
+    btn.setAttribute('aria-expanded',String(si));
+    var t=btn.querySelector('.menu-t'); if(t) t.textContent=si?'Cerrar':'Menú';
+    inerte(si);
+  }
+  if(btn&&cajon){
+    btn.addEventListener('click',function(){ cajonAbierto(btn.getAttribute('aria-expanded')!=='true'); });
+    cajon.addEventListener('click',function(e){ if(e.target.closest('a')) cajonAbierto(false); });
+    [].forEach.call(cajon.querySelectorAll('.acor-b'),function(b){
+      var l=document.getElementById(b.getAttribute('aria-controls'));
+      b.addEventListener('click',function(){ var si=b.getAttribute('aria-expanded')!=='true'; b.setAttribute('aria-expanded',String(si)); l.hidden=!si; });
+    });
+    var ancho=window.matchMedia('(min-width:900px)');
+    var alCambiar=function(e){ if(e.matches) cajonAbierto(false); else cierra(false); };
+    if(ancho.addEventListener) ancho.addEventListener('change',alCambiar); else ancho.addListener(alCambiar);
+    window.addEventListener('pagehide',function(){ cajonAbierto(false); });
+  }
+  document.addEventListener('keydown',function(e){
+    if(e.key!=='Escape') return;
+    if(abierto) cierra(true);
+    else if(raiz.classList.contains('cajon-abierto')){ cajonAbierto(false); btn.focus(); }
   });
 
-  // Índice lateral: marca el capítulo que se está leyendo
-  var indice=document.querySelector('.indice-lateral');
-  if(indice&&'IntersectionObserver' in window){
+  // Índice lateral: marca la sección que se está leyendo
+  [].forEach.call(document.querySelectorAll('.indice-lateral'),function(indice){
+    if(!('IntersectionObserver' in window)) return;
     var ligas={}; [].forEach.call(indice.querySelectorAll('a[href^="#"]'),function(a){ ligas[a.getAttribute('href').slice(1)]=a; });
     var vi=new IntersectionObserver(function(es){
       es.forEach(function(e){ if(e.isIntersecting){ for(var k in ligas) ligas[k].classList.toggle('activo',k===e.target.id); } });
     },{rootMargin:'-20% 0px -70% 0px'});
     Object.keys(ligas).forEach(function(id){ var el=document.getElementById(id); if(el) vi.observe(el); });
-  }
+  });
 
-  // Señales del inicio: con dos o más marcadas aparece "Platiquemos de ellas"; las marcadas viajan a Contacto por sessionStorage
-  var sen=document.getElementById('senales');
+  // Diagnóstico del inicio: cuenta las señales; con dos o más aparece "Platiquemos de ellas".
+  // Las marcadas viajan a Hablemos por sessionStorage (nunca en la URL).
+  var sen=document.getElementById('diag-senales');
   if(sen){
-    var cajas=[].slice.call(sen.querySelectorAll('input[type="checkbox"]')), ir=document.getElementById('senales-ir'), cuenta=document.getElementById('senales-cuenta');
+    var cajas=[].slice.call(sen.querySelectorAll('input[type="checkbox"]')), ir=document.getElementById('senales-ir'),
+        cuenta=document.getElementById('senales-cuenta'), msg=document.getElementById('senales-msg');
     var marcadas=function(){ return cajas.filter(function(c){ return c.checked; }).map(function(c){ return c.value; }); };
     var pinta=function(){
       var n=marcadas().length;
+      cuenta.textContent=n;
       ir.hidden=n<2;
-      cuenta.textContent=n===0?'Marca las que reconozcas en tu negocio.':n===1?'Reconoces una. Si reconoces dos o más, platiquemos de ellas.':'Reconoces '+n+'.';
+      msg.textContent=n<2?'Marca las que apliquen a tu negocio. Si reconoces dos o más, conviene platicarlo.'
+        :'Reconoces '+n+' de '+cajas.length+'. Son justo los temas en los que trabajamos. En la primera reunión los revisamos contigo, sin costo.';
     };
     cajas.forEach(function(c){ c.addEventListener('change',pinta); });
     ir.addEventListener('click',function(){ try{ sessionStorage.setItem('ollin-senales',JSON.stringify(marcadas())); }catch(_){} });
     pinta();
   }
 
-  // Perspectivas: el filtro por ámbito funciona sin JS como anclas a los grupos; con JS filtra la lista principal
+  // Perspectivas: el filtro funciona sin JS como anclas a los grupos; con JS filtra la lista (también desde el menú: #cat-… y #formato-…)
   var filtro=document.querySelector('.filtro');
   if(filtro){
-    var filas=[].slice.call(document.querySelectorAll('#lista-articulos > li'));
+    var lista=document.querySelector('.persp-lista'), filas=[].slice.call(document.querySelectorAll('#lista-articulos > li'));
     var botones=[].slice.call(filtro.querySelectorAll('a[data-cat]'));
-    var aplica=function(cat){
-      botones.forEach(function(b){ b.setAttribute('aria-pressed',String(b.dataset.cat===cat)); });
-      filas.forEach(function(li){ li.hidden=!(cat==='todos'||li.dataset.cat===cat); });
+    var aplica=function(cat,formato){
+      botones.forEach(function(b){ b.setAttribute('aria-pressed',String(!formato&&b.dataset.cat===cat)); });
+      var todos=!formato&&cat==='todos';
+      if(lista) lista.classList.toggle('filtrada',!todos);
+      filas.forEach(function(li){ li.hidden=!(todos||(formato?li.dataset.formato===formato:li.dataset.cat===cat)); });
     };
     botones.forEach(function(b){ b.setAttribute('role','button'); b.addEventListener('click',function(e){ e.preventDefault(); aplica(b.dataset.cat); }); });
-    aplica('todos');
+    var desdeHash=function(){
+      var h=decodeURIComponent(location.hash.slice(1)), m;
+      if((m=h.match(/^cat-(.+)$/))) aplica(m[1]);
+      else if((m=h.match(/^formato-(.+)$/))) aplica(null,m[1].replace(/s$/,''));   // #formato-guias → data-formato="guia"
+      else return aplica('todos');
+      var l=document.getElementById('pe1-t'); if(l) l.scrollIntoView();
+    };
+    window.addEventListener('hashchange',desdeHash);
+    desdeHash();
   }
 
-  // Analítica: un solo escuchador delegado para los enlaces marcados con data-evento (WhatsApp, correo y "Hablemos").
-  // Sólo manda el nombre del evento y su ubicación; nunca datos del formulario. Sin GA4_ID no existe gtag y no hace nada.
+  // Analítica: un solo escuchador delegado para lo marcado con data-evento. Sólo manda el nombre del evento y su ubicación;
+  // nunca datos del formulario. Sin GA4_ID no existe gtag y no hace nada.
   function evento(nombre,ubicacion){
     if(typeof window.gtag==='function') window.gtag('event',nombre,{ubicacion:ubicacion,transport_type:'beacon'});
   }
@@ -87,93 +129,70 @@
     if(a) evento(a.dataset.evento,a.dataset.ubicacion);
   });
 
-  // Abre el correo ya armado (modo local, sin FORMULARIO_URL). Pasa por aquí para que las pruebas puedan sustituirla
-  // (window.__abrirDestino) sin abrir nada de verdad.
-  function abrirDestino(url){
-    if(typeof window.__abrirDestino==='function') return window.__abrirDestino(url);
-    location.href=url;
-  }
-
-  // Formulario (sólo en /contacto/): sin JS queda oculto y sólo se ven los enlaces directos.
-  // Publicado, lo manda la aplicación web de Apps Script (Google Workspace) a proyectos@ después de validar reCAPTCHA.
+  // Formulario de Hablemos. Publicado, lo manda la aplicación web de Apps Script (Google Workspace) al correo de la empresa y lleva a /contacto/gracias/.
+  // Sin JS, el formulario se envía directo a la aplicación web, que responde con su propia página de confirmación.
   var f=document.getElementById('f-forma');
   if(f){
-    f.hidden=false;
-    var CORREO='proyectos@ollinsoluciones.com', destino=f.dataset.destino, clave=f.dataset.captcha;
+    f.noValidate=true; f.elements.js.value='1';
+    var destino=f.dataset.destino, t0=Date.now();
     var err=document.getElementById('f-error'), estado=document.getElementById('f-estado'), boton=f.querySelector('button[type="submit"]');
+    var GRACIAS='/contacto/gracias/';
     var MSJ={
+      ambito:'Elige qué te trae.',
       nombre:'Escribe tu nombre.',
       correo:'Escribe tu correo.',
       correoMal:'Revisa tu correo: debe tener la forma nombre@dominio.com.',
-      asunto:'Elige qué te trae.',
-      captcha:'Marca la casilla «No soy un robot».',
+      mensaje:'Cuéntanos de tu negocio o de lo que hoy te quita tiempo.',
       enviando:'Enviando…',
-      ok:'Gracias. Recibimos tu mensaje y te respondemos el mismo día, de lunes a sábado, de 9:00 a 21:00 h, para acordar la primera reunión.',
-      falla:'No pudimos enviar tu mensaje. Inténtalo de nuevo en unos minutos o escríbenos a '+CORREO+'.',
-      local:'Para completar el envío, confirma el mensaje en tu programa de correo. Te respondemos el mismo día, de lunes a sábado, de 9:00 a 21:00 h.'
+      falla:'No pudimos enviar tu mensaje. Inténtalo de nuevo en unos minutos.',
+      sinDestino:'El formulario todavía no está conectado. Inténtalo de nuevo más tarde.'
     };
     // vaciar y llenar en el siguiente cuadro: así role=status vuelve a anunciar aunque el texto sea el mismo
-    // (el último texto pedido manda: un cuadro pendiente no pisa un mensaje más nuevo)
     var di=function(el,t){ el.__t=t; el.textContent=''; if(t) requestAnimationFrame(function(){ if(el.__t===t) el.textContent=t; }); };
-    var marca=function(id,t){ var c=document.getElementById(id), e=document.getElementById(id+'-e'); if(c&&c.setAttribute) c.setAttribute('aria-invalid',String(!!t)); if(e) e.textContent=t||''; return !!t; };
+    var marca=function(id,t){ var c=document.getElementById(id), e=document.getElementById(id+'-e'); if(c) c.setAttribute('aria-invalid',String(!!t)); if(e) e.textContent=t||''; return !!t; };
 
-    // reCAPTCHA se carga sólo cuando el formulario está por verse o alguien lo usa: el resto del sitio no se conecta a Google.
-    var widget=null, cargado=false;
-    function cargaCaptcha(){
-      if(cargado||!clave) return; cargado=true;
-      window.__ollinCaptcha=function(){ widget=window.grecaptcha.render('f-captcha',{sitekey:clave,theme:window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}); };
-      var sc=document.createElement('script'); sc.async=true;
-      sc.src='https://www.google.com/recaptcha/api.js?onload=__ollinCaptcha&render=explicit&hl=es-419';
-      document.head.appendChild(sc);
-    }
-    if(clave){
-      f.addEventListener('focusin',cargaCaptcha);
-      if('IntersectionObserver' in window){ var vi=new IntersectionObserver(function(es){ if(es[0].isIntersecting){ cargaCaptcha(); vi.disconnect(); } },{rootMargin:'300px 0px'}); vi.observe(f); }
-      else cargaCaptcha();
-    }
-
-    // Precarga: ?ambito=<slug> elige "¿Qué te trae?"; las señales marcadas en el inicio llegan al mensaje y se borran del almacenamiento
-    var sel=f.elements.asunto, msj=f.elements.mensaje;
+    // Precarga: ?ambito=<slug> elige "¿Qué te trae?"; las señales marcadas en el inicio llegan a "Cuéntanos" y se borran del almacenamiento
     var amb=(location.search.match(/[?&]ambito=([\w-]+)/)||[])[1];
-    if(amb&&sel) [].forEach.call(sel.options,function(o){ if(o.dataset.ambito===amb) sel.value=o.value; });
+    if(amb) [].forEach.call(f.querySelectorAll('input[name="ambito"]'),function(r){ if(r.value===amb) r.checked=true; });
     var llegadas=null;
     try{ llegadas=JSON.parse(sessionStorage.getItem('ollin-senales')||'null'); sessionStorage.removeItem('ollin-senales'); }catch(_){}
+    var msj=f.elements.mensaje;
     if(llegadas&&llegadas.length&&msj&&!msj.value){
       msj.value='Reconozco estas señales en mi negocio:\n'+llegadas.map(function(x){ return '- '+x; }).join('\n')+'\n\n';
     }
+    f.addEventListener('change',function(e){ if(e.target.name==='ambito') marca('f-ambito',''); });
 
     f.addEventListener('submit',function(e){
       e.preventDefault();
-      var d={};
-      ['nombre','correo','puesto','negocio','asunto','mensaje'].forEach(function(n){ d[n]=f.elements[n].value.trim(); });
-      var token=clave&&widget!==null&&window.grecaptcha?window.grecaptcha.getResponse(widget):'';
+      var elegido=f.querySelector('input[name="ambito"]:checked');
+      var d={ambito:elegido?elegido.value:''};
+      ['nombre','correo','negocio','mensaje'].forEach(function(n){ d[n]=f.elements[n].value.trim(); });
       var malas=[
+        marca('f-ambito',d.ambito?'':MSJ.ambito),
         marca('f-nombre',d.nombre?'':MSJ.nombre),
         marca('f-correo',!d.correo?MSJ.correo:/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.correo)?'':MSJ.correoMal),
-        marca('f-asunto',d.asunto?'':MSJ.asunto),
-        clave?marca('f-captcha',token?'':MSJ.captcha):false
+        marca('f-mensaje',d.mensaje?'':MSJ.mensaje)
       ];
       di(estado,''); di(err,'');
       if(malas.some(Boolean)){
         var primero=f.querySelector('[aria-invalid="true"]');
-        if(primero&&primero.id!=='f-captcha') primero.focus(); else if(primero) primero.scrollIntoView({block:'center'});
+        if(primero&&primero.id==='f-ambito') f.querySelector('input[name="ambito"]').focus(); else if(primero) primero.focus();
         di(err,'Revisa los campos marcados.');
         return;
       }
-      var cuerpo='Nombre: '+d.nombre+'\nCorreo: '+d.correo+(d.puesto?'\nPuesto: '+d.puesto:'')+(d.negocio?'\nNegocio: '+d.negocio:'')+(d.mensaje?'\n\n'+d.mensaje:'');
-      if(!destino){   // modo local: sin aplicación web, se arma el correo
-        evento('formulario_correo','contacto');
-        abrirDestino('mailto:'+CORREO+'?subject='+encodeURIComponent(d.asunto)+'&body='+encodeURIComponent(cuerpo));
-        di(estado,MSJ.local); return;
+      if(!destino){
+        // Revisión en local sin FORMULARIO_URL: recorre el flujo hasta la confirmación sin enviar nada. Publicado así, avisa (el verificador no deja publicar sin destino).
+        if(local){ evento('formulario_prueba_local','contacto'); location.href=GRACIAS; return; }
+        di(err,MSJ.sinDestino); return;
       }
-      var datos=new URLSearchParams(d); datos.append('g-recaptcha-response',token); datos.append('sitio_web',f.elements.sitio_web.value);
+      var datos=new URLSearchParams(d);
+      datos.append('sitio_web',f.elements.sitio_web.value); datos.append('tiempo',String(Math.round((Date.now()-t0)/1000))); datos.append('js','1');
       boton.disabled=true; di(estado,MSJ.enviando);
       fetch(destino,{method:'POST',body:datos}).then(function(r){ return r.json(); }).then(function(r){
         if(!r||!r.ok) throw new Error((r&&r.error)||'sin respuesta');
         evento('formulario_enviado','contacto');   // sólo el nombre del evento y su ubicación, nunca lo que se escribió
-        f.reset(); di(estado,MSJ.ok);
-      }).catch(function(){ di(err,MSJ.falla); di(estado,''); })
-        .then(function(){ boton.disabled=false; if(widget!==null&&window.grecaptcha) window.grecaptcha.reset(widget); });
+        location.href=GRACIAS;
+      }).catch(function(){ di(err,MSJ.falla); di(estado,''); boton.disabled=false; });
     });
   }
 
