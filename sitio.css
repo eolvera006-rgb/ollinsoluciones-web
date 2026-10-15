@@ -504,16 +504,18 @@ h2.t{font-size:var(--t-h2); line-height:1.02; letter-spacing:-.025em; max-width:
 .portada img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:40% 45%}
 .portada::after{content:""; position:absolute; inset:0; pointer-events:none;
   background:
-    linear-gradient(90deg, rgba(var(--sombra),.62) 0%, rgba(var(--sombra),.5) 30%, rgba(var(--sombra),.26) 50%, rgba(var(--sombra),.04) 66%, rgba(var(--sombra),0) 76%),
-    linear-gradient(180deg, rgba(var(--sombra),.14) 0%, rgba(var(--sombra),0) 22%)}
-.hero-in{position:relative; z-index:1; display:grid; grid-template-columns:minmax(0,40rem) minmax(0,1fr) auto; align-content:center; align-items:end; gap:24px;
+    linear-gradient(90deg, rgba(var(--sombra),.56) 0%, rgba(var(--sombra),.45) 30%, rgba(var(--sombra),.23) 50%, rgba(var(--sombra),.04) 66%, rgba(var(--sombra),0) 76%),
+    linear-gradient(180deg, rgba(var(--sombra),.12) 0%, rgba(var(--sombra),0) 22%)}
+.hero-in{position:relative; z-index:1; display:grid; grid-template-columns:minmax(0,52rem) minmax(0,1fr) auto; align-content:end; align-items:end; gap:24px;
   /* la portada toma la proporción de la foto (1672 × 940) hasta 900 px de alto: en laptop se ve completa */
-  min-height:clamp(560px, calc(100vw * 940 / 1672), 900px); padding-block:clamp(48px,6vw,88px)}
+  min-height:clamp(560px, calc(100vw * 940 / 1672), 900px); padding-block:clamp(48px,6vw,88px) clamp(56px,7vw,104px)}
+/* Barra y portada comparten un contenedor más ancho: el logo y el título arrancan en la misma vertical, cerca de la orilla */
+.barra .wrap,.hero .wrap{max-width:1520px}
 .cartela{grid-column:1}
 .hero h1{font-size:clamp(44px,4.8vw,76px); line-height:1.02; letter-spacing:-.024em; color:var(--marfil); text-shadow:0 2px 28px rgba(var(--sombra),.35)}
 .hero h1 .l1,.hero h1 .acento{display:block}
 .hero h1 .acento{color:var(--salvia)}
-.hero h1 .h1-sub{color:var(--muted); max-width:32ch; margin-top:clamp(20px,2.2vw,28px); text-shadow:0 1px 16px rgba(var(--sombra),.5)}
+.hero h1 .h1-sub{color:var(--muted); max-width:64ch; text-wrap:balance; margin-top:clamp(20px,2.2vw,28px); text-shadow:0 1px 16px rgba(var(--sombra),.5)}
 /* Recuadro de contacto: oscuro translúcido (va sobre la parte clara de la foto), borde marfil tenue y el sobre de correo */
 .btn.recuadro{grid-column:3; min-height:54px; padding:0 26px 0 22px; gap:12px; font-size:16px; border-radius:4px;
   border-color:rgba(244,241,234,.5); color:var(--marfil); background:rgba(var(--sombra),.42)}
@@ -526,9 +528,9 @@ h2.t{font-size:var(--t-h2); line-height:1.02; letter-spacing:-.025em; max-width:
 @media (max-width:920px){
   .portada img{object-position:21% 50%}
   .portada::after{background:
-    linear-gradient(0deg, rgba(var(--sombra),.74) 0%, rgba(var(--sombra),.56) 36%, rgba(var(--sombra),.2) 62%, rgba(var(--sombra),0) 80%)}
+    linear-gradient(0deg, rgba(var(--sombra),.67) 0%, rgba(var(--sombra),.5) 36%, rgba(var(--sombra),.18) 62%, rgba(var(--sombra),0) 80%)}
   .hero-in{grid-template-columns:minmax(0,1fr); align-content:end; gap:clamp(24px,6vw,32px); min-height:clamp(560px, calc(100svh - var(--barra-h, 72px)), 820px); padding-block:clamp(48px,10vw,80px) clamp(32px,7vw,56px)}
-  .hero h1 .h1-sub{max-width:34ch}
+  .hero h1 .h1-sub{max-width:none; text-wrap:pretty}
   .btn.recuadro{grid-column:1; justify-self:end}
 }
 
