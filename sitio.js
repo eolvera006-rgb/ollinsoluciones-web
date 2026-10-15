@@ -23,7 +23,7 @@
     btn.addEventListener('click',function(){ abrir(btn.getAttribute('aria-expanded')!=='true'); });
     document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&raiz.classList.contains('menu-abierto')){ abrir(false); btn.focus(); } });
     menu.addEventListener('click',function(e){ if(e.target.closest('a')) abrir(false); });
-    var ancho=window.matchMedia('(min-width:760px)');
+    var ancho=window.matchMedia('(min-width:1024px)');
     (ancho.addEventListener?ancho.addEventListener('change',function(e){ if(e.matches) abrir(false); }):ancho.addListener(function(e){ if(e.matches) abrir(false); }));
     window.addEventListener('pagehide',function(){ abrir(false); });
   }
