@@ -1,15 +1,18 @@
 # Ollin Soluciones
 
-> Ponemos al día negocios con años de historia y acompañamos a los que ya crecieron, con herramientas hechas a la medida de cada uno. La primera reunión no tiene costo; el costo de cada proyecto depende de su alcance y se informa por escrito antes de empezar. Reuniones presenciales en la Ciudad de México y a distancia en toda la República.
+> Acompañamos a dueños de negocios en momentos de cambio: negocios con años de historia, negocios que ya crecieron y empresas que empiezan. Agilizamos lo que se hace a mano, automatizamos lo que se repite y ponemos en marcha herramientas a la medida. La primera reunión no tiene costo; el costo de cada proyecto depende de su alcance y se informa por escrito antes de empezar. Reuniones presenciales en la Ciudad de México y a distancia en toda la República.
 
-## Áreas de trabajo
+## Ámbitos
 
-- Inventario: Certeza sobre lo que tienes y dónde está. Existencias exactas por almacén, actualizadas en tiempo real.
-- Producción: El costo real de cada producto. Rendimiento, merma y costo promedio por lote.
-- Crédito y cobranza: Una cartera bajo control y un flujo predecible. Saldos por cliente, antigüedad de cartera y avisos de cobro.
-- Automatización: Crecer sin que la carga operativa crezca en la misma proporción. Captura, conciliaciones y reportes que el sistema resuelve por sí mismo.
-- Dirección: Decisiones respaldadas por información confiable. Tablero de ventas, márgenes y flujo de efectivo.
-- Contabilidad: Información ordenada para cada cierre. Datos limpios para el cierre mensual, sin sustituir el sistema de tu contador.
+- [Herencia y relevo](https://ollinsoluciones.com/ambitos/herencia-y-relevo/): «Recibí el negocio de mi familia». Recibir un negocio familiar es heredar también su forma de trabajar: lo que funciona y lo que vive sólo en la memoria de quien lo llevaba. Nuestra labor es que el negocio deje de depender de una sola persona, con información ordenada, forma de trabajar por escrito y herramientas que la siguiente generación pueda usar.
+- [Operación y automatización](https://ollinsoluciones.com/ambitos/operacion-y-automatizacion/): «El negocio creció y la operación no». Cuando un negocio crece, lo que antes se resolvía a mano empieza a ocupar el día entero. Agilizamos lo que hoy se hace a mano y automatizamos lo que se repite, empezando por lo que más tiempo te quita, para que el crecimiento no exija más captura ni más horas del dueño.
+- [Finanzas y dirección](https://ollinsoluciones.com/ambitos/finanzas-y-direccion/): «Vendo más, pero no sé cuánto gano». Vender más no siempre significa ganar más. Ordenamos la información que un dueño necesita para decidir: el costo real de lo que vende, el estado de su cartera, su flujo de efectivo y un tablero de dirección, con datos limpios que además facilitan el cierre de su contador.
+- [Imagen y presencia](https://ollinsoluciones.com/ambitos/imagen-y-presencia/): «Mi negocio es mejor de lo que se ve». Hay negocios con años de buen trabajo que desde fuera casi nadie ve. Nuestra labor es que se vea el negocio que es: cómo se presenta, cómo responde a quien lo busca y cómo lo encuentran quienes todavía no lo conocen.
+- [Empresas que empiezan](https://ollinsoluciones.com/ambitos/empresas-que-empiezan/): «Estoy empezando». Empezar un negocio es el mejor momento para hacerlo con orden. Te acompañamos a poner en marcha desde el primer día la información, la forma de trabajar y las herramientas que tu negocio va a necesitar, para que crecer no signifique tener que ponerse al día después.
+
+## Perspectivas
+
+- [Por qué existe Ollin](https://ollinsoluciones.com/perspectivas/por-que-existe-ollin/): Ollin nació al heredar un negocio familiar con años de historia. El relato completo: lo que aprendimos, nuestra misión y lo que nos mueve.
 
 ## Primera reunión
 
@@ -29,8 +32,9 @@
 
 ## Páginas
 
-- [Nosotros](https://ollinsoluciones.com/nosotros/): cómo nació Ollin y las tres cosas que guían cada proyecto.
-- [Qué hacemos](https://ollinsoluciones.com/que-hacemos/): las seis áreas de trabajo y con quién trabajamos.
-- [Cómo trabajamos](https://ollinsoluciones.com/como-trabajamos/): valores, proceso, costo, información del cliente y preguntas frecuentes.
+- [Nuestra historia](https://ollinsoluciones.com/nosotros/): cómo nació Ollin, las tres cosas que aprendimos, misión, visión y valores.
+- [Ámbitos](https://ollinsoluciones.com/ambitos/): los cinco momentos de un negocio en los que acompañamos al dueño.
+- [Cómo trabajamos](https://ollinsoluciones.com/como-trabajamos/): proceso, compromisos por escrito, información del cliente y preguntas frecuentes.
+- [Perspectivas](https://ollinsoluciones.com/perspectivas/): textos para dueños de negocios, por ámbito.
 - [Primera reunión](https://ollinsoluciones.com/contacto/): cómo contactarnos y qué pasa en la primera reunión.
 - [Aviso de privacidad](https://ollinsoluciones.com/aviso-privacidad.html)
