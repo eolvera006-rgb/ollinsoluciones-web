@@ -1,6 +1,7 @@
 (function(){
   var raiz=document.documentElement;
-  var quieto=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Fuera del dominio publicado (revisión en local) se ven los avisos de borrador
+  if(!/(^|\.)ollinsoluciones\.com$/.test(location.hostname)) raiz.classList.add('local');
 
   // Alto de la barra: anclas (scroll-padding) y panel del menú móvil
   var barra=document.querySelector('.barra');
@@ -27,24 +28,54 @@
     window.addEventListener('pagehide',function(){ abrir(false); });
   }
 
-  // Revelado al bajar: una sola vez. El script del final del <body> ya dejó visible lo de la primera pantalla
-  // (arriba del 90 % de la ventana) y puso html.revela; aquí sólo se vigila lo de abajo.
-  var els=[].slice.call(document.querySelectorAll('[data-revela]'));
-  [].forEach.call(document.querySelectorAll('[data-grupo]'),function(g){
-    [].forEach.call(g.querySelectorAll('[data-revela]'),function(el,i){ el.style.setProperty('--i',Math.min(i,3)); });
+  // Submenú de Ámbitos (escritorio): botón de despliegue junto al enlace; se cierra con Esc, al salir con el foco o con un clic fuera
+  [].forEach.call(document.querySelectorAll('.con-sub'),function(li){
+    var b=li.querySelector('.sub-btn'); if(!b) return;
+    b.hidden=false;
+    var pon=function(si){ li.classList.toggle('abierto',si); b.setAttribute('aria-expanded',String(si)); };
+    b.addEventListener('click',function(){ pon(b.getAttribute('aria-expanded')!=='true'); });
+    li.addEventListener('keydown',function(e){ if(e.key==='Escape'&&li.classList.contains('abierto')){ pon(false); b.focus(); } });
+    li.addEventListener('focusout',function(e){ if(!li.contains(e.relatedTarget)) pon(false); });
+    document.addEventListener('click',function(e){ if(!li.contains(e.target)) pon(false); });
   });
-  var tarde=window.performance&&performance.now()>2300;   // la red de seguridad CSS ya mostró todo: no se vuelve a esconder
-  if(!raiz.classList.contains('revela')||quieto||tarde||!('IntersectionObserver' in window)){
-    els.forEach(function(el){ el.classList.add('visto'); });
-  } else {
-    var io=new IntersectionObserver(function(es){
-      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('visto'); io.unobserve(e.target); } });
-    },{rootMargin:'0px 0px -10% 0px'});
-    els.forEach(function(el){ if(!el.classList.contains('visto')) io.observe(el); });
+
+  // Índice lateral: marca el capítulo que se está leyendo
+  var indice=document.querySelector('.indice-lateral');
+  if(indice&&'IntersectionObserver' in window){
+    var ligas={}; [].forEach.call(indice.querySelectorAll('a[href^="#"]'),function(a){ ligas[a.getAttribute('href').slice(1)]=a; });
+    var vi=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ for(var k in ligas) ligas[k].classList.toggle('activo',k===e.target.id); } });
+    },{rootMargin:'-20% 0px -70% 0px'});
+    Object.keys(ligas).forEach(function(id){ var el=document.getElementById(id); if(el) vi.observe(el); });
   }
 
-  // Dirección del recorrido para la transición entre páginas (la lee el script del <head> en la página nueva)
-  window.addEventListener('pageswap',function(){ try{ sessionStorage.setItem('ollin-paso',raiz.dataset.paso); }catch(_){} });
+  // Señales del inicio: con dos o más marcadas aparece "Platiquemos de ellas"; las marcadas viajan a Contacto por sessionStorage
+  var sen=document.getElementById('senales');
+  if(sen){
+    var cajas=[].slice.call(sen.querySelectorAll('input[type="checkbox"]')), ir=document.getElementById('senales-ir'), cuenta=document.getElementById('senales-cuenta');
+    var marcadas=function(){ return cajas.filter(function(c){ return c.checked; }).map(function(c){ return c.value; }); };
+    var pinta=function(){
+      var n=marcadas().length;
+      ir.hidden=n<2;
+      cuenta.textContent=n===0?'':n===1?'Reconoces una.':'Reconoces '+n+'.';
+    };
+    cajas.forEach(function(c){ c.addEventListener('change',pinta); });
+    ir.addEventListener('click',function(){ try{ sessionStorage.setItem('ollin-senales',JSON.stringify(marcadas())); }catch(_){} });
+    pinta();
+  }
+
+  // Perspectivas: el filtro por ámbito funciona sin JS como anclas a los grupos; con JS filtra la lista principal
+  var filtro=document.querySelector('.filtro');
+  if(filtro){
+    var filas=[].slice.call(document.querySelectorAll('#lista-articulos > li'));
+    var botones=[].slice.call(filtro.querySelectorAll('a[data-cat]'));
+    var aplica=function(cat){
+      botones.forEach(function(b){ b.setAttribute('aria-pressed',String(b.dataset.cat===cat)); });
+      filas.forEach(function(li){ li.hidden=!(cat==='todos'||li.dataset.cat===cat); });
+    };
+    botones.forEach(function(b){ b.setAttribute('role','button'); b.addEventListener('click',function(e){ e.preventDefault(); aplica(b.dataset.cat); }); });
+    aplica('todos');
+  }
 
   // Analítica: un solo escuchador delegado para los enlaces marcados con data-evento (WhatsApp, correo y "Hablemos").
   // Sólo manda el nombre del evento y su ubicación; nunca datos del formulario. Sin GA4_ID no existe gtag y no hace nada.
@@ -74,7 +105,7 @@
       nombre:'Escribe tu nombre.',
       correo:'Escribe tu correo.',
       correoMal:'Revisa tu correo: debe tener la forma nombre@dominio.com.',
-      asunto:'Escribe el asunto.',
+      asunto:'Elige qué te trae.',
       captcha:'Marca la casilla «No soy un robot».',
       enviando:'Enviando…',
       ok:'Gracias. Recibimos tu mensaje y te respondemos el mismo día, de lunes a sábado, de 9:00 a 21:00 h, para acordar la primera reunión.',
@@ -90,7 +121,7 @@
     var widget=null, cargado=false;
     function cargaCaptcha(){
       if(cargado||!clave) return; cargado=true;
-      window.__ollinCaptcha=function(){ widget=window.grecaptcha.render('f-captcha',{sitekey:clave,theme:'dark'}); };
+      window.__ollinCaptcha=function(){ widget=window.grecaptcha.render('f-captcha',{sitekey:clave,theme:window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}); };
       var sc=document.createElement('script'); sc.async=true;
       sc.src='https://www.google.com/recaptcha/api.js?onload=__ollinCaptcha&render=explicit&hl=es-419';
       document.head.appendChild(sc);
@@ -99,6 +130,16 @@
       f.addEventListener('focusin',cargaCaptcha);
       if('IntersectionObserver' in window){ var vi=new IntersectionObserver(function(es){ if(es[0].isIntersecting){ cargaCaptcha(); vi.disconnect(); } },{rootMargin:'300px 0px'}); vi.observe(f); }
       else cargaCaptcha();
+    }
+
+    // Precarga: ?ambito=<slug> elige "¿Qué te trae?"; las señales marcadas en el inicio llegan al mensaje y se borran del almacenamiento
+    var sel=f.elements.asunto, msj=f.elements.mensaje;
+    var amb=(location.search.match(/[?&]ambito=([\w-]+)/)||[])[1];
+    if(amb&&sel) [].forEach.call(sel.options,function(o){ if(o.dataset.ambito===amb) sel.value=o.value; });
+    var llegadas=null;
+    try{ llegadas=JSON.parse(sessionStorage.getItem('ollin-senales')||'null'); sessionStorage.removeItem('ollin-senales'); }catch(_){}
+    if(llegadas&&llegadas.length&&msj&&!msj.value){
+      msj.value='Reconozco estas señales en mi negocio:\n'+llegadas.map(function(x){ return '- '+x; }).join('\n')+'\n\n';
     }
 
     f.addEventListener('submit',function(e){
@@ -136,5 +177,4 @@
     });
   }
 
-  raiz.classList.add('listo');
 })();
