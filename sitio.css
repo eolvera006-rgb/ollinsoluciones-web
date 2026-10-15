@@ -76,12 +76,13 @@ p{margin:0}
 }
 @media (max-width:620px){ :root{ --viaje:16px; --empuje:24px } }
 
-html{background:var(--noche)}   /* lienzo: rebote del scroll arriba/abajo y fondo entre páginas, igual a barra y pie */
+html{background:var(--paper)}   /* lienzo: rebote del scroll arriba y fondo entre páginas, igual a la barra */
 
 /* — Barra — */
-.barra{position:sticky; top:0; z-index:10; background:var(--paper)}
-.nav{display:flex; align-items:center; gap:clamp(18px,3vw,40px); padding-block:18px}
-.nav .logo{display:block; width:clamp(148px,16vw,196px); margin-right:auto}
+/* Barra clara y baja: niebla (grafito en tema oscuro) con una línea fina abajo */
+.barra{position:sticky; top:0; z-index:10; background:var(--paper); border-bottom:1px solid color-mix(in srgb, var(--ink) 10%, transparent)}
+.nav{display:flex; align-items:center; gap:clamp(18px,3vw,40px); padding-block:9px}
+.nav .logo{display:block; width:clamp(118px,10vw,136px); margin-right:auto}
 .nav .logo svg{display:block; width:100%; height:auto}
 .menu{display:contents}
 .nav-l{list-style:none; margin:0; padding:0; display:flex; gap:clamp(22px,2.6vw,36px); font-size:15px}
@@ -90,22 +91,14 @@ html{background:var(--noche)}   /* lienzo: rebote del scroll arriba/abajo y fond
 .nav-l a[aria-current="page"]{color:var(--ink)}
 /* El punto de "estás aquí" es un elemento propio para que viaje de una página a otra */
 .aqui{display:inline-block; flex:none; width:6px; height:6px; border-radius:50%; background:var(--accent); margin-right:9px; view-transition-name:aqui}
-.nav .btn{min-height:44px; padding:0 18px; font-size:14px}
+.nav .btn{min-height:40px; padding:0 18px; font-size:14px}
 .nav .btn[aria-current="page"]{background:var(--accent); border-color:var(--accent); color:var(--accent-ink)}
 .nav .btn .aqui{background:currentColor; margin-right:2px}
 .solo-movil,.menu-btn,.menu-pie{display:none}
-.nav .pupila{animation:mirar 30s ease-in-out infinite}
-@keyframes mirar{
-  0%,1.5%{transform:translate(0,0)}
-  3%,6.5%{transform:translate(-509px,57px)}
-  8%,11%{transform:translate(-358px,396px)}
-  12.5%,16%{transform:translate(38px,320px)}
-  18%,100%{transform:translate(0,0)}
-}
 
 @media (max-width:759px){
-  .nav{gap:4px; padding-block:14px}
-  .nav .logo{width:clamp(100px,32vw,148px); flex:0 1 auto; min-width:92px}
+  .nav{gap:4px; padding-block:8px}
+  .nav .logo{width:clamp(100px,28vw,118px); flex:0 1 auto; min-width:92px}
   .nav .btn{padding:0 14px}
   /* sin JS: los enlaces bajan a un renglón propio */
   html:not(.js) .nav{flex-wrap:wrap}
@@ -511,8 +504,8 @@ h2.t{font-size:var(--t-h2); line-height:1.02; letter-spacing:-.025em; max-width:
 .portada img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:40% 45%}
 .portada::after{content:""; position:absolute; inset:0; pointer-events:none;
   background:
-    linear-gradient(90deg, rgba(var(--sombra),.72) 0%, rgba(var(--sombra),.6) 30%, rgba(var(--sombra),.32) 50%, rgba(var(--sombra),.05) 66%, rgba(var(--sombra),0) 76%),
-    linear-gradient(180deg, rgba(var(--sombra),.2) 0%, rgba(var(--sombra),0) 22%)}
+    linear-gradient(90deg, rgba(var(--sombra),.62) 0%, rgba(var(--sombra),.5) 30%, rgba(var(--sombra),.26) 50%, rgba(var(--sombra),.04) 66%, rgba(var(--sombra),0) 76%),
+    linear-gradient(180deg, rgba(var(--sombra),.14) 0%, rgba(var(--sombra),0) 22%)}
 .hero-in{position:relative; z-index:1; display:grid; grid-template-columns:minmax(0,40rem) minmax(0,1fr) auto; align-content:center; align-items:end; gap:24px;
   /* la portada toma la proporción de la foto (1672 × 940) hasta 900 px de alto: en laptop se ve completa */
   min-height:clamp(560px, calc(100vw * 940 / 1672), 900px); padding-block:clamp(48px,6vw,88px)}
@@ -533,7 +526,7 @@ h2.t{font-size:var(--t-h2); line-height:1.02; letter-spacing:-.025em; max-width:
 @media (max-width:920px){
   .portada img{object-position:21% 50%}
   .portada::after{background:
-    linear-gradient(0deg, rgba(var(--sombra),.82) 0%, rgba(var(--sombra),.66) 36%, rgba(var(--sombra),.24) 62%, rgba(var(--sombra),0) 80%)}
+    linear-gradient(0deg, rgba(var(--sombra),.74) 0%, rgba(var(--sombra),.56) 36%, rgba(var(--sombra),.2) 62%, rgba(var(--sombra),0) 80%)}
   .hero-in{grid-template-columns:minmax(0,1fr); align-content:end; gap:clamp(24px,6vw,32px); min-height:clamp(560px, calc(100svh - var(--barra-h, 72px)), 820px); padding-block:clamp(48px,10vw,80px) clamp(32px,7vw,56px)}
   .hero h1 .h1-sub{max-width:34ch}
   .btn.recuadro{grid-column:1; justify-self:end}
