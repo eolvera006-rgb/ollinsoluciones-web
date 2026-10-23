@@ -2,37 +2,28 @@
 @font-face{font-family:'Newsreader';font-style:normal;font-weight:200 800;font-display:swap;src:url(/fuentes/newsreader.woff2) format('woff2')}
 @font-face{font-family:'Newsreader';font-style:italic;font-weight:200 800;font-display:swap;src:url(/fuentes/newsreader-italic.woff2) format('woff2')}
 @font-face{font-family:'Schibsted Grotesk';font-style:normal;font-weight:400 700;font-display:swap;src:url(/fuentes/schibsted-grotesk.woff2) format('woff2')}
+@font-face{font-family:'Jost';font-style:normal;font-weight:100 900;font-display:swap;src:url(/fuentes/jost.woff2) format('woff2')}
 @font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:swap;src:url(/fuentes/ibm-plex-mono-400.woff2) format('woff2')}
 @font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url(/fuentes/ibm-plex-mono-500.woff2) format('woff2')}
 /* — Tokens: color — */
 :root{
-  --niebla:#EFF5F5; --blanco:#FAFCFC; --tinta:#121A1C; --pizarra:#505A5D;
+  --niebla:#EFF5F5; --blanco:#FFFFFF; --tinta:#121A1C; --pizarra:#505A5D;
   --noche:#0B1012; --noche-2:#141C1F; --niebla-noche:#E7ECED; --gris-noche:#A9B3B5;
   --tezontle:#6C2B24; --tezontle-claro:#BF6B5E;
+  --pizarra-a:#172529; --pizarra-b:#2B3F45;   /* barra y pie (2026-10-19): la tinta aclarada, en degradado hacia la derecha */
 
-  /* Papeles: un solo fondo claro para el contenido; niebla sólo en los recuadros (diagnóstico, lo que no hacemos) */
+  /* Papeles: fondo blanco para el contenido (sin tema oscuro desde el 2026-10-19); niebla sólo en los recuadros (diagnóstico, lo que no hacemos) */
   --paper:var(--blanco); --paper-2:var(--niebla); --ink:var(--tinta); --muted:var(--pizarra);
   --accent:var(--tezontle); --accent-ink:var(--blanco);
   --regla:color-mix(in srgb, var(--pizarra) 28%, transparent);
   --hueco-fondo:#E4EAEA; --hueco-borde:#9AA5A8;    /* espacios reservados para fotografía */
   --elegido:#F6EEEC;                                /* opción elegida en el formulario */
-  color-scheme:light;
+  color-scheme:only light;   /* 2026-10-19: la página es blanca siempre; no sigue el modo oscuro del sistema */
 
   --font-display:"Newsreader","Iowan Old Style",Georgia,serif;
   --font-body:"Schibsted Grotesk","Helvetica Neue",Arial,sans-serif;
   --font-data:"IBM Plex Mono",ui-monospace,Menlo,monospace;
-}
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --paper:#101719; --paper-2:var(--noche-2); --ink:var(--niebla-noche); --muted:var(--gris-noche);
-  --accent:var(--tezontle-claro); --accent-ink:var(--noche); color-scheme:dark;
-  --regla:color-mix(in srgb, var(--gris-noche) 26%, transparent);
-  --hueco-fondo:#182124; --hueco-borde:#56646A; --elegido:color-mix(in srgb, var(--tezontle-claro) 14%, #101719);
-}}
-:root[data-theme="dark"]{
-  --paper:#101719; --paper-2:var(--noche-2); --ink:var(--niebla-noche); --muted:var(--gris-noche);
-  --accent:var(--tezontle-claro); --accent-ink:var(--noche); color-scheme:dark;
-  --regla:color-mix(in srgb, var(--gris-noche) 26%, transparent);
-  --hueco-fondo:#182124; --hueco-borde:#56646A; --elegido:color-mix(in srgb, var(--tezontle-claro) 14%, #101719);
+  --font-pitch:"Jost","Futura","Avenir Next","Helvetica Neue",Arial,sans-serif;   /* subtítulo de la portada */
 }
 /* Superficie oscura: barra, cierre de cada página y pie. Redefine los tokens localmente y todo lo de adentro (logo incluido) se adapta solo */
 .noche{--paper:var(--noche); --paper-2:var(--noche-2); --ink:var(--niebla-noche); --muted:var(--gris-noche); --accent:var(--tezontle-claro); --accent-ink:var(--noche);
@@ -57,7 +48,7 @@
   --t-capitular:96px;
 
   --gutter:clamp(20px, 4.5vw, 64px); --max:1200px;
-  --sec:clamp(96px, 10vw, 144px);            /* entre secciones */
+  --sec:clamp(64px, 8vw, 112px);             /* entre secciones (ronda 6: menos aire; lo marcan la regla y el título) */
   --e-rotulo:16px;                           /* rótulo → título */
   --e-titulo:clamp(36px, 4.2vw, 56px);       /* título → contenido */
   --e-img:24px;                              /* imagen → rótulo de tarjeta */
@@ -71,7 +62,8 @@
 
 *{box-sizing:border-box}
 html,body{overflow-x:clip}
-html{scroll-behavior:smooth; background:var(--paper)}
+html{background:var(--paper)}
+html:focus-within{scroll-behavior:smooth}   /* suave sólo en los clics dentro de la página: al llegar con un ancla (#…) el salto es inmediato */
 html{scroll-padding-top:calc(var(--barra-h,64px) + 24px + env(safe-area-inset-top,0px))}   /* anclas, scrollIntoView y foco con teclado */
 body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); font-size:var(--t-texto); line-height:1.6; font-weight:400; -webkit-font-smoothing:antialiased}
 .wrap{max-width:calc(var(--max) + 2 * var(--gutter)); margin:0 auto; padding-inline:var(--gutter)}
@@ -118,20 +110,21 @@ p{margin:0}
 .boton.contorno:hover{background:var(--ink); color:var(--paper)}
 .boton[disabled]{opacity:.6; cursor:progress}
 
-/* — Barra (oscura) — */
-.barra{position:sticky; top:0; z-index:20; border-bottom:1px solid var(--regla)}
+/* — Barra (2026-10-19): pizarra más clara que la noche, en degradado, para acompañar la página blanca — */
+.barra{position:sticky; top:0; z-index:20; border-bottom:1px solid rgba(255,255,255,.08);
+  background:linear-gradient(100deg, var(--pizarra-a) 0%, #1F3036 55%, var(--pizarra-b) 100%); box-shadow:0 1px 0 rgba(18,26,28,.06), 0 8px 24px -18px rgba(18,26,28,.5)}
+.pie.noche{--paper:var(--pizarra-a); background:linear-gradient(100deg, var(--pizarra-a) 0%, #1C2C31 60%, #22353B 100%)}
 .nav{display:flex; align-items:center; gap:clamp(20px,2.4vw,36px); padding-block:9px}
 .nav .logo{display:block; width:clamp(100px,8.2vw,114px); margin-right:auto}
 .nav .logo svg{display:block; width:100%; height:auto}
 .nav-l{list-style:none; margin:0; padding:0; display:flex; align-items:center; gap:clamp(20px,2.4vw,36px)}
 .nav-l > li{display:flex; align-items:center}
-.nav-a{display:inline-flex; align-items:center; gap:7px; min-height:44px; padding:0; border:0; background:none; font-family:var(--font-body); font-weight:500; font-size:16px; line-height:1; letter-spacing:.005em; color:var(--muted); text-decoration:none; white-space:nowrap; cursor:pointer; transition:color .2s}
+/* Secciones en Newsreader, la letra de los títulos: la barra se lee como el índice de una revista */
+.nav-a{display:inline-flex; align-items:center; gap:7px; min-height:44px; padding:0; border:0; background:none; font-family:var(--font-display); font-weight:450; font-size:19px; line-height:1; letter-spacing:.005em; padding-top:2px; color:color-mix(in srgb, var(--ink) 82%, transparent); text-decoration:none; white-space:nowrap; cursor:pointer; transition:color .2s}
 .nav-a:hover,.nav-a[aria-current="page"],.nav-a.en-seccion,.nav-a[aria-expanded="true"]{color:var(--ink)}
 .nav-a[aria-current="page"],.nav-a.en-seccion{box-shadow:inset 0 -2px 0 var(--accent)}
 .chev{width:10px; height:10px; flex:none; fill:none; stroke:currentColor; stroke-width:1.6; transition:transform .2s}
 [aria-expanded="true"] > .chev{transform:rotate(180deg)}
-.barra-cta{min-height:40px; padding:0 20px}
-.barra-cta[aria-current="page"]{background:var(--accent); border-color:var(--accent); color:var(--accent-ink)}
 .desp-b,.menu-btn{display:none}
 html.js .desp-b{display:inline-flex}
 html.js .desp > .sinjs{display:none}
@@ -141,8 +134,6 @@ html.js .desp > .sinjs{display:none}
   --regla:color-mix(in srgb, var(--pizarra) 28%, transparent); --hueco-fondo:#E4EAEA; --hueco-borde:#9AA5A8;
   display:none; position:absolute; left:0; right:0; top:100%; z-index:2; background:var(--paper); color:var(--ink); max-height:calc(100svh - var(--barra-h,64px)); overflow-y:auto;
   box-shadow:0 24px 48px -32px rgba(0,0,0,.6)}
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .panel{--paper:#101719; --paper-2:var(--noche-2); --ink:var(--niebla-noche); --muted:var(--gris-noche); --accent:var(--tezontle-claro); --accent-ink:var(--noche);
-  --regla:color-mix(in srgb, var(--gris-noche) 26%, transparent); --hueco-fondo:#182124; --hueco-borde:#56646A}}
 .panel.abierto{display:block}
 .panel:focus{outline:none}
 .panel-in{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2fr) minmax(0,1fr); column-gap:clamp(32px,4vw,64px); padding-block:48px 56px}
@@ -156,7 +147,7 @@ html.js .desp > .sinjs{display:none}
 .panel-b a:hover .pn,.panel-b a[aria-current="page"] .pn{color:var(--accent)}
 .panel-cols > div{display:grid; align-content:start; gap:6px}
 .panel-cols ul{list-style:none; margin:0; padding:0; display:grid}
-.panel-cols a{display:flex; align-items:center; min-height:40px; padding:0; font-weight:500; font-size:16px}
+.panel-cols a{display:flex; align-items:flex-start; padding-block:10px; font-weight:500; font-size:16px; line-height:1.3}
 .panel-cols a:hover{color:var(--accent)}
 .panel-c{display:grid; align-content:start; gap:12px}
 .destacado{display:grid; gap:8px; text-decoration:none; color:var(--ink)}
@@ -167,10 +158,10 @@ html.js .desp > .sinjs{display:none}
 .velo{position:fixed; inset:var(--barra-h,64px) 0 0 0; z-index:1; background:rgba(11,16,18,.5)}
 
 /* Cajón móvil (menos de 900 px): pantalla completa en noche, entradas en Newsreader, Hablemos fijo al pie */
-.cajon{position:fixed; inset:var(--barra-h,64px) 0 0 0; z-index:3; display:flex; flex-direction:column; background:var(--noche); overflow-y:auto; overscroll-behavior:contain}
+.cajon{position:fixed; inset:var(--barra-h,64px) 0 0 0; z-index:3; display:flex; flex-direction:column; background:var(--pizarra-a); overflow-y:auto; overscroll-behavior:contain}
 .cajon-l{list-style:none; margin:0; padding:8px var(--gutter) 32px; flex:1}
 .cajon-l > li{border-bottom:1px solid var(--regla)}
-.cajon-l > li > a,.acor-b{display:flex; align-items:center; justify-content:space-between; gap:16px; width:100%; min-height:68px; padding:0; border:0; background:none; text-align:left; cursor:pointer;
+.cajon-l > li > a,.acor-b,.niv-b{display:flex; align-items:center; justify-content:space-between; gap:16px; width:100%; min-height:68px; padding:0; border:0; background:none; text-align:left; cursor:pointer;
   font-family:var(--font-display); font-weight:400; font-size:28px; line-height:1.15; letter-spacing:-.01em; color:var(--ink); text-decoration:none}
 .cajon-l > li > a[aria-current="page"]{color:var(--accent)}
 .acor-b .chev{width:14px; height:14px; color:var(--muted)}
@@ -179,7 +170,7 @@ html.js .desp > .sinjs{display:none}
 .acor-l .pn{font-family:var(--font-body); font-weight:600; font-size:16px; line-height:1.35}
 .acor-l .pf{font-family:var(--font-display); font-style:italic; font-size:16px; line-height:1.35; color:var(--muted)}
 .acor-l a[aria-current="page"] .pn{color:var(--accent)}
-.cajon-pie{position:sticky; bottom:0; display:grid; gap:12px; padding:20px var(--gutter) calc(20px + env(safe-area-inset-bottom,0px)); background:var(--noche); border-top:1px solid var(--regla)}
+.cajon-pie{position:sticky; bottom:0; display:grid; gap:12px; padding:20px var(--gutter) calc(20px + env(safe-area-inset-bottom,0px)); background:var(--pizarra-a); border-top:1px solid var(--regla)}
 .cajon-pie .boton{width:100%; min-height:52px}
 .cajon-pie p{font-size:15px; line-height:1.4; color:var(--muted); text-align:center}
 html.cajon-abierto,html.cajon-abierto body{overflow:hidden}
@@ -192,11 +183,10 @@ html.cajon-abierto .menu-ico::before{transform:translateY(4.75px) rotate(45deg)}
 html.cajon-abierto .menu-ico::after{transform:translateY(-4.75px) rotate(-45deg)}
 
 @media (min-width:900px){ .cajon{display:none!important} }
-@media (max-width:1100px) and (min-width:900px){ .nav,.nav-l{gap:20px} .nav-a{font-size:15px} }
+@media (max-width:1100px) and (min-width:900px){ .nav,.nav-l{gap:20px} .nav-a{font-size:17px} }
 @media (max-width:899px){
   .nav{gap:6px; padding-block:8px}
   .nav .logo{width:clamp(90px,25vw,102px); flex:0 1 auto; min-width:86px}
-  .barra-cta{padding:0 14px}
   .panel,.velo{display:none!important}
   /* sin JS: los enlaces bajan a un renglón propio (Ámbitos y Perspectivas llevan a su índice) */
   html:not(.js) .nav{flex-wrap:wrap}
@@ -205,7 +195,7 @@ html.cajon-abierto .menu-ico::after{transform:translateY(-4.75px) rotate(-45deg)
   html.js .nav-l{display:none}
   html.js .menu-btn{display:inline-flex; align-items:center; gap:9px; min-height:44px; padding:0 8px; background:none; border:0; border-radius:2px; font:600 var(--t-rotulo-s)/1 var(--font-body); letter-spacing:.1em; text-transform:uppercase; color:var(--ink); cursor:pointer}
 }
-@media (max-width:359px){ .barra-cta{padding:0 11px} html.js .menu-btn{padding:0 6px; gap:7px} }
+@media (max-width:359px){ html.js .menu-btn{padding:0 6px; gap:7px} }
 
 /* — Patrón de sección: regla fina, 20 px, rótulo, 16 px, título, 56 px, contenido — */
 .sec{padding-top:var(--sec)}
@@ -243,8 +233,10 @@ h2.conviccion{font-weight:300; font-size:var(--t-conviccion); line-height:1.02; 
 /* — Fotografía y su espacio reservado — */
 .media{display:block; width:100%; height:auto; aspect-ratio:var(--ar,3/2); object-fit:cover; margin:0}
 .hueco{position:relative; display:flex; align-items:flex-end; padding:12px 14px; background:var(--hueco-fondo); border:1px dashed var(--hueco-borde)}
-.hueco-et{font-family:var(--font-body); font-weight:600; font-size:13px; line-height:1.35; letter-spacing:.02em; color:var(--muted); text-wrap:pretty}
-.hueco.mini{width:120px; padding:8px}
+.hueco-et{font-family:var(--font-body); font-weight:600; font-size:13px; line-height:1.35; letter-spacing:.02em; color:var(--muted); text-wrap:pretty; opacity:0; transition:opacity .2s}
+.hueco:hover .hueco-et,a:focus-visible .hueco-et,.hueco:focus-within .hueco-et{opacity:1}   /* ronda 6: la etiqueta del espacio sólo al pasar el cursor o con el foco */
+.fila-c .mini{width:96px; aspect-ratio:4/3}
+.hueco.mini{padding:8px}
 .foto{margin:0}
 .foto figcaption{margin-top:12px; font-family:var(--font-display); font-style:italic; font-size:var(--t-nota); line-height:1.45; color:var(--muted)}
 .foto-cab{margin-top:clamp(48px,6vw,80px)}
@@ -263,19 +255,18 @@ h2.conviccion{font-weight:300; font-size:var(--t-conviccion); line-height:1.02; 
 .tarjeta:hover .ch,.art-dest:hover .ch,.fila-c:hover .ch{transform:translateX(4px)}
 .art-dest .t-tarjeta{font-size:clamp(28px,2.6vw,38px); line-height:1.12; letter-spacing:-.012em}
 .art-dest.grande .t-tarjeta{font-size:clamp(30px,3.2vw,44px)}
-.momentos-nota{display:grid; align-content:start; gap:8px; padding-top:20px; border-top:1px solid var(--regla)}
-.momentos-nota p{font-family:var(--font-display); font-style:italic; font-size:21px; line-height:1.45; color:var(--muted); max-width:24ch}
 .marca-borrador{display:inline-block; margin-left:.6em; padding:2px 6px; border:1px solid var(--accent); color:var(--accent); font:600 13px/1.3 var(--font-body); letter-spacing:.08em; text-transform:uppercase; vertical-align:middle}
 
-/* Fila compacta: miniatura de 120 px, rótulo y título */
+/* Fila compacta: miniatura 4:3 de 96 px, rótulo y título (la misma medida en Perspectivas, ámbitos y la 404) */
 .filas-c{list-style:none; margin:0; padding:0; display:grid}
 .filas-c > li + li{border-top:1px solid var(--regla)}
-.fila-c{display:grid; grid-template-columns:120px minmax(0,1fr); gap:24px; align-items:start; padding-block:24px; text-decoration:none; color:var(--ink)}
+.fila-c{display:grid; grid-template-columns:96px minmax(0,1fr); gap:18px; align-items:start; padding-block:20px; text-decoration:none; color:var(--ink)}
 .filas-c > li:first-child .fila-c{padding-top:0}
 .fila-c-t{display:grid; align-content:start}
-.t-fila{margin-top:8px; font-weight:500; font-size:var(--t-h3-s); line-height:28px}
+.t-fila{margin-top:8px; font-weight:500; font-size:19px; line-height:1.3}
+.fila-c-t > .t-fila:first-child{margin-top:0}
 .fila-c .meta{margin-top:12px}
-@media (max-width:479px){ .fila-c{grid-template-columns:88px minmax(0,1fr); gap:18px} .hueco.mini{width:88px} }
+@media (max-width:479px){ .fila-c{grid-template-columns:88px minmax(0,1fr); gap:16px} .hueco.mini,.fila-c .mini{width:88px} }
 
 /* Perspectivas del inicio: un artículo grande y tres filas */
 .persp{display:grid; gap:var(--e-tarjeta-y) var(--col-gap)}
@@ -284,7 +275,11 @@ h2.conviccion{font-weight:300; font-size:var(--t-conviccion); line-height:1.02; 
 /* Nuestra historia (inicio): imagen 1:1 y texto */
 .dos-col{display:grid; gap:40px}
 @media (min-width:760px){ .dos-col{grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:var(--col-gap); align-items:center} }
-.origen{padding-top:20px}
+.origen{padding-top:20px; border-top:1px solid var(--regla)}
+/* Bloque Nosotros del inicio: la imagen arriba, a la altura del título (no centrada); en teléfono, después del texto */
+.dos-col.origen{align-items:start}
+@media (min-width:760px){ .dos-col.origen > .media{margin-top:calc(var(--t-rotulo) * 1.3 + var(--e-rotulo))} }
+@media (max-width:759px){ .dos-col.origen > .media{order:2} }   /* ronda 6: la regla de la sección, sin la cabecera vacía */
 .origen-t .texto{margin-top:var(--e-titulo)}
 .origen-t .flecha{margin-top:28px}
 
@@ -386,7 +381,6 @@ html:not(.js) .diag-n{display:none}
 .prosa a{color:var(--ink); text-decoration:underline; text-decoration-color:var(--accent); text-decoration-thickness:1px; text-underline-offset:.2em}
 .prosa a:hover{color:var(--accent)}
 .num-cap{color:var(--accent); margin-right:.15em}
-.historia h2,.prosa h2[id]{scroll-margin-top:calc(var(--barra-h,64px) + 24px)}
 .nota-lazo{font-style:italic; font-size:var(--t-nota); line-height:1.5; color:var(--muted)}
 .prosa > p.nota-lazo{margin-top:8px}
 .prosa > .hueco.junto-cap{max-width:420px; margin-top:36px}
@@ -410,7 +404,7 @@ html:not(.js) .diag-n{display:none}
 html.local .aviso-borrador{display:block}
 
 /* — Páginas de ámbito: secciones dentro de la columna — */
-.sub-sec{padding-top:20px; border-top:1px solid var(--regla); scroll-margin-top:calc(var(--barra-h,64px) + 24px)}
+.sub-sec{padding-top:20px; border-top:1px solid var(--regla)}
 .sub-sec + .sub-sec{margin-top:var(--e-interna)}
 .sub-sec > h2{font-family:var(--font-display); font-weight:400; font-size:clamp(32px,3.4vw,48px); line-height:1.08; letter-spacing:-.01em; max-width:20ch}
 .sub-cont{margin-top:var(--e-titulo)}
@@ -465,57 +459,42 @@ html.local .aviso-borrador{display:block}
 /* Marcador visible de lo que falta (lo encuentran el verificador y la búsqueda de "[POR COMPLETAR") */
 .por-completar{display:inline; padding:0 5px; border:1px dashed var(--accent); color:var(--ink); font-family:var(--font-body); font-style:normal; font-weight:600; font-size:max(13px,.78em); letter-spacing:.02em}
 
-/* — Perspectivas: filtro, destacado y lista — */
-.filtro ul{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:8px}
-.filtro a{display:inline-flex; align-items:center; min-height:40px; padding:0 14px; border:1px solid var(--regla); border-radius:2px; color:var(--muted); font:600 var(--t-rotulo-s)/1 var(--font-body); letter-spacing:.08em; text-transform:uppercase; text-decoration:none}
-.filtro a:hover,.filtro [aria-pressed="true"]{color:var(--ink); border-color:var(--ink)}
-.persp-lista{display:grid; gap:var(--e-tarjeta-y) var(--col-gap)}
-@media (min-width:900px){ .persp-lista{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); align-items:start} }
-#lista-articulos > .es-dest{display:none}
-.persp-lista.filtrada{grid-template-columns:minmax(0,var(--col-ambito))}
-.persp-lista.filtrada > .art-dest{display:none}
-.persp-lista.filtrada #lista-articulos > .es-dest:not([hidden]){display:block}
-.grupo-cat{margin-top:var(--e-interna)}
-.grupo-cat > .rotulo-t{margin-bottom:20px; color:var(--accent)}
-html.js .grupos-cat{display:none}
-
 /* — Hablemos — */
 .sec-contacto{padding-block:clamp(48px,6vw,80px) var(--sec)}
 .c-grid{display:grid; gap:64px}
 @media (min-width:1024px){ .c-grid{grid-template-columns:minmax(0,720px) minmax(0,1fr); column-gap:clamp(48px,7vw,112px); align-items:start} .despues{position:sticky; top:calc(var(--barra-h,64px) + 32px)} }
+/* Formulario (referencia del dueño): etiqueta normal arriba, nota en gris, recuadro de línea fina; con error, etiqueta, recuadro y mensaje en tezontle */
 .forma{display:grid; max-width:720px}
-form.forma > * + *{margin-top:36px}
-.forma-nota{font-size:14px; line-height:1.45; color:var(--muted)}
-.etq,.campo > label{color:var(--muted)}
-.obl{margin-left:2px; color:var(--accent)}
-.trae{border:0; margin:0; padding:0; min-width:0}
-.trae legend{padding:0; margin-bottom:16px}
-.opciones{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr)); gap:12px}
-.opc{position:relative; display:grid; align-content:start; gap:6px; min-height:92px; padding:16px 18px; border:1px solid color-mix(in srgb, var(--ink) 22%, transparent); border-radius:2px; cursor:pointer; transition:border-color .2s, background .2s}
-.opc input{position:absolute; inset:0; width:100%; height:100%; margin:0; opacity:0; cursor:pointer}
-.opc-n{font-weight:600; font-size:16px; line-height:1.3}
-.opc-f{font-family:var(--font-display); font-style:italic; font-size:15px; line-height:1.4; color:var(--muted)}
-.opc:hover{border-color:var(--ink)}
-.opc:has(input:checked){border-color:var(--accent); background:var(--elegido); box-shadow:inset 0 0 0 1px var(--accent)}
-.opc:has(input:focus-visible){outline:2px solid var(--accent); outline-offset:2px}
-.trae[aria-invalid="true"] .opc{border-color:var(--accent)}
-.dos-campos{display:grid; gap:36px}
-@media (min-width:640px){ .dos-campos{grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:32px} }
-.campo{display:grid; gap:6px; align-content:start}
-.forma input:not([type="radio"]):not([type="hidden"]),.forma textarea{font:inherit; font-size:18px; line-height:1.5; color:var(--ink); background:transparent; border:0; border-bottom:1px solid color-mix(in srgb, var(--ink) 50%, var(--paper)); border-radius:0; padding:10px 0; width:100%; min-width:0; transition:border-color .2s}
-.forma textarea{resize:vertical; min-height:168px}
-.forma ::placeholder{color:var(--muted); opacity:1}
-.forma input:focus,.forma textarea:focus{outline:none; border-bottom-color:var(--accent); box-shadow:0 1px 0 0 var(--accent)}
-.forma [aria-invalid="true"]{border-bottom-color:var(--accent)}
-.campo-n{font-size:14px; line-height:1.45; color:var(--muted)}
-.campo-e{font-size:14px; line-height:1.4; color:var(--accent)}
+form.forma > * + *{margin-top:28px}
+.forma-t{font-family:var(--font-display); font-weight:600; font-size:clamp(36px,4vw,44px); line-height:1.05; letter-spacing:-.015em}
+.forma-t + .forma-nota{margin-top:8px}
+.forma-nota{font-size:17px; line-height:1.45; color:var(--ink)}
+.forma > .forma-nota{margin-bottom:12px}
+.campo{display:grid; align-content:start}
+.forma .campo > label,.etq-c{margin:0 0 10px; font-family:var(--font-body); font-weight:400; font-size:18px; line-height:1.3; letter-spacing:0; text-transform:none; color:var(--ink)}
+.obl{color:inherit}
+.campo-n{margin:-2px 0 12px; font-size:17px; line-height:1.4; color:var(--muted)}
+.forma input:not([type="hidden"]),.forma textarea{font:inherit; font-size:18px; line-height:1.4; color:var(--ink); background:var(--paper); border:1px solid var(--ink); border-radius:0;
+  padding:0 16px; height:56px; width:100%; min-width:0; transition:border-color .15s, box-shadow .15s}
+.forma textarea{height:auto; min-height:140px; padding:14px 16px; resize:vertical}
+.forma input:focus,.forma textarea:focus{outline:none; box-shadow:inset 0 0 0 1px var(--ink)}
+.campo:has([aria-invalid="true"]) > label,.campo:has([aria-invalid="true"]) > .etq-c{color:var(--accent)}
+.forma input[aria-invalid="true"],.forma textarea[aria-invalid="true"]{border-color:var(--accent)}
+.forma input[aria-invalid="true"]:focus,.forma textarea[aria-invalid="true"]:focus{box-shadow:inset 0 0 0 1px var(--accent)}
+.campo-e{margin-top:10px; font-size:17px; line-height:1.4; color:var(--accent)}
 .campo-e:empty,.forma .error:empty,.forma .estado:empty{display:none}
-.forma .aviso{font-size:14px; line-height:1.5; color:var(--muted)}
-.forma .aviso a{color:var(--ink); text-underline-offset:.2em}
-.forma .error{color:var(--accent); font-size:15px}
+/* reCAPTCHA mide 304 × 78: el espacio queda reservado para que nada salte al cargarlo */
+.captcha{min-height:78px}
+.forma .error{color:var(--accent); font-size:17px}
 .forma .estado{font-size:17px; line-height:1.5; max-width:46ch}
-form.forma > .acciones{margin-top:28px}
-.boton.envio{min-height:54px; padding:0 40px}
+form.forma > .acciones{margin-top:36px}
+.boton.envio{min-height:56px; min-width:min(100%,300px); padding:0 40px; border-radius:0}
+/* mientras falten campos obligatorios, Enviar se ve en gris (sigue respondiendo: al tocarlo marca lo que falta) */
+.boton.envio.incompleto{background:#E3E7E7; border-color:#E3E7E7; color:#5F696B}
+.boton.envio.incompleto:hover{background:#D6DCDC; border-color:#D6DCDC; color:#4B5456}
+.forma .aviso{font-size:15px; line-height:1.5}
+.forma .aviso a{color:var(--muted); text-underline-offset:.2em}
+.forma .aviso a:hover{color:var(--ink)}
 .trampa{position:absolute; left:-10000px; width:1px; height:1px; overflow:hidden}
 .despues{padding-top:20px; border-top:1px solid var(--regla)}
 .despues .rotulo{margin-bottom:28px}
@@ -541,7 +520,7 @@ form.forma > .acciones{margin-top:28px}
 
 /* — Movimiento reducido — */
 @media (prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
+  html,html:focus-within{scroll-behavior:auto}
   *{transition:none!important; animation:none!important}
 }
 
@@ -549,7 +528,7 @@ form.forma > .acciones{margin-top:28px}
    Fija los valores que antes heredaba (letra de cuerpo Schibsted 17 px, títulos en 400, botón sin rotulado), así se ve idéntica. — */
 .hero{font-family:var(--font-body); font-size:17px; line-height:1.6; font-weight:400}
 .hero h1{font-weight:400}
-.hero h1 .h1-sub{display:block; margin-top:clamp(22px,2.4vw,32px); max-width:30ch; font-family:var(--font-body); font-weight:500; font-size:clamp(18px,1.55vw,22px); line-height:1.4; letter-spacing:0; color:var(--ink); white-space:normal; text-wrap:pretty}
+.hero h1 .h1-sub{display:block; margin-top:clamp(22px,2.4vw,32px); max-width:30ch; font-family:var(--font-display); font-weight:400; font-size:clamp(18px,1.55vw,22px); line-height:1.4; letter-spacing:0; color:var(--ink); white-space:normal; text-wrap:pretty}
 .hero .btn{font-family:var(--font-body); font-weight:700; font-size:15px; letter-spacing:.01em; text-transform:none; font-variant-numeric:normal; min-height:50px; padding:0 26px}
 /* Hallmark · component: portada (hero) · genre: editorial · legibilidad: degradado oscuro bajo el título
  * pre-emit critique: P4 H4 E4 S4 R5 V4 */
@@ -576,7 +555,8 @@ form.forma > .acciones{margin-top:28px}
 .hero h1{font-size:clamp(42px,5.9vw,94px); line-height:1.02; letter-spacing:-.024em; color:var(--blanco); text-shadow:0 2px 28px rgba(var(--sombra),.35)}
 .hero h1 .l1,.hero h1 .acento{display:block}
 .hero h1 .acento{color:var(--blanco)}
-.hero h1 .h1-sub{color:var(--blanco); font-weight:600; font-size:clamp(19px,1.7vw,24px); letter-spacing:-.005em; max-width:60ch; text-wrap:balance; margin-top:clamp(20px,2.2vw,28px); text-shadow:0 1px 16px rgba(var(--sombra),.5)}
+/* subtítulo (2026-10-22): Jost en lugar de Newsreader, en dos renglones a partir de 640 px; el tamaño sigue al ancho para que el texto no pase a un tercero */
+.hero h1 .h1-sub{color:var(--blanco); font-family:var(--font-pitch); font-weight:400; font-size:clamp(19px,1.75vw,25px); line-height:1.45; letter-spacing:.005em; max-width:none; text-wrap:balance; margin-top:clamp(20px,2.2vw,28px); text-shadow:0 1px 16px rgba(var(--sombra),.5)}
 /* Recuadro de contacto: oscuro translúcido (va sobre la parte clara de la foto), borde marfil tenue y el sobre de correo */
 .btn.recuadro{grid-column:3; min-height:54px; padding:0 26px 0 22px; gap:12px; font-size:16px; border-radius:4px;
   border-color:rgba(244,241,234,.5); color:var(--marfil); background:rgba(var(--sombra),.42)}
@@ -591,22 +571,628 @@ form.forma > .acciones{margin-top:28px}
   .portada::after{background:
     linear-gradient(0deg, rgba(var(--sombra),.62) 0%, rgba(var(--sombra),.52) 36%, rgba(var(--sombra),.4) 50%, rgba(var(--sombra),.22) 64%, rgba(var(--sombra),.08) 76%, rgba(var(--sombra),0) 86%)}
   .hero-in{grid-template-columns:minmax(0,1fr); align-content:end; gap:clamp(24px,6vw,32px); min-height:clamp(560px, calc(100svh - var(--barra-h, 72px)), 820px); padding-block:clamp(48px,10vw,80px) clamp(32px,7vw,56px)}
-  .hero h1 .h1-sub{max-width:none; text-wrap:pretty}
+  .hero h1 .h1-sub{font-size:clamp(17px,2.55vw,21px)}
   .btn.recuadro{grid-column:1; justify-self:end}
 }
 
-/* Secuencia de entrada: la foto se descubre de izquierda a derecha y se acerca despacio;
-   el título, el pitch y el recuadro suben uno tras otro; al bajar, la foto va más lento que el texto */
+/* Secuencia de entrada: la foto aparece y se asienta con un acercamiento corto; el título, el pitch y el recuadro suben uno tras otro.
+   Sólo opacidad y escala (las hace la tarjeta de video, sin repintar la foto en cada cuadro). Con JS, la foto espera a estar decodificada
+   para no arrancar a medias; si tarda, a los 1.5 s se muestra igual. Al bajar, la foto va más lento que el texto. */
 @media (prefers-reduced-motion:no-preference){
-  .portada picture{animation:portada-abre 1.3s cubic-bezier(.65,0,.25,1) both}
-  .portada img{animation:portada-acerca 9s cubic-bezier(.2,.6,.2,1) both}
-  .hero .entra{animation:portada-entra .95s var(--ease-marcha) both; animation-delay:calc(var(--n) * 140ms + 200ms)}
+  html.js .portada:not(.lista) picture{opacity:0}
+  .portada picture{will-change:opacity}
+  .portada.lista picture{animation:portada-aparece .6s ease-out both}
+  .portada.lista img{animation:portada-acerca 1.8s cubic-bezier(.2,.6,.2,1) both}
+  .hero .entra{animation:portada-entra .6s var(--ease-marcha) both; animation-delay:calc(var(--n) * 90ms + 150ms)}
   @supports (animation-timeline: view()){
     .portada{animation:portada-paralaje linear both; animation-timeline:view(); animation-range:exit 0% exit 100%}
   }
 }
-@keyframes portada-abre{from{clip-path:inset(0 100% 0 0)}}
-@keyframes portada-acerca{from{scale:1.08}}
-@keyframes portada-entra{from{opacity:0; translate:0 24px}}
+@keyframes portada-aparece{from{opacity:0}}
+@keyframes portada-acerca{from{scale:1.035}}
+@keyframes portada-entra{from{opacity:0; translate:0 16px}}
 @keyframes portada-paralaje{to{translate:0 14%}}
 
+/* — Ventana del inicio: el formulario en un recuadro blanco al centro, sobre la página oscurecida (también en tema oscuro).
+   Capa propia (no <dialog> modal) para que el reto de imágenes de reCAPTCHA quede encima; en teléfono ocupa la pantalla — */
+.ventana{--paper:var(--blanco); --paper-2:var(--niebla); --ink:var(--tinta); --muted:var(--pizarra); --accent:var(--tezontle); --accent-ink:var(--blanco);
+  --regla:color-mix(in srgb, var(--pizarra) 28%, transparent); color-scheme:light;
+  position:fixed; inset:0; z-index:1000; display:flex; align-items:center; justify-content:center; padding:16px;
+  background:rgba(11,16,18,.66); -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px); overscroll-behavior:contain}
+.ventana[hidden]{display:none}
+html.ventana-abierta{overflow:hidden}
+.ventana-caja{position:relative; width:min(100%, 520px); max-height:100%; overflow-y:auto; overscroll-behavior:contain;
+  padding:36px 40px 32px; background:var(--paper); color:var(--ink); box-shadow:0 40px 90px -30px rgba(0,0,0,.65)}
+.ventana-caja:focus{outline:none}
+.ventana-x{position:absolute; top:8px; right:8px; z-index:1; display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; padding:0; border:0; background:none; color:var(--ink); cursor:pointer}
+.ventana-x:hover{background:var(--paper-2)}
+.ventana-x:focus-visible{outline:2px solid var(--ink); outline-offset:-4px}
+.cruz{width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:1.4; stroke-linecap:round}
+@media (max-width:639px){
+  .ventana{padding:0}
+  .ventana-caja{width:100%; height:100%; padding:56px 20px 32px}
+}
+/* En la ventana todo va a escala menor: recuadros de 44 px, letra de 15–16 px, menos aire entre campos */
+.ventana form.forma > * + *{margin-top:16px}
+.ventana .forma-t{font-size:30px}
+.ventana .forma-t + .forma-nota{margin-top:6px}
+.ventana .forma-nota{font-size:14px}
+.ventana .forma > .forma-nota{margin-bottom:6px}
+.ventana .forma .campo > label,.ventana .etq-c{margin-bottom:6px; font-size:15px}
+.ventana .campo-n{margin:-2px 0 8px; font-size:14px}
+.ventana .forma input:not([type="hidden"]),.ventana .forma textarea{height:44px; padding:0 12px; font-size:16px}
+.ventana .forma textarea{height:76px; min-height:60px; padding:10px 12px}
+.ventana .campo-e{margin-top:6px; font-size:14px}
+.ventana .forma .error{font-size:14px}
+.ventana form.forma > .acciones{margin-top:24px}
+.ventana .boton.envio{min-height:46px; min-width:min(100%,200px); padding:0 32px; font-size:15px}
+.ventana .forma .aviso{font-size:13px}
+@media (prefers-reduced-motion:no-preference){
+  .ventana:not([hidden]){animation:ventana-velo .25s ease both}
+  .ventana:not([hidden]) .ventana-caja{animation:ventana-entra .35s var(--ease-marcha) both}
+}
+@keyframes ventana-entra{from{opacity:0; translate:0 16px}}
+@keyframes ventana-velo{from{opacity:0}}
+
+/* ================= Nosotros, niveles del cajón y cierre de cada texto (propuesta acoplada, aprobada el 2026-10-15) ================= */
+/* Panel Nosotros: la vista general a la izquierda y cuatro grupos en dos columnas, como el «About Us» de McKinsey */
+.panel-in.panel-nos{grid-template-columns:minmax(0,1fr) minmax(0,2fr) minmax(0,1fr)}
+
+/* Cajón por niveles: la lista de pestañas y, al tocar una, su nivel con «‹ Volver» */
+.cajon-cuerpo{flex:1; display:flex; flex-direction:column}
+.niv-b > .chev,.niv-b[aria-expanded] > .chev{width:14px; height:14px; color:var(--muted); transform:rotate(-90deg)}
+.cajon.en-nivel .cajon-l{display:none}
+.nivel{padding:4px var(--gutter) 40px}
+.nivel[hidden]{display:none}
+.nivel:focus{outline:none}
+.niv-volver{display:inline-flex; align-items:center; gap:10px; min-height:52px; padding:0; border:0; background:none; cursor:pointer;
+  font:600 var(--t-rotulo-s)/1 var(--font-body); letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+.niv-volver span{font-size:24px; letter-spacing:0; margin-top:-3px}
+.niv-volver:hover{color:var(--ink)}
+.niv-t{font-family:var(--font-display); font-weight:400; font-size:32px; line-height:1.1; letter-spacing:-.01em; margin-top:6px}
+.nivel > .flecha{margin-top:14px; font-size:17px}
+.niv-g{margin-top:32px; display:grid; gap:4px; align-content:start}
+.niv-g ul,.niv-l{list-style:none; margin:0; padding:0; display:grid}
+.niv-g a{display:flex; align-items:center; min-height:44px; padding-block:7px; font-weight:500; font-size:17px; line-height:1.3; text-decoration:none; color:var(--ink)}
+.niv-g a[aria-current="page"]{color:var(--accent)}
+.niv-l{margin-top:20px}
+.niv-l a{display:grid; gap:2px; padding:10px 0; text-decoration:none; color:var(--ink)}
+.niv-l .pn{font-family:var(--font-body); font-weight:600; font-size:16px; line-height:1.35}
+.niv-l .pf{font-family:var(--font-display); font-style:italic; font-size:16px; line-height:1.35; color:var(--muted)}
+/* Tableta: el formato de la captura de McKinsey (columna oscura con las pestañas y el nivel en claro a la derecha) */
+@media (min-width:640px) and (max-width:899px){
+  .cajon{display:grid; grid-template-columns:minmax(220px,34%) minmax(0,1fr); grid-template-rows:minmax(0,1fr) auto; overflow:hidden}
+  .cajon-cuerpo{display:contents}
+  .cajon-l{grid-column:1; grid-row:1; overflow-y:auto; padding:8px 0 32px}
+  .cajon.en-nivel .cajon-l{display:block}
+  .cajon-l > li{padding-inline:var(--gutter)}
+  .cajon-l > li:has(> .niv-b[aria-expanded="true"]){background:var(--noche-2)}
+  .niv-b[aria-expanded="true"] .niv-txt{text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:7px; text-decoration-color:var(--accent)}
+  .cajon-pie{grid-column:1; grid-row:2}
+  .nivel{grid-column:2; grid-row:1 / span 2; overflow-y:auto; padding:40px clamp(28px,5vw,48px) 48px;
+    --paper:var(--blanco); --ink:var(--tinta); --muted:var(--pizarra); --accent:var(--tezontle); --regla:color-mix(in srgb, var(--pizarra) 28%, transparent);
+    background:var(--paper); color:var(--ink)}
+  .niv-volver{display:none}
+  .niv-t{margin-top:0; font-size:36px}
+  .niv-g{margin-top:28px}
+  .niv-gs{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:32px}
+}
+@media (min-width:640px) and (max-width:719px){ .niv-gs{grid-template-columns:1fr} }
+
+/* «Te mostramos cómo lo manejamos»: el cierre de cada texto y de cada página fuera del inicio. Recuadro en niebla con filo tezontle,
+   título en Newsreader, un párrafo en Schibsted (habla Ollin, no el artículo) y el botón Contacto con el sobre de la portada */
+.mostramos{margin-top:var(--e-interna); max-width:var(--col-lectura); padding:clamp(28px,4vw,44px); background:var(--paper-2); border-top:3px solid var(--accent);
+  display:grid; gap:18px}
+.mostramos-t{font-family:var(--font-display); font-weight:400; font-size:clamp(30px,3vw,38px); line-height:1.1; letter-spacing:-.01em; max-width:20ch}
+.mostramos-b{display:grid; gap:26px; justify-items:start}
+.mostramos-b p{font-size:var(--t-tarjeta); line-height:1.6; max-width:56ch; text-wrap:pretty}
+.mostramos-btn{gap:12px; min-height:52px; padding:0 26px 0 22px}
+.mostramos-btn .sobre{width:20px; height:20px}
+.sec-mostramos{padding-bottom:var(--sec)}
+.sec-mostramos .mostramos{margin-top:0; max-width:none}
+@media (min-width:900px){
+  .sec-mostramos .mostramos{grid-template-columns:minmax(0,5fr) minmax(0,7fr); column-gap:var(--col-gap); align-items:start; padding:clamp(40px,4.5vw,64px)}
+  .sec-mostramos .mostramos-t{font-size:clamp(36px,3.6vw,48px)}
+}
+.nota-legal{margin-top:48px; max-width:var(--col-lectura); font-family:var(--font-display); font-style:italic; font-size:var(--t-nota); line-height:1.5; color:var(--muted)}
+.nota-legal + .mostramos,.fuentes + .mostramos,.compartir-fila + .mostramos{margin-top:40px}
+.fuentes + .nota-legal{margin-top:32px}
+.nota-legal + .compartir-fila{margin-top:28px}
+.mostramos + .sub-sec{margin-top:var(--e-interna)}
+
+/* PyMES en el inicio: tres cifras con su lectura y su fuente, sin casillas */
+.cifras{list-style:none; margin:0; padding:0; display:grid; gap:44px var(--e-tarjeta-x)}
+@media (min-width:768px){ .cifras{grid-template-columns:repeat(3,minmax(0,1fr))} }
+.cifras li{padding-top:18px; border-top:1px solid var(--regla); display:grid; align-content:start; gap:14px}
+.cifra-n{font-family:var(--font-display); font-weight:300; font-size:clamp(56px,5.6vw,80px); line-height:1; letter-spacing:-.02em; color:var(--accent); font-variant-numeric:lining-nums}
+.cifra-t{font-size:var(--t-tarjeta); line-height:1.55; max-width:34ch}
+.cifra-f{font-family:var(--font-display); font-style:italic; font-size:var(--t-nota); line-height:1.45; color:var(--muted)}
+
+/* ================= Perspectivas como blog (aprobado el 2026-10-15): secciones con introducción, fuentes, compartir y RSS ================= */
+/* Página de sección (Herencias, PyMES): la introducción en la columna de lectura y, debajo, sus textos */
+.sec-intro{padding-top:clamp(48px,6vw,88px)}
+.intro-sec{max-width:var(--col-lectura)}
+.intro-enl{margin-top:28px; display:flex; flex-wrap:wrap; gap:4px 36px; max-width:var(--col-lectura)}
+.legal-sec .nota-legal{margin-top:40px}
+/* Índice de Perspectivas: las secciones, como dos tarjetas de texto con filo */
+.secciones-per > li{display:grid}
+.sec-tarjeta{display:grid; align-content:start; gap:8px; padding-top:20px; border-top:3px solid var(--accent); text-decoration:none; color:var(--ink)}
+.sec-tarjeta p{font-size:var(--t-tarjeta); line-height:1.55; color:var(--muted); max-width:46ch}
+.sec-tarjeta:hover .t-tarjeta,.sec-tarjeta:focus-visible .t-tarjeta{color:var(--accent)}
+/* Fuentes de un texto: después del cuerpo, en letra menor; no entran al índice «En este texto» */
+.fuentes{margin-top:56px; padding-top:20px; border-top:1px solid var(--regla); max-width:var(--col-lectura); font-size:15px; line-height:1.55; color:var(--muted)}
+.fuentes-t{font-family:var(--font-body); font-weight:600; font-size:var(--t-rotulo-s); line-height:1.35; letter-spacing:.1em; text-transform:uppercase; color:var(--ink)}
+.fuentes ol{margin:14px 0 0; padding-left:1.4em; display:grid; gap:8px}
+.fuentes li{padding-left:.2em; overflow-wrap:anywhere}
+.fuentes a{color:var(--ink); text-decoration:underline; text-decoration-color:var(--accent); text-underline-offset:.2em}
+.fuentes a:hover{color:var(--accent)}
+.fuentes .pdv-f{margin-top:20px; font-family:var(--font-body); font-weight:600; font-size:15px; color:var(--ink)}
+/* Compartir: la hoja de compartir del teléfono o copiar el enlace (sin JS no aparece) */
+.compartir-fila{margin-top:40px; display:flex; flex-wrap:wrap; align-items:center; gap:8px 18px; max-width:var(--col-lectura)}
+.compartir{display:inline-flex; align-items:center; gap:10px; min-height:44px; padding:0 18px 0 14px; border:1px solid var(--regla); border-radius:2px; background:transparent;
+  font:600 15px/1 var(--font-body); color:var(--ink); cursor:pointer; transition:border-color .2s, color .2s}
+.compartir:hover{border-color:var(--ink)}
+.compartir:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
+.ico-comp{width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round}
+.compartir-ok{font-size:15px; color:var(--muted); margin:0}
+/* PyMES en el inicio: la nota de cada cifra y la fecha de actualización */
+.cifras .flecha{justify-self:start; margin-top:-4px; font-size:16px}
+.cifras-al{margin-top:28px; font-family:var(--font-display); font-style:italic; font-size:var(--t-nota); line-height:1.45; color:var(--muted)}
+.sec .sec-cont > .cifras-al{margin-top:28px}
+/* Nuestro punto de vista (Nosotros): cada tema en la misma secuencia, rótulo → postura → Lo que vemos → Lo que proponemos → enlaces */
+.pdv-txt > .pdv + .pdv{margin-top:var(--e-interna); padding-top:clamp(28px,3vw,40px); border-top:1px solid var(--regla)}
+.pdv > * + *{margin-top:var(--e-parrafo)}
+.pdv > .rotulo{margin-bottom:0}
+.pdv > h2{margin-top:10px}
+.pdv .pdv-p{margin-top:32px; font-family:var(--font-body); font-weight:600; font-size:var(--t-rotulo-s); line-height:1.35; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+.pdv .pdv-p + p{margin-top:10px}
+.pdv .pdv-enl{display:flex; flex-wrap:wrap; gap:0 32px; margin-top:20px; font-family:var(--font-body)}
+.pdv-enl .flecha{font-size:16px}
+/* Nuestra historia → Nuestro punto de vista */
+.nos-sigue{margin-top:56px; padding-top:18px; border-top:1px solid var(--regla); max-width:var(--col-lectura); display:grid; gap:4px}
+.nos-sigue + .mostramos{margin-top:48px}
+/* Menús con más grupos: aire entre grupos; Nosotros en tres columnas cuando hay lugar */
+.panel-cols{row-gap:30px}
+/* La tarjeta destacada y las de «Sigue leyendo» llevan su fecha, como las filas */
+.art-dest .art-txt > .meta,.tarjeta .art-txt > .meta{margin-top:14px}
+
+/* ================= Ajustes de la revisión de diseño (2026-10-16) ================= */
+/* Sin el cierre oscuro, la última sección de una página guarda su aire antes del pie */
+main > .lectura:last-child,main > .sec:last-child{padding-bottom:var(--sec)}
+/* Metadatos en teléfono: uno debajo de otro, sin el «·» al empezar renglón */
+@media (max-width:639px){
+  .fila-c .meta,.art-dest .meta,.tarjeta .meta,.mos .meta{flex-direction:column; align-items:flex-start; gap:4px}
+  .fila-c .meta > * + *::before,.art-dest .meta > * + *::before,.tarjeta .meta > * + *::before,.mos .meta > * + *::before{content:none}
+}
+/* Fuentes: números sin el hueco de las cifras tabulares */
+.fuentes li::marker{font-variant-numeric:proportional-nums}
+/* En los ámbitos, el cierre mide lo mismo que su columna */
+.lectura.ambito .mostramos{max-width:var(--col-ambito)}
+/* Los enlaces con flecha no se subrayan dentro de un texto */
+.prosa .flecha{text-decoration:none}
+
+/* Voz expositiva (2026-10-16): cifras dentro del texto de un ámbito, firma de Perspectivas y enlaces del bloque Nosotros del inicio */
+.cifras.en-texto{gap:32px var(--e-tarjeta-x)}
+@media (min-width:768px){ .cifras.en-texto{grid-template-columns:repeat(3,minmax(0,1fr))} }
+.cifras.en-texto .cifra-n{font-size:clamp(40px,3.4vw,52px)}
+.cifras.en-texto .cifra-t{font-size:16px; line-height:1.5}
+.cifras.en-texto + .texto{margin-top:40px}
+.sub-cont > .texto + .senales-dueno{margin-top:24px}
+.firma-pub{margin-top:40px; padding-top:18px; border-top:1px solid var(--regla); max-width:var(--col-lectura); font-family:var(--font-display); font-style:italic; font-size:var(--t-nota); line-height:1.5; color:var(--muted)}
+.firma-pub a{color:var(--ink); text-decoration:underline; text-decoration-color:var(--accent); text-underline-offset:.2em}
+.firma-pub a:hover{color:var(--accent)}
+.fuentes + .nos-sigue,.nota-legal + .nos-sigue{margin-top:40px}
+.origen-enl{margin-top:28px; display:flex; flex-wrap:wrap; gap:4px 36px}
+.origen-t .origen-enl .flecha{margin-top:0}
+
+/* — Pliego (2026-10-16): textos largos a dos tiempos, sin índice lateral ni columna única —
+   Cada apartado es una fila: cabecera a la izquierda (número o rótulo, título, cita o imagen) y contenido a la derecha;
+   el texto corrido va a dos columnas desde 900 px. Las imágenes entre apartados van a todo lo ancho. */
+.pliego{padding-top:clamp(56px,6vw,96px)}
+.pl-intro{font-family:var(--font-display); font-size:clamp(19px,.4vw + 17.5px,22px); line-height:1.55; font-variant-numeric:oldstyle-nums proportional-nums}
+/* Párrafos con sangría y sin espacio entre ellos: WebKit lleva el margen de un párrafo a la cabeza de la columna siguiente y la desalinea */
+.pl-intro > p{margin:0; text-wrap:pretty}
+.pl-intro > p + p{text-indent:1.4em}
+.pl-intro > :last-child{margin-bottom:0}
+@media (min-width:720px){ .pl-intro{columns:2; column-gap:clamp(28px,3vw,52px)} }   /* revisión: en tableta también a dos columnas */
+.pl-intro.corto{columns:1; max-width:62ch}   /* una introducción corta no se parte en dos columnas desequilibradas */
+.pl-sec{display:grid; gap:28px; margin-top:var(--e-interna); padding-top:24px; border-top:1px solid var(--regla)}
+.pliego .wrap > .pl-sec:first-child,.pliego .aviso-borrador + .pl-sec,.pl-art > .pl-intro + .pl-sec{margin-top:0}
+.pl-art > .pl-intro + .pl-sec{margin-top:var(--e-interna)}
+.pl-art{display:block}
+@media (min-width:1024px){
+  .pl-sec{grid-template-columns:var(--pl-cols); column-gap:var(--col-gap); align-items:start}
+  .pl-sec.ancho,.pl-sec.ancho-cont{grid-template-columns:minmax(0,1fr)}
+  .pl-cab{position:sticky; top:calc(var(--barra-h,64px) + 32px)}
+  .pl-sec.ancho .pl-cab,.pl-sec.ancho-cont .pl-cab{position:static}
+}
+.pl-cab{display:grid; align-content:start; gap:14px}
+.pl-cab .rotulo{margin:0}
+.pl-n{font-family:var(--font-display); font-size:20px; line-height:1; color:var(--accent); font-variant-numeric:lining-nums}
+.pl-cab h2{font-family:var(--font-display); font-weight:400; font-size:clamp(28px,2.5vw,38px); line-height:1.12; letter-spacing:-.012em; text-wrap:balance; max-width:18ch}
+.pl-sec.ancho h2,.pl-sec.ancho-cont h2{max-width:24ch}
+.pl-cab .cita-destacada{margin-top:18px; font-size:clamp(21px,1.6vw,26px); line-height:1.3}
+.pl-nota{font-family:var(--font-display); font-style:italic; font-size:18px; line-height:1.5; color:var(--muted); max-width:32ch; text-wrap:pretty}
+.pl-cab-img{margin-top:14px}
+/* Revisión de la ronda 6: con el pliego a una columna (menos de 1024 px), la imagen junto al título va a todo lo ancho en 3:2, no como un retrato pegado a la izquierda */
+@media (max-width:1023px){ .pl-cab-img{max-width:none} .pl-cab-img .media{aspect-ratio:3/2} }
+.pl-txt{font-family:var(--font-display); font-size:clamp(18px,.2vw + 17.4px,19.5px); line-height:1.62; font-variant-numeric:oldstyle-nums proportional-nums}
+@media (min-width:720px){ .pl-txt{columns:2; column-gap:clamp(28px,3vw,52px)} }
+.pl-txt > *{margin:0 0 var(--e-parrafo)}
+.pl-txt > p{margin:0}
+.pl-txt > p + p{text-indent:1.4em}
+.pl-txt > p + :not(p){margin-top:var(--e-parrafo)}
+.pl-txt > :last-child{margin-bottom:0}
+.pl-txt p{text-wrap:pretty; hanging-punctuation:first}
+.pl-txt h3{break-after:avoid; font-weight:500; font-size:21px; line-height:1.3}
+.pl-txt ul,.pl-txt ol{padding-left:1.15em}
+.pl-txt li{break-inside:avoid}
+.pl-txt a,.pl-cont .texto a,.pl-lead a,.pdv-dos a,.cifra-f a,.intro-sec a{color:inherit; text-decoration:underline; text-decoration-color:var(--accent); text-decoration-thickness:1px; text-underline-offset:.2em}
+.pl-txt a:hover,.pdv-dos a:hover,.cifra-f a:hover{color:var(--accent)}
+.pl-cont > * + *{margin-top:40px}
+.pl-cont > .cifras + .pl-txt{margin-top:44px}
+.pl-lead{font-family:var(--font-display); font-size:clamp(21px,1.5vw,26px); line-height:1.4; max-width:40ch; text-wrap:pretty}
+.pl-img{margin-top:var(--e-interna)}
+.pl-img + .pl-sec{margin-top:var(--e-interna)}
+.pl-fin{display:grid; margin-top:var(--e-interna)}
+@media (min-width:1024px){ .pl-fin{grid-template-columns:var(--pl-cols); column-gap:var(--col-gap)} }
+.pl-fin-c > :first-child{margin-top:0}
+.pl-fin-c .mostramos{max-width:none}
+.pl-fin-c .nota-legal,.pl-fin-c .compartir-fila,.pl-fin-c .firma-pub,.pl-fin-c .nos-sigue{max-width:none}
+.pl-fin-c .nota-legal + .compartir-fila{margin-top:24px}
+.pl-fin-c .nos-sigue + .mostramos{margin-top:40px}
+/* Ámbitos: «Siguiente ámbito» en su propia franja a todo lo ancho (ya no bajo «Para seguir leyendo», en la columna derecha) */
+.pl-fin.ancho{grid-template-columns:minmax(0,1fr)!important; margin-top:clamp(56px,6vw,80px)}
+.pl-fin.ancho .nota-legal{max-width:var(--col-lectura)}
+.amb-pdv{margin-top:32px}
+/* Capitular dentro de columnas: tres líneas, como en la columna única */
+.pl-txt .capitular::first-letter,.pl-intro .capitular::first-letter{color:var(--accent)}
+
+/* Rejillas del pliego (convicciones, valores, misión y visión, Lo que vemos / Cómo lo abordamos) */
+.rejilla{list-style:none; margin:0; padding:0; display:grid; gap:40px var(--e-tarjeta-x)}
+@media (min-width:700px){ .rejilla.dos{grid-template-columns:repeat(2,minmax(0,1fr))} .rejilla.tres{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (min-width:1024px){ .rejilla.tres{grid-template-columns:repeat(3,minmax(0,1fr))} }
+.rejilla > *{padding-top:18px; border-top:1px solid var(--regla)}
+.rejilla h3{font-weight:500; font-size:var(--t-h3-s); line-height:1.3}
+.rejilla p{margin-top:10px; font-size:var(--t-tarjeta); line-height:1.55; color:var(--muted); text-wrap:pretty}
+.rejilla.numerada{counter-reset:conv}
+.rejilla.numerada > li{counter-increment:conv}
+.rejilla.numerada > li::before{content:counter(conv, decimal-leading-zero); display:block; margin-bottom:14px; font-family:var(--font-display); font-weight:300; font-size:44px; line-height:1; color:var(--accent)}
+.pl-cont .pl-lead + .rejilla{margin-top:36px}
+.mision > div{border-top:2px solid var(--ink)}
+.mision .rotulo-t{color:var(--accent)}
+.mv-t{margin-top:12px!important; font-family:var(--font-display); font-size:clamp(24px,2vw,30px)!important; line-height:1.25!important; color:var(--ink)!important}
+.pdv-dos > div{border-top:0; padding-top:0}
+.pdv-dos .pdv-p{font-family:var(--font-body); font-weight:600; font-size:var(--t-rotulo-s); letter-spacing:.1em; text-transform:uppercase; color:var(--accent)}
+.pdv-dos p{font-family:var(--font-display); font-size:18.5px; line-height:1.6; color:var(--ink)}
+.pdv-enl{display:flex; flex-wrap:wrap; gap:4px 36px}
+
+/* Páginas de ámbito, Cómo trabajamos y secciones dentro del pliego */
+.pliego .senales-dueno li{font-size:clamp(20px,1.2vw + 13px,24px)}
+.pasos.dos{grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+@media (min-width:700px){ .pasos.dos{grid-template-columns:repeat(2,minmax(0,1fr))} }
+.pliego .compromisos{display:grid; gap:0 var(--e-tarjeta-x)}
+@media (min-width:700px){ .pliego .compromisos{grid-template-columns:repeat(2,minmax(0,1fr))} }
+.reticula.tres-t{grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+@media (min-width:1024px){ .reticula.tres-t{grid-template-columns:repeat(3,minmax(0,1fr))} }
+.sec-tarjeta .media{margin-bottom:var(--e-img)}
+.despues > .media{margin-bottom:28px}
+.pliego .compromisos{max-width:none}
+
+/* Siguiente (2026-10-16): la secuencia de Nosotros y de Ámbitos termina en un enlace a la página que sigue, no en un botón */
+.siguiente{margin-top:40px; padding-top:18px; border-top:2px solid var(--ink)}
+.pl-fin-c > .siguiente:first-child{margin-top:0}
+.siguiente .rotulo-t{color:var(--accent)}
+.sig-a{display:grid; gap:8px; margin-top:12px; text-decoration:none; color:var(--ink)}
+.sig-t{font-family:var(--font-display); font-weight:400; font-size:clamp(30px,3vw,44px); line-height:1.1; letter-spacing:-.012em}
+.sig-d{font-size:var(--t-tarjeta); line-height:1.55; color:var(--muted); max-width:52ch}
+.sig-a:hover .sig-t,.sig-a:focus-visible .sig-t{color:var(--accent)}
+.sig-a:hover .ch{transform:translateX(4px)}
+.nota-legal + .siguiente,.nos-sigue + .siguiente{margin-top:48px}
+
+/* Nosotros (2026-10-19): las cuatro páginas comparten pestañas arriba y la misma cabecera; sustituyen a las migas visibles */
+.subnav{border-bottom:1px solid var(--regla); background:var(--paper)}
+.subnav ul{list-style:none; margin:0; padding:0; display:flex; gap:clamp(20px,3vw,40px); overflow-x:auto; scrollbar-width:none; -webkit-overflow-scrolling:touch}
+.subnav ul::-webkit-scrollbar{display:none}
+.subnav a{display:flex; align-items:center; min-height:56px; white-space:nowrap; font:600 var(--t-rotulo-s)/1 var(--font-body); letter-spacing:.1em; text-transform:uppercase;
+  color:var(--muted); text-decoration:none; box-shadow:inset 0 -2px 0 transparent; transition:color .2s, box-shadow .2s}
+.subnav a:hover{color:var(--ink)}
+.subnav a[aria-current="page"]{color:var(--ink); box-shadow:inset 0 -2px 0 var(--accent)}
+.cab-nos > .wrap{padding-top:clamp(48px,6vw,96px)}
+.cab-nos h1{font-size:var(--t-h1-art); line-height:1.05; max-width:20ch}
+
+/* Perspectivas sin filtro (2026-10-19): lo más reciente y, debajo, bloques por sección y por tema */
+.portada-per{display:grid; gap:var(--e-tarjeta-y) var(--col-gap)}
+@media (min-width:900px){ .portada-per{grid-template-columns:minmax(0,8fr) minmax(0,4fr); align-items:start}
+  .portada-per.sola{grid-template-columns:minmax(0,var(--col-ambito))} }
+.bloques{display:grid; gap:64px var(--e-tarjeta-x)}
+@media (min-width:768px){ .bloques.dos,.bloques.tres{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (min-width:1100px){ .bloques.tres{grid-template-columns:repeat(3,minmax(0,1fr))} }
+.bloque-cat{display:grid; align-content:start; padding-top:20px; border-top:2px solid var(--ink)}
+.bloque-cat.grande{border-top-color:var(--accent)}
+.bloque-cab{display:grid; text-decoration:none; color:var(--ink)}
+.bloque-cab .media{margin-bottom:var(--e-img)}
+.bloque-cab .rotulo-t{color:var(--accent)}
+.bloque-cat.grande .t-tarjeta{font-size:clamp(28px,2.6vw,38px); letter-spacing:-.012em}
+a.bloque-cab:hover .t-tarjeta,a.bloque-cab:focus-visible .t-tarjeta{color:var(--accent)}
+a.bloque-cab:hover .ch{transform:translateX(4px)}
+.bloque-d{margin-top:10px; font-size:var(--t-tarjeta); line-height:1.55; color:var(--muted); text-wrap:pretty}
+.bloque-l{list-style:none; margin:22px 0 0; padding:0; display:grid}
+.bloque-l li{border-top:1px solid var(--regla)}
+.bloque-l a{display:grid; gap:8px; padding:16px 0; text-decoration:none; color:var(--ink)}
+.bloque-l .bl-t{font-family:var(--font-display); font-size:clamp(19px,1.45vw,21px); line-height:1.3}
+.bloque-l a:hover .bl-t,.bloque-l a:focus-visible .bl-t{color:var(--accent)}
+
+/* Inicio: los ámbitos en franja (el mosaico de textos salió en la ronda 7: ver .portada-ini) */
+.amb-franja{list-style:none; margin:0; padding:0; display:grid; gap:0 var(--e-tarjeta-x)}
+@media (min-width:640px) and (max-width:1099px){
+  .amb-c{grid-template-columns:minmax(0,1fr) minmax(0,2fr); column-gap:var(--e-tarjeta-x); padding-bottom:28px}
+  .amb-c .rotulo-t{grid-row:1 / span 2; padding-top:6px}
+}
+@media (min-width:1100px){ .amb-franja{grid-template-columns:repeat(5,minmax(0,1fr))}
+  /* un nombre de dos renglones no empuja su frase: los cinco rótulos ocupan el mismo alto y las frases empiezan en la misma línea */
+  .amb-c .rotulo-t{min-height:2.7em; display:flex; align-items:flex-end} }
+.amb-franja li{border-top:2px solid var(--ink)}
+.amb-c{display:grid; align-content:start; gap:12px; height:100%; padding:20px 0 36px; text-decoration:none; color:var(--ink)}
+.amb-c .rotulo-t{color:var(--accent)}
+.amb-f{font-family:var(--font-display); font-size:clamp(22px,1.7vw,26px); line-height:1.2; letter-spacing:-.006em; text-wrap:balance}
+.amb-l{font-size:15px; line-height:1.55; color:var(--muted); text-wrap:pretty}
+.amb-c:hover .amb-f,.amb-c:focus-visible .amb-f{color:var(--accent)}
+.amb-c:hover .ch{transform:translateX(4px)}
+
+/* Imágenes de artículo con tamaños distintos (2026-10-19): una banda 3:2 o 4:5 se queda al ancho de la columna del texto, no a todo lo ancho */
+@media (min-width:1024px){ .pl-img.angosta{display:grid; grid-template-columns:var(--pl-cols); column-gap:var(--col-gap)} .pl-img.angosta > .media{grid-column:2} }
+.foto-cab.por-3x2{max-width:calc(var(--max) * .78)}
+img.media{background:var(--hueco-fondo)}
+
+/* ================= Ronda 6 (2026-10-19): menos rótulos y metadatos, imágenes de tamaños distintos, cabecera partida ================= */
+/* Cabecera partida: el texto a la izquierda y la imagen 4:5 a la derecha (ámbitos, secciones, Nosotros, notas) */
+.cab-txt{min-width:0}
+.cab-lado .cab-img{margin-top:clamp(32px,5vw,48px); max-width:480px}
+/* Revisión: abajo de 900 px la rejilla se apila; la imagen va a todo lo ancho en 3:2 en lugar de un retrato con media fila vacía */
+@media (max-width:899px){ .cab-lado .cab-img{max-width:none} .cab-lado .cab-img .media{aspect-ratio:3/2} }
+@media (min-width:900px){
+  .cab-lado > .wrap{display:grid; grid-template-columns:minmax(0,7fr) minmax(0,5fr); column-gap:var(--col-gap); align-items:stretch}
+  /* las migas arriba, a la altura de la imagen; título y entradilla abajo, sobre la misma base */
+  .cab-lado .cab-txt{display:flex; flex-direction:column; justify-content:flex-end}
+  .cab-lado .cab-txt > .migas{margin-bottom:auto; padding-bottom:clamp(40px,5.5vw,80px)}
+  .cab-lado .cab-img{align-self:end}
+  .cab-lado .cab-img{margin-top:0; max-width:none}
+  .cab-lado h1{max-width:16ch}
+  .cab-art.cab-lado h1{max-width:18ch}
+  /* Revisión: con un título corto (o sin migas, en Nosotros) el texto bajado a la base del 4:5 dejaba la parte de arriba vacía.
+     El texto sube con las migas y el 4:5 se queda, más angosto si el título es de un renglón */
+  .cab-lado.h1-corto > .wrap{grid-template-columns:minmax(0,8fr) minmax(0,4fr)}
+  /* con un título de un renglón, el 4:5 (370×463) seguía dejando unos 300 px de blanco bajo la entradilla: la imagen pasa a 4:3 */
+  .cab-lado.h1-corto .cab-img .media{aspect-ratio:4/3}
+  .cab-lado.h1-corto .cab-txt,.cab-lado.cab-nos .cab-txt{justify-content:flex-start}
+  .cab-lado.h1-corto .cab-txt > .migas{margin-bottom:0}
+  .cab-lado.h1-corto .cab-img,.cab-lado.cab-nos .cab-img{align-self:start}
+}
+/* Tarjetas: rótulo y título; entradilla y meta sólo en los destacados */
+.art-txt{display:grid; align-content:start}
+@media (min-width:900px){
+  .art-dest.horizontal{grid-template-columns:minmax(0,7fr) minmax(0,5fr); column-gap:var(--col-gap); align-items:center}
+  .art-dest.horizontal .media{margin-bottom:0}
+}
+/* Perspectivas: cuatro filas compactas junto al destacado (miniatura 4:3 de 96 px) */
+.portada-lado .fila-c{grid-template-columns:96px minmax(0,1fr); gap:18px; padding-block:20px}
+.portada-lado > li:first-child .fila-c{padding-top:0}
+.portada-lado .mini{width:96px; aspect-ratio:4/3}
+.portada-lado .t-fila{font-size:19px; line-height:1.3}
+/* «Por tema»: índice tipográfico sin fotografías */
+.indice-temas{display:grid; gap:48px var(--e-tarjeta-x)}
+@media (min-width:700px){ .indice-temas{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (min-width:1024px){ .indice-temas{grid-template-columns:repeat(3,minmax(0,1fr))} }
+.bl-n{font-family:var(--font-display); font-weight:400; font-size:clamp(26px,2.2vw,32px); line-height:1.15; letter-spacing:-.01em}
+.indice-t .bloque-d{margin-top:8px}
+.indice-t .bloque-l{margin-top:16px}
+/* Herencias: lista numerada en orden de lectura */
+.orden{list-style:none; margin:0; padding:0; display:grid}
+.orden-a{display:grid; gap:20px; padding-block:28px; border-top:1px solid var(--regla); text-decoration:none; color:var(--ink)}
+.orden > li:first-child .orden-a{padding-top:0; border-top:0}
+@media (min-width:700px){ .orden-a{grid-template-columns:minmax(0,4fr) minmax(0,8fr); column-gap:var(--col-gap); align-items:start} }
+.orden-t{display:grid; gap:10px; align-content:start}
+.orden-t p{font-size:var(--t-tarjeta); line-height:1.55; color:var(--muted); max-width:56ch; text-wrap:pretty}
+.orden-a:hover .t-tarjeta,.orden-a:focus-visible .t-tarjeta{color:var(--accent)}
+.orden-a:hover .ch{transform:translateX(4px)}
+/* /ambitos/: dos tarjetas grandes arriba y tres abajo */
+@media (min-width:900px){
+  .reticula.momentos{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .reticula.momentos > li:nth-child(-n+2){grid-column:span 3}
+  .reticula.momentos > li:nth-child(n+3){grid-column:span 2}
+  .reticula.momentos > li:nth-child(n+3) .media{aspect-ratio:4/3}
+}
+/* Apartados cortos: no se parten en dos columnas (la fila sigue a dos tiempos) */
+.pl-sec.corto .pl-txt{columns:1; max-width:62ch}
+/* /ambitos/ en tableta: dos columnas y la quinta tarjeta, sola, a todo lo ancho con la imagen al lado */
+@media (min-width:640px) and (max-width:899px){
+  .reticula.momentos{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .reticula.momentos > li:last-child:nth-child(odd){grid-column:1 / -1}
+  .reticula.momentos > li:last-child:nth-child(odd) .tarjeta{grid-template-columns:minmax(0,1fr) minmax(0,1fr); grid-template-rows:1fr auto auto auto 1fr; column-gap:var(--e-tarjeta-x)}
+  .reticula.momentos > li:last-child:nth-child(odd) .tarjeta > .media{grid-column:1; grid-row:1 / -1; margin-bottom:0}
+  .reticula.momentos > li:last-child:nth-child(odd) .tarjeta > :not(.media){grid-column:2}
+  .reticula.momentos > li:last-child:nth-child(odd) .tarjeta > .rotulo-t{grid-row:2}
+  .reticula.momentos > li:last-child:nth-child(odd) .tarjeta > .t-tarjeta{grid-row:3}
+  .reticula.momentos > li:last-child:nth-child(odd) .tarjeta > p{grid-row:4}
+}
+/* «Por tema»: los ámbitos en su propia rejilla de cuatro */
+@media (min-width:1024px){ .indice-temas.cuatro{grid-template-columns:repeat(4,minmax(0,1fr))} }
+.sec .sec-cont > .indice-temas + .indice-temas{margin-top:64px}
+/* Secciones de Perspectivas: la descripción ocupa dos renglones en las dos, así las listas de títulos arrancan a la misma altura */
+@media (min-width:768px){ .bloques .bloque-d{min-height:3.1em} }
+/* 404: sin migas, la cabecera guarda el mismo aire que las demás */
+.cab.sin-migas > .wrap{padding-top:clamp(64px,8vw,128px)}
+/* Cajón: la pestaña de la sección actual, subrayada en tezontle */
+.niv-b.en-seccion .niv-txt{text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:7px; text-decoration-color:var(--accent)}
+/* Panel Nosotros: el aviso de privacidad va al final del DOM, pero se ve bajo la descripción */
+.panel-nos > .panel-b{grid-row:1 / span 2}
+.panel-nos > .panel-p{grid-column:1; grid-row:2; align-self:start}
+/* Menús: Ámbitos y Nosotros sin destacado, su lista a lo ancho; el aviso de privacidad como enlace pequeño */
+#panel-ambitos .panel-b,#panel-nosotros .panel-b{grid-column:2 / -1}
+.panel-p{margin-top:18px; font-size:14px; line-height:1.4}
+.panel-p a,.niv-p a{color:var(--muted); text-underline-offset:.2em}
+.panel-p a:hover,.niv-p a:hover{color:var(--ink)}
+.niv-p{margin-top:24px; font-size:15px}
+.pie-col .pie-h{margin-top:14px}
+/* Enlace de cada sección: a la derecha del título; en teléfono, al final del contenido */
+.sec-pie{display:none}
+/* Pestañas de Nosotros: el borde derecho se desvanece cuando no caben todas */
+@media (max-width:639px){
+  .subnav ul{-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent); mask-image:linear-gradient(90deg,#000 85%,transparent)}
+  .subnav ul.izq{-webkit-mask-image:linear-gradient(90deg,transparent,#000 32px,#000 85%,transparent); mask-image:linear-gradient(90deg,transparent,#000 32px,#000 85%,transparent)}
+  .subnav ul::after{content:""; flex:0 0 40px}
+}
+/* Teléfono */
+@media (max-width:599px){
+  .cab.centrada{text-align:left}
+  .cab.centrada .migas ol,.cab.centrada .meta{justify-content:flex-start}
+  .cab.centrada h1,.cab.centrada .entradilla{margin-inline:0}
+  .cab.centrada .meta{flex-direction:column; align-items:flex-start; gap:4px}
+  .cab.centrada .meta > * + *::before{content:none}
+  .pl-img .media,.foto-cab .media,.pl-cab-img .media,.cab-lado .cab-img .media{aspect-ratio:3/2}
+  .pie-cols{grid-template-columns:1fr 1fr; gap:28px 20px}
+  .cab-contacto .cab-img{display:none}
+  .sec-cab > .flecha{display:none}
+  .sec-pie{display:block; margin-top:20px}
+}
+/* La última pieza de una página (pliego de un ámbito, de una sección o de Nosotros) guarda su aire antes del pie */
+main > .pliego:last-child{padding-bottom:var(--sec)}
+/* «Por tema», rejilla de cuatro: un nombre de dos renglones no baja su descripción respecto a las vecinas */
+@media (min-width:1024px){ .indice-temas.cuatro .bl-n{min-height:2.3em} }
+
+/* Ronda 7 (2026-10-21, referencia: McKinsey, Goldman Sachs y J.P. Morgan) */
+/* Inicio: el texto más reciente grande y, a la derecha, «lo último» en renglones de texto sin fotos */
+.portada-ini{display:grid; gap:var(--e-tarjeta-y) var(--col-gap)}
+@media (min-width:900px){ .portada-ini{grid-template-columns:minmax(0,8fr) minmax(0,4fr); align-items:start}
+  .portada-ini.sola{grid-template-columns:minmax(0,var(--col-ambito))} }
+.renglones{list-style:none; margin:0; padding:0; display:grid; border-top:2px solid var(--ink)}
+.renglones > li + li{border-top:1px solid var(--regla)}
+.renglon{display:grid; gap:8px; padding-block:20px; text-decoration:none; color:var(--ink)}
+.renglon .rotulo-t{color:var(--accent)}
+.renglon .t-fila{margin:0}
+.renglon .meta{margin-top:2px}
+.renglon:hover .t-fila,.renglon:focus-visible .t-fila{color:var(--accent)}
+.renglon:hover .ch{transform:translateX(4px)}
+/* Para seguir leyendo: tres tarjetas */
+.reticula.tres{grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+@media (min-width:900px){ .reticula.tres{grid-template-columns:repeat(3,minmax(0,1fr))} }
+.reticula.tres .t-tarjeta{font-size:clamp(20px,1.6vw,24px); line-height:1.22}
+/* Menú de Perspectivas: cada sección con su línea */
+.panel-cols a:has(.pf){flex-direction:column; gap:4px}
+.panel-cols .pn{font-family:var(--font-body); font-weight:600; font-size:16px; line-height:1.3}
+.panel-cols .pf{font-family:var(--font-display); font-style:italic; font-weight:400; font-size:15px; line-height:1.35; color:var(--muted)}
+.panel-cols a:hover .pn,.panel-cols a[aria-current="page"] .pn{color:var(--accent)}
+.panel-cols a:hover .pf{color:var(--muted)}
+/* Pie: el aviso de privacidad en la franja legal */
+.pie-l a{color:inherit; text-decoration:none}
+.pie-l a:hover{color:var(--ink); text-decoration:underline; text-underline-offset:.25em}
+
+/* ================= Ronda 8 (2026-10-22): formatos de imagen — pantalla, cine, media pantalla y recuadro ================= */
+/* De orilla a orilla: salen de la caja (.wrap) sin barra horizontal (html y body llevan overflow-x:clip) */
+.sangre{width:100vw; margin-inline:calc(50% - 50vw)}
+.sangre .media,.sangre .foto{width:100%}
+.pl-img.cine .media,.foto-cab.cine .media,.cine-ini .media{aspect-ratio:2.39/1}
+.pl-img.pantalla .media,.foto-cab.pantalla .media{aspect-ratio:auto; height:min(88svh,66vw); min-height:300px}
+.foto-cab.sangre{margin-top:clamp(48px,6vw,80px)}
+@media (max-width:719px){ .pl-img.cine .media,.foto-cab.cine .media,.cine-ini .media{aspect-ratio:16/10} }
+/* Recuadro: la imagen enmarcada sobre niebla, como una lámina */
+.recuadro-m{background:var(--niebla); padding:clamp(24px,6.5vw,104px) clamp(16px,10vw,168px)}
+.recuadro-m .media,.recuadro-m .foto{max-width:860px; margin-inline:auto}
+.recuadro-m .media[style*="4/5"]{max-width:500px}
+.foto-cab.recuadro{max-width:calc(var(--max) + 2 * var(--gutter))}
+/* Media pantalla dentro del pliego: la imagen fija en una mitad, el apartado en la otra, sobre niebla */
+.pl-media{margin-top:var(--e-interna)}
+.pl-media + .pl-sec,.pl-media + .pl-img,.pl-img + .pl-media{margin-top:var(--e-interna)}
+.pl-media .pl-sec{margin-top:0}
+.pl-media-img .media{aspect-ratio:3/2}
+.pl-media-txt{padding-top:28px}
+@media (min-width:1024px){
+  .pl-media{width:100vw; margin-inline:calc(50% - 50vw); display:grid; grid-template-columns:50vw minmax(0,1fr); background:var(--niebla)}
+  .pl-media.der{grid-template-columns:minmax(0,1fr) 50vw}
+  .pl-media.der .pl-media-img{order:2}
+  .pl-media-img .media{position:sticky; top:var(--barra-h,64px); aspect-ratio:auto; height:calc(100svh - var(--barra-h,64px)); max-height:980px}
+  .pl-media-txt{align-self:center; padding:clamp(64px,7vw,112px) max(var(--gutter),calc((100vw - var(--max)) / 2)) clamp(64px,7vw,112px) var(--col-gap)}
+  .pl-media.der .pl-media-txt{padding-left:max(var(--gutter),calc((100vw - var(--max)) / 2)); padding-right:var(--col-gap)}
+  .pl-media .pl-sec{grid-template-columns:minmax(0,1fr); border-top:0; padding-top:0; row-gap:32px}
+  .pl-media .pl-cab{position:static}
+  .pl-media .pl-txt{columns:1; max-width:60ch}
+}
+/* Cabecera a media pantalla: el texto a la izquierda, en la caja; la imagen en la mitad derecha hasta la orilla y desde la barra */
+@media (min-width:900px){
+  .cab.cab-media > .wrap{max-width:none; padding:0 0 0 max(var(--gutter),calc((100vw - var(--max)) / 2)); grid-template-columns:minmax(0,1fr) 50vw; column-gap:var(--col-gap)}
+  .cab.cab-media .cab-txt{padding-block:clamp(40px,4vw,56px) clamp(48px,5vw,80px); justify-content:flex-end}
+  .cab.cab-media .cab-txt > .migas{margin-bottom:auto}
+  .cab.cab-media .cab-img{align-self:stretch; max-width:none}
+  .cab.cab-media .cab-img .media{aspect-ratio:auto; height:100%; min-height:min(74svh,760px)}
+}
+/* Inicio: banda «cine» y el bloque de Nosotros a media pantalla */
+.cine-ini{margin-top:var(--sec)}
+.origen-media{margin-top:var(--sec)}
+.origen-media > .media{aspect-ratio:3/2}
+.origen-media .origen-t{padding:40px var(--gutter) 0}
+@media (min-width:900px){
+  .origen-media{display:grid; grid-template-columns:50vw minmax(0,1fr); align-items:stretch; background:var(--niebla)}
+  .origen-media > .media{aspect-ratio:auto; height:100%; min-height:min(72svh,720px)}
+  .origen-media .origen-t{align-self:center; padding:clamp(56px,6vw,96px) max(var(--gutter),calc((100vw - var(--max)) / 2)) clamp(56px,6vw,96px) var(--col-gap)}
+}
+
+/* Gráficas de barras en los artículos (2026-10-22, orden del dueño: comparaciones con gráficas; los porcentajes van chicos, nunca como cifra destacada).
+   Cruzan las dos columnas del texto. --max en la figura fija la escala (la barra de ese valor mide 85% de la pista); --v en cada barra. */
+.grafica{column-span:all; break-inside:avoid; margin:40px 0; padding:22px 0 18px; border-top:1px solid var(--ink); border-bottom:1px solid var(--regla);
+  font-family:var(--font-body); font-variant-numeric:lining-nums; --max:100}
+.pl-txt > .grafica{margin:var(--e-parrafo) 0 calc(var(--e-parrafo) * 1.6)}
+.grafica-t{margin:0; font-weight:600; font-size:16px; line-height:1.35; text-wrap:balance}
+.grafica-s{margin:4px 0 0; font-size:14px; line-height:1.4; color:var(--muted)}
+.grafica-ley{display:flex; flex-wrap:wrap; gap:6px 20px; margin:14px 0 0; font-size:13px; color:var(--muted)}
+.grafica-ley i{display:inline-block; width:12px; height:12px; margin-right:6px; vertical-align:-1px; background:var(--ink)}
+.grafica-ley i.m2{background:var(--accent)}
+.barras{list-style:none; margin:18px 0 0; padding:0 !important; display:grid; gap:12px}
+.barras li{display:grid; grid-template-columns:minmax(0,13rem) minmax(0,1fr); gap:4px 16px; align-items:center}
+.b-et{font-size:14px; line-height:1.3}
+.b-ser{display:grid; gap:4px}
+.b-fila{display:flex; align-items:center; gap:8px; min-height:14px}
+.b-barra{flex:0 0 auto; height:12px; min-width:2px; width:calc(var(--v) / var(--max) * 85%); background:var(--ink)}
+.b-barra.b2{background:var(--accent)}
+.b-v{font-family:var(--font-data); font-variant-numeric:tabular-nums; font-size:12.5px; line-height:1; color:var(--muted); white-space:nowrap}
+.grafica-f{margin:16px 0 0; font-family:var(--font-display); font-style:italic; font-size:var(--t-nota); line-height:1.45; color:var(--muted)}
+.grafica-f a{color:inherit; text-decoration:underline; text-decoration-color:var(--accent); text-underline-offset:.2em}
+@media (max-width:599px){ .barras li{grid-template-columns:minmax(0,1fr)} }
+
+/* ================= Horizonte 2030 (2026-10-22): prospectiva. En el inicio, la banda «cine» es la portada de la sección ================= */
+.hz-ini{margin-top:var(--sec)}
+.hz-banda{position:relative; isolation:isolate}
+.hz-banda .media{aspect-ratio:2.39/1; min-height:420px; object-position:50% 80%}   /* las torres van en el tercio inferior de la foto */
+.hz-cartela{position:absolute; inset:0; display:flex; align-items:flex-end; padding-bottom:clamp(32px,4.5vw,64px);
+  background:linear-gradient(to top, rgba(11,16,18,.82) 0%, rgba(11,16,18,.45) 45%, rgba(11,16,18,0) 80%)}
+.hz-cartela .wrap{width:100%}
+.hz-cartela .rotulo{color:var(--niebla)}
+.hz-cartela .h2{color:var(--blanco); max-width:16ch; font-size:clamp(40px,5vw,72px); font-weight:300; line-height:1.04}
+.hz-l{margin:20px 0 0; max-width:44ch; font-family:var(--font-display); font-size:var(--t-entradilla); line-height:1.4; color:color-mix(in srgb, var(--blanco) 88%, transparent); text-wrap:pretty}
+.hz-ini .portada-ini{margin-top:var(--e-titulo)}
+.hz-pie{margin:clamp(36px,4vw,48px) 0 0; padding-top:20px; border-top:1px solid var(--regla)}
+@media (max-width:719px){ .hz-banda .media{aspect-ratio:4/5; min-height:0} }
+/* Página de la sección: el texto principal horizontal y, debajo, los demás en rejilla */
+.tras-dest{margin-top:var(--e-tarjeta-y)}
+img.media[src$="centro-datos-pasillo-servidores-penumbra.jpg"]{object-position:50% 100%}   /* el recorte deja fuera el reflejo de la lente (arriba a la derecha) */
+
+/* ================= Tipografía y espacios (2026-10-23, pedido del dueño: «que los espacios en blanco tengan sentido») =================
+   1. Medida: la columna del título cede espacio (4/8 → 3.5/8.5) y cada columna de texto gana ~25 px (≈ 48 caracteres por renglón).
+   2. Texto corrido a dos columnas con división silábica en español (lang="es-MX") y bandera derecha: el borde deja de dentar sin abrir
+      huecos entre palabras (justificado a ~48 caracteres los abría). Sin viudas ni huérfanas al pie o a la cabeza de columna.
+   3. Ritmo vertical: el espacio entre apartados baja (de hasta 112 a 96 px) y el título queda más cerca de su texto que del apartado anterior.
+   4. La entrada de un artículo arranca en la misma orilla que el texto corrido, no suelta a la izquierda. */
+:root{--pl-cols:minmax(0,3.5fr) minmax(0,8.5fr); --e-interna:clamp(64px,7vw,96px)}
+.pl-txt,.pl-intro{line-height:1.6; orphans:3; widows:3; font-kerning:normal}
+.pl-txt p,.pl-intro p{orphans:3; widows:3}
+@media (min-width:720px){
+  .pl-txt,.pl-intro{hyphens:auto; -webkit-hyphens:auto; hyphenate-limit-chars:8 3 3; -webkit-hyphenate-limit-before:3; -webkit-hyphenate-limit-after:3; text-wrap:pretty}
+  .pl-txt .grafica,.pl-txt .cita-destacada,.pl-txt h3{text-align:left; hyphens:manual; -webkit-hyphens:manual}
+}
+.pl-sec{padding-top:28px}
+.pl-cab{gap:12px}
+.pl-cab h2{font-size:clamp(27px,2.3vw,36px); line-height:1.14}
+@media (max-width:1023px){ .pl-sec{gap:24px} .pl-cab h2{max-width:22ch} }
+@media (min-width:1024px){
+  .pl-art > .pl-intro.corto{margin-left:calc((100% - var(--col-gap)) * 3.5 / 12 + var(--col-gap)); max-width:62ch}
+}

@@ -4,6 +4,15 @@
   var local=!/(^|\.)ollinsoluciones\.com$/.test(location.hostname);
   if(local) raiz.classList.add('local');
 
+  // Portada: la foto entra hasta que está decodificada (así la animación no arranca con la imagen a medias); tope de 1.5 s
+  var portada=document.querySelector('.portada'), fotoP=portada&&portada.querySelector('img');
+  if(fotoP){
+    var muestra=function(){ portada.classList.add('lista'); };
+    var lista=fotoP.complete&&fotoP.naturalWidth?Promise.resolve():new Promise(function(r){ fotoP.addEventListener('load',r,{once:true}); fotoP.addEventListener('error',r,{once:true}); });
+    lista.then(function(){ return fotoP.decode?fotoP.decode().catch(function(){}):null; }).then(muestra);
+    setTimeout(muestra,1500);
+  }
+
   // Alto de la barra: anclas (scroll-padding), paneles, velo y cajón
   var barra=document.querySelector('.barra');
   function medir(){ raiz.style.setProperty('--barra-h', barra.getBoundingClientRect().height+'px'); }
@@ -23,11 +32,16 @@
     if(velo) velo.hidden=true;
     if(devolver) d.b.focus();
   }
+  // Ronda 6: con un panel abierto, si la página se desplaza más de 48 px el panel se cierra (la persona ya siguió leyendo)
+  var y0=0;
+  function alDesplazar(){ if(abierto&&Math.abs(window.scrollY-y0)>48) cierra(false); }
+  window.addEventListener('scroll',alDesplazar,{passive:true});
   function abre(d){
     if(abierto===d) return cierra(true);
     cierra(false);
     abierto=d; d.b.setAttribute('aria-expanded','true'); d.p.classList.add('abierto');
     if(velo) velo.hidden=false;
+    y0=window.scrollY;
     d.p.focus({preventScroll:true});
   }
   desps.forEach(function(d){
@@ -36,6 +50,8 @@
     d.p.addEventListener('click',function(e){ if(e.target.closest('a')) cierra(false); });
     // salir del panel con Tab (o Mayús+Tab) lo cierra sin robar el foco
     d.p.addEventListener('focusout',function(e){ if(abierto===d&&e.relatedTarget&&!d.p.contains(e.relatedTarget)&&e.relatedTarget!==d.b) cierra(false); });
+    // y salir hacia atrás desde su botón (Mayús+Tab más allá de la pestaña) también lo cierra
+    d.b.addEventListener('focusout',function(e){ if(abierto===d&&e.relatedTarget&&!d.p.contains(e.relatedTarget)) cierra(false); });
   });
   if(velo) velo.addEventListener('click',function(){ cierra(false); });
   document.addEventListener('click',function(e){ if(abierto&&!abierto.p.contains(e.target)&&!abierto.b.contains(e.target)) cierra(false); });
@@ -47,15 +63,29 @@
     cajon.hidden=!si; raiz.classList.toggle('cajon-abierto',si);
     btn.setAttribute('aria-expanded',String(si));
     var t=btn.querySelector('.menu-t'); if(t) t.textContent=si?'Cerrar':'Menú';
-    inerte(si);
+    if(!raiz.classList.contains('ventana-abierta')) inerte(si);   // con la ventana del formulario abierta, la página sigue inerte
   }
   if(btn&&cajon){
     btn.addEventListener('click',function(){ cajonAbierto(btn.getAttribute('aria-expanded')!=='true'); });
     cajon.addEventListener('click',function(e){ if(e.target.closest('a')) cajonAbierto(false); });
-    [].forEach.call(cajon.querySelectorAll('.acor-b'),function(b){
-      var l=document.getElementById(b.getAttribute('aria-controls'));
-      b.addEventListener('click',function(){ var si=b.getAttribute('aria-expanded')!=='true'; b.setAttribute('aria-expanded',String(si)); l.hidden=!si; });
+    // Niveles (propuesta, como el menú de McKinsey): en teléfono el nivel ocupa el lugar de la lista y «‹ Volver» regresa;
+    // en tableta el nivel se ve a la derecha de la lista
+    var nivB=[].slice.call(cajon.querySelectorAll('.niv-b')), tableta=window.matchMedia('(min-width:640px)');
+    var cierraNiveles=function(){ nivB.forEach(function(b){ b.setAttribute('aria-expanded','false'); document.getElementById(b.getAttribute('aria-controls')).hidden=true; }); cajon.classList.remove('en-nivel'); };
+    var abreNivel=function(b){
+      cierraNiveles();
+      var n=document.getElementById(b.getAttribute('aria-controls'));
+      b.setAttribute('aria-expanded','true'); n.hidden=false; cajon.classList.add('en-nivel');
+      if(!tableta.matches){ cajon.scrollTop=0; n.focus({preventScroll:true}); }
+    };
+    nivB.forEach(function(b){ b.addEventListener('click',function(){ if(b.getAttribute('aria-expanded')==='true'&&!tableta.matches) cierraNiveles(); else abreNivel(b); }); });
+    [].forEach.call(cajon.querySelectorAll('.niv-volver'),function(v){
+      v.addEventListener('click',function(){ var b=cajon.querySelector('[aria-controls="'+v.closest('.nivel').id+'"]'); cierraNiveles(); b.focus(); });
     });
+    // cada vez que el cajón se abre empieza en la lista (en tableta, con el primer nivel a la derecha)
+    var actual=function(){ var r=location.pathname, id=/^\/(nosotros|como-trabajamos|contacto)\//.test(r)?'niv-nosotros':/^\/perspectivas\//.test(r)?'niv-perspectivas':'niv-ambitos';
+      return cajon.querySelector('.niv-b[aria-controls="'+id+'"]')||nivB[0]; };
+    btn.addEventListener('click',function(){ if(!cajon.hidden){ cierraNiveles(); if(tableta.matches&&nivB.length) abreNivel(actual()); } });
     var ancho=window.matchMedia('(min-width:900px)');
     var alCambiar=function(e){ if(e.matches) cajonAbierto(false); else cierra(false); };
     if(ancho.addEventListener) ancho.addEventListener('change',alCambiar); else ancho.addListener(alCambiar);
@@ -66,6 +96,16 @@
     if(abierto) cierra(true);
     else if(raiz.classList.contains('cajon-abierto')){ cajonAbierto(false); btn.focus(); }
   });
+
+  // Pestañas de Nosotros en teléfono: la pestaña de la página actual queda a la vista, centrada (ronda 6)
+  var tabA=document.querySelector('.subnav a[aria-current="page"]');
+  if(tabA){
+    var tabs=tabA.closest('ul');
+    // con la lista desplazada, el borde izquierdo también se desvanece (sin él, la pestaña anterior se ve cortada)
+    var bordes=function(){ tabs.classList.toggle('izq',tabs.scrollLeft>4); };
+    if(tabs.scrollWidth>tabs.clientWidth) tabs.scrollLeft=tabA.offsetLeft-tabs.offsetLeft-(tabs.clientWidth-tabA.offsetWidth)/2;
+    bordes(); tabs.addEventListener('scroll',bordes,{passive:true});
+  }
 
   // Índice lateral: marca la sección que se está leyendo
   [].forEach.call(document.querySelectorAll('.indice-lateral'),function(indice){
@@ -96,28 +136,17 @@
     pinta();
   }
 
-  // Perspectivas: el filtro funciona sin JS como anclas a los grupos; con JS filtra la lista (también desde el menú: #cat-… y #formato-…)
-  var filtro=document.querySelector('.filtro');
-  if(filtro){
-    var lista=document.querySelector('.persp-lista'), filas=[].slice.call(document.querySelectorAll('#lista-articulos > li'));
-    var botones=[].slice.call(filtro.querySelectorAll('a[data-cat]'));
-    var aplica=function(cat,formato){
-      botones.forEach(function(b){ b.setAttribute('aria-pressed',String(!formato&&b.dataset.cat===cat)); });
-      var todos=!formato&&cat==='todos';
-      if(lista) lista.classList.toggle('filtrada',!todos);
-      filas.forEach(function(li){ li.hidden=!(todos||(formato?li.dataset.formato===formato:li.dataset.cat===cat)); });
-    };
-    botones.forEach(function(b){ b.setAttribute('role','button'); b.addEventListener('click',function(e){ e.preventDefault(); aplica(b.dataset.cat); }); });
-    var desdeHash=function(){
-      var h=decodeURIComponent(location.hash.slice(1)), m;
-      if((m=h.match(/^cat-(.+)$/))) aplica(m[1]);
-      else if((m=h.match(/^formato-(.+)$/))) aplica(null,m[1].replace(/s$/,''));   // #formato-guias → data-formato="guia"
-      else return aplica('todos');
-      var l=document.getElementById('pe1-t'); if(l) l.scrollIntoView();
-    };
-    window.addEventListener('hashchange',desdeHash);
-    desdeHash();
-  }
+  // Compartir un texto: la hoja de compartir del teléfono (WhatsApp, LinkedIn, correo…) o, donde no exista, copiar el enlace. Sin servicios de terceros.
+  [].forEach.call(document.querySelectorAll('.compartir'),function(b){
+    var ok=b.parentNode.querySelector('.compartir-ok'), url=b.getAttribute('data-url'), titulo=b.getAttribute('data-titulo');
+    var copia=navigator.clipboard&&navigator.clipboard.writeText;
+    if(!navigator.share&&!copia) return;
+    b.hidden=false;
+    b.addEventListener('click',function(){
+      if(navigator.share){ navigator.share({title:titulo,url:url}).catch(function(){}); return; }
+      navigator.clipboard.writeText(url).then(function(){ ok.textContent='Enlace copiado.'; },function(){ ok.textContent='No se pudo copiar. El enlace es '+url; });
+    });
+  });
 
   // Analítica: un solo escuchador delegado para lo marcado con data-evento. Sólo manda el nombre del evento y su ubicación;
   // nunca datos del formulario. Sin GA4_ID no existe gtag y no hace nada.
@@ -129,20 +158,78 @@
     if(a) evento(a.dataset.evento,a.dataset.ubicacion);
   });
 
-  // Formulario de Hablemos. Publicado, lo manda la aplicación web de Apps Script (Google Workspace) al correo de la empresa y lleva a /contacto/gracias/.
-  // Sin JS, el formulario se envía directo a la aplicación web, que responde con su propia página de confirmación.
+  // Ventana del inicio: los enlaces a /contacto/ de la página y del pie abren el formulario en un recuadro sobre la página.
+  // Sin JS siguen yendo a /contacto/; con Cmd/Ctrl o clic central se abren en otra pestaña, como cualquier enlace.
+  // Ronda 6: las pestañas de Nosotros, «Siguiente» y los menús (paneles y cajón, con su botón Contacto) navegan a /contacto/ (es una página de Nosotros);
+  // en teléfono (menos de 640 px) ningún enlace se intercepta, y por eso tampoco se anuncia como un cuadro de diálogo.
+  // Mientras está abierta, la barra, la página y el pie quedan inertes: el foco no sale del recuadro (ni del reto de reCAPTCHA, que va al final del documento).
+  var ventana=document.getElementById('ventana-contacto');
+  var abreVentana=function(){}, cierraVentana=function(){};
+  if(ventana){
+    var caja=ventana.querySelector('.ventana-caja'), origen=null, desdeVelo=false;
+    var tapadas=[document.querySelector('.saltar'),document.querySelector('header'),document.querySelector('main'),document.querySelector('footer')];
+    abreVentana=function(a){
+      origen=a; ventana.hidden=false; raiz.classList.add('ventana-abierta');
+      tapadas.forEach(function(el){ if(el) el.inert=true; });
+      caja.scrollTop=0; caja.focus({preventScroll:true});   // el foco entra al recuadro (lo anuncia el lector de pantalla) sin marcar ningún campo
+      ventana.dispatchEvent(new Event('abierta'));
+    };
+    cierraVentana=function(){
+      if(ventana.hidden) return;
+      ventana.hidden=true; raiz.classList.remove('ventana-abierta');
+      tapadas.forEach(function(el){ if(el) el.inert=false; });
+      if(origen) origen.focus({preventScroll:true});
+    };
+    // propuesta: lo que la persona escribe en el asunto manda; sólo se reemplaza el asunto que puso un enlace
+    var asV=ventana.querySelector('[name="asunto"]');
+    if(asV) asV.addEventListener('input',function(e){ if(e.isTrusted) delete asV.dataset.auto; });
+    var telefono=window.matchMedia('(max-width:639px)');
+    var abren=[].filter.call(document.querySelectorAll('main a[href^="/contacto/"], footer a[href^="/contacto/"]'),function(a){
+      return !/^\/contacto\/gracias/.test(a.getAttribute('href'))&&!a.closest('.subnav,.siguiente,.panel');
+    });
+    var popup=function(){ abren.forEach(function(a){ if(telefono.matches) a.removeAttribute('aria-haspopup'); else a.setAttribute('aria-haspopup','dialog'); }); };
+    popup();
+    if(telefono.addEventListener) telefono.addEventListener('change',popup); else telefono.addListener(popup);
+    abren.forEach(function(a){
+      a.addEventListener('click',function(e){
+        if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||e.button) return;
+        if(telefono.matches) return;
+        e.preventDefault();
+        // propuesta: el ámbito del enlace (?ambito=…) escribe el asunto, si la persona no escribió otro
+        var fv=ventana.querySelector('form'), am=(a.getAttribute('href').match(/[?&]ambito=([\w-]+)/)||[])[1], noms={};
+        try{ noms=JSON.parse(fv.dataset.ambitos||'{}'); }catch(_){}
+        var as=fv.elements.asunto;
+        if(as&&(!as.value||as.dataset.auto)){ as.value=am&&noms[am]?noms[am]:''; if(as.value) as.dataset.auto='1'; else delete as.dataset.auto; as.dispatchEvent(new Event('input')); }
+        // señales marcadas en el diagnóstico del inicio: pasan al mensaje
+        var marcadas=[].map.call(document.querySelectorAll('#diag-senales input:checked'),function(c){ return c.value; });
+        try{ sessionStorage.removeItem('ollin-senales'); }catch(_){}
+        var m=ventana.querySelector('textarea[name="mensaje"]');
+        if(a.id==='senales-ir'&&marcadas.length&&m&&!m.value) m.value='Reconozco estas señales en mi negocio:\n'+marcadas.map(function(x){ return '- '+x; }).join('\n')+'\n\n';
+        abreVentana(a);
+      });
+    });
+    // cierra con la cruz, con Esc o con un clic en el velo (sólo si el clic empezó ahí: seleccionar texto y soltar fuera no la cierra)
+    ventana.addEventListener('pointerdown',function(e){ desdeVelo=e.target===ventana; });
+    ventana.addEventListener('click',function(e){ if((e.target===ventana&&desdeVelo)||e.target.closest('[data-cierra]')) cierraVentana(); });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!ventana.hidden) cierraVentana(); });
+  }
+
+  // Formulario de contacto (en /contacto/ y en la ventana del inicio). Publicado, lo manda la aplicación web de Apps Script (Google Workspace)
+  // al correo de la empresa después de validar reCAPTCHA, y lleva a /contacto/gracias/.
   var f=document.getElementById('f-forma');
   if(f){
     f.noValidate=true; f.elements.js.value='1';
     var destino=f.dataset.destino, t0=Date.now();
+    // Validación de seguridad: reCAPTCHA v2 («No soy un robot»). En local, sin clave, se usa la clave de prueba pública de Google (siempre pasa y avisa que es de prueba).
+    var clave=f.dataset.captcha||(local?'6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI':'');
     var err=document.getElementById('f-error'), estado=document.getElementById('f-estado'), boton=f.querySelector('button[type="submit"]');
-    var GRACIAS='/contacto/gracias/';
+    var GRACIAS='/contacto/gracias/', CORREO_RE=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
     var MSJ={
-      ambito:'Elige qué te trae.',
       nombre:'Escribe tu nombre.',
       correo:'Escribe tu correo.',
       correoMal:'Revisa tu correo: debe tener la forma nombre@dominio.com.',
-      mensaje:'Cuéntanos de tu negocio o de lo que hoy te quita tiempo.',
+      asunto:'Escribe el asunto.',
+      captcha:'Marca la casilla «No soy un robot».',
       enviando:'Enviando…',
       falla:'No pudimos enviar tu mensaje. Inténtalo de nuevo en unos minutos.',
       sinDestino:'El formulario todavía no está conectado. Inténtalo de nuevo más tarde.'
@@ -150,34 +237,64 @@
     // vaciar y llenar en el siguiente cuadro: así role=status vuelve a anunciar aunque el texto sea el mismo
     var di=function(el,t){ el.__t=t; el.textContent=''; if(t) requestAnimationFrame(function(){ if(el.__t===t) el.textContent=t; }); };
     var marca=function(id,t){ var c=document.getElementById(id), e=document.getElementById(id+'-e'); if(c) c.setAttribute('aria-invalid',String(!!t)); if(e) e.textContent=t||''; return !!t; };
+    var revisa=function(n){
+      var v=f.elements[n].value.trim();
+      return n==='correo'?(!v?MSJ.correo:CORREO_RE.test(v)?'':MSJ.correoMal):(v?'':MSJ[n]);
+    };
+    var OBLIGATORIOS=['nombre','correo','asunto'];
 
-    // Precarga: ?ambito=<slug> elige "¿Qué te trae?"; las señales marcadas en el inicio llegan a "Cuéntanos" y se borran del almacenamiento
-    var amb=(location.search.match(/[?&]ambito=([\w-]+)/)||[])[1];
-    if(amb) [].forEach.call(f.querySelectorAll('input[name="ambito"]'),function(r){ if(r.value===amb) r.checked=true; });
+    var widget=null, cargado=false;
+    var token=function(){ return clave&&widget!==null&&window.grecaptcha?window.grecaptcha.getResponse(widget):''; };
+    // Enviar se ve en gris mientras falte algo obligatorio
+    var listo=function(){ boton.classList.toggle('incompleto',OBLIGATORIOS.some(revisa)||(!!clave&&!token())); };
+    // reCAPTCHA se carga sólo cuando el formulario está por verse: el resto del sitio no se conecta a Google
+    function cargaCaptcha(){
+      if(cargado||!clave) return; cargado=true;
+      window.__ollinCaptcha=function(){
+        widget=window.grecaptcha.render('f-captcha',{sitekey:clave,theme:'light',
+          callback:function(){ marca('f-captcha',''); listo(); }, 'expired-callback':listo, 'error-callback':listo});
+      };
+      var sc=document.createElement('script'); sc.async=true;
+      sc.src='https://www.google.com/recaptcha/api.js?onload=__ollinCaptcha&render=explicit&hl=es-419';
+      document.head.appendChild(sc);
+    }
+    if(clave){
+      if(ventana&&ventana.contains(f)) ventana.addEventListener('abierta',cargaCaptcha);
+      else if('IntersectionObserver' in window){ var vi=new IntersectionObserver(function(es){ if(es[0].isIntersecting){ cargaCaptcha(); vi.disconnect(); } },{rootMargin:'300px 0px'}); vi.observe(f); }
+      else cargaCaptcha();
+      f.addEventListener('focusin',cargaCaptcha);
+    }
+
+    // Errores por campo, como en la referencia: al salir de un campo obligatorio se revisa; al corregirlo, el error se quita en cuanto escribe
+    OBLIGATORIOS.forEach(function(n){
+      var el=f.elements[n];
+      el.addEventListener('blur',function(){ if(!(ventana&&ventana.hidden&&ventana.contains(f))) marca('f-'+n,revisa(n)); });
+      el.addEventListener('input',function(){ if(el.getAttribute('aria-invalid')==='true') marca('f-'+n,revisa(n)); listo(); });
+    });
+
+    // Precarga: ?ambito=<slug> llena el asunto con el nombre del ámbito; las señales marcadas en el inicio llegan al mensaje y se borran del almacenamiento
+    var amb=(location.search.match(/[?&]ambito=([\w-]+)/)||[])[1], nombres={};
+    try{ nombres=JSON.parse(f.dataset.ambitos||'{}'); }catch(_){}
+    if(amb&&nombres[amb]&&!f.elements.asunto.value) f.elements.asunto.value=nombres[amb];
     var llegadas=null;
     try{ llegadas=JSON.parse(sessionStorage.getItem('ollin-senales')||'null'); sessionStorage.removeItem('ollin-senales'); }catch(_){}
     var msj=f.elements.mensaje;
     if(llegadas&&llegadas.length&&msj&&!msj.value){
       msj.value='Reconozco estas señales en mi negocio:\n'+llegadas.map(function(x){ return '- '+x; }).join('\n')+'\n\n';
     }
-    f.addEventListener('change',function(e){ if(e.target.name==='ambito') marca('f-ambito',''); });
+    listo();
 
     f.addEventListener('submit',function(e){
       e.preventDefault();
-      var elegido=f.querySelector('input[name="ambito"]:checked');
-      var d={ambito:elegido?elegido.value:''};
-      ['nombre','correo','negocio','mensaje'].forEach(function(n){ d[n]=f.elements[n].value.trim(); });
-      var malas=[
-        marca('f-ambito',d.ambito?'':MSJ.ambito),
-        marca('f-nombre',d.nombre?'':MSJ.nombre),
-        marca('f-correo',!d.correo?MSJ.correo:/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.correo)?'':MSJ.correoMal),
-        marca('f-mensaje',d.mensaje?'':MSJ.mensaje)
-      ];
+      var d={};
+      ['nombre','correo','puesto','negocio','asunto','mensaje'].forEach(function(n){ d[n]=f.elements[n].value.trim(); });
+      var t=token();
+      var malas=OBLIGATORIOS.map(function(n){ return marca('f-'+n,revisa(n)); });
+      if(clave) malas.push(marca('f-captcha',t?'':MSJ.captcha));
       di(estado,''); di(err,'');
       if(malas.some(Boolean)){
         var primero=f.querySelector('[aria-invalid="true"]');
-        if(primero&&primero.id==='f-ambito') f.querySelector('input[name="ambito"]').focus(); else if(primero) primero.focus();
-        di(err,'Revisa los campos marcados.');
+        if(primero&&primero.id!=='f-captcha') primero.focus(); else if(primero) primero.scrollIntoView({block:'center',behavior:'smooth'});
         return;
       }
       if(!destino){
@@ -186,13 +303,18 @@
         di(err,MSJ.sinDestino); return;
       }
       var datos=new URLSearchParams(d);
-      datos.append('sitio_web',f.elements.sitio_web.value); datos.append('tiempo',String(Math.round((Date.now()-t0)/1000))); datos.append('js','1');
+      datos.append('g-recaptcha-response',t); datos.append('sitio_web',f.elements.sitio_web.value);
+      datos.append('tiempo',String(Math.round((Date.now()-t0)/1000))); datos.append('js','1');
       boton.disabled=true; di(estado,MSJ.enviando);
       fetch(destino,{method:'POST',body:datos}).then(function(r){ return r.json(); }).then(function(r){
         if(!r||!r.ok) throw new Error((r&&r.error)||'sin respuesta');
         evento('formulario_enviado','contacto');   // sólo el nombre del evento y su ubicación, nunca lo que se escribió
         location.href=GRACIAS;
-      }).catch(function(){ di(err,MSJ.falla); di(estado,''); boton.disabled=false; });
+      }).catch(function(){
+        di(err,MSJ.falla); di(estado,''); boton.disabled=false;
+        if(widget!==null&&window.grecaptcha) window.grecaptcha.reset(widget);   // el token ya se usó: hay que marcar la casilla otra vez
+        listo();
+      });
     });
   }
 

@@ -4,36 +4,58 @@
 
 ## Ámbitos
 
-- [Herencia y relevo](https://ollinsoluciones.com/ambitos/herencia-y-relevo/): «Recibí el negocio de mi familia». Cuando un negocio pasa de una generación a otra, lo más valioso suele vivir en la memoria de quien lo dirigía: clientes, precios, proveedores y acuerdos. Nuestro trabajo es que esa información quede ordenada y que el negocio funcione con herramientas que la siguiente generación pueda usar, en coordinación con el notario y el contador de la familia.
-- [Operación y automatización](https://ollinsoluciones.com/ambitos/operacion-y-automatizacion/): «El negocio creció y la operación no». Cuando un negocio crece, lo que antes se resolvía a mano empieza a ocupar el día entero. Agilizamos lo que hoy se hace a mano y automatizamos lo que se repite, empezando por lo que más tiempo te quita, para que el crecimiento no exija más captura ni más horas del dueño.
-- [Finanzas y dirección](https://ollinsoluciones.com/ambitos/finanzas-y-direccion/): «Vendo más, pero no sé cuánto gano». Vender más no siempre significa ganar más. Ordenamos la información que un dueño necesita para decidir: el costo real de lo que vende, el estado de su cartera, su flujo de efectivo y un tablero de dirección, con datos limpios que además facilitan el cierre de su contador.
-- [Imagen y presencia](https://ollinsoluciones.com/ambitos/imagen-y-presencia/): «Mi negocio es mejor de lo que se ve». Hay negocios con años de buen trabajo que desde fuera casi nadie ve. Nuestra labor es que se vea el negocio que es: cómo se presenta, cómo responde a quien lo busca y cómo lo encuentran quienes todavía no lo conocen.
-- [Empresas que empiezan](https://ollinsoluciones.com/ambitos/empresas-que-empiezan/): «Estoy empezando». Empezar un negocio es el mejor momento para hacerlo con orden. Te acompañamos a poner en marcha desde el primer día la información, la forma de trabajar y las herramientas que tu negocio va a necesitar, para que crecer no signifique tener que ponerse al día después.
+- [Herencia y relevo](https://ollinsoluciones.com/ambitos/herencia-y-relevo/): La sucesión de la propiedad y de la dirección. Heredar un negocio implica dos decisiones distintas: quién será su dueño y quién lo dirigirá. La primera tiene un instrumento conocido, el testamento. La segunda depende de algo más difícil de transmitir: lo que sabe quien hoy está al frente y que casi nunca está por escrito.
+- [Operación y automatización](https://ollinsoluciones.com/ambitos/operacion-y-automatizacion/): La organización del trabajo cuando el negocio crece. Lo que al principio se resolvía a mano, con una libreta y buena memoria, deja de alcanzar cuando el negocio crece. El trabajo se multiplica, la misma información se escribe varias veces y el tiempo de quien dirige se va en operar.
+- [Finanzas y dirección](https://ollinsoluciones.com/ambitos/finanzas-y-direccion/): Costos, cobranza, efectivo e indicadores. Entre vender más y ganar más, la diferencia suele estar en tres lugares: un costo que se estima en lugar de calcularse, cuentas por cobrar sin seguimiento y cifras que llegan tarde para decidir.
+- [Imagen y presencia](https://ollinsoluciones.com/ambitos/imagen-y-presencia/): La imagen de un negocio ante quien no lo conoce. Un negocio con años de trabajo puede ser casi invisible para quien no lo conoce. Antes de la primera visita o de la primera llamada, quien lo busca se forma una idea con lo que encuentra de él, y con esa idea decide si lo considera.
+- [Empresas que empiezan](https://ollinsoluciones.com/ambitos/empresas-que-empiezan/): Supervivencia y prácticas de gestión al abrir. Los primeros meses de un negocio son los de mayor riesgo de cierre y también los de mayor margen para decidir cómo trabajar. Las decisiones que se toman entonces sobre cómo registrar, cobrar y organizar el trabajo tienden a convertirse en la forma en que el negocio funciona durante años.
 
 ## Perspectivas
 
-- [Por qué existe Ollin](https://ollinsoluciones.com/perspectivas/por-que-existe-ollin/): Ollin nació al heredar un negocio familiar con años de historia. El relato completo: lo que aprendimos, nuestra misión y lo que nos mueve.
+- [Agentes de inteligencia artificial y productividad empresarial a 2030](https://ollinsoluciones.com/perspectivas/agentes-de-ia-en-la-empresa/): Los agentes de IA avanzan rápido en pruebas y siguen en ensayo en las empresas. Qué proyectan los estudios de productividad y qué requiere usarlos.
+- [Tareas, habilidades e inteligencia artificial generativa hacia 2030](https://ollinsoluciones.com/perspectivas/ia-generativa-y-trabajo/): La OIT ubica a una cuarta parte del empleo mundial en ocupaciones expuestas a la IA generativa. Qué tareas cambian hacia 2030 y qué habilidades suben.
+- [Automatización de procesos en las empresas de México hacia 2030](https://ollinsoluciones.com/perspectivas/automatizacion-de-procesos/): México tiene 62 robots por cada 10 mil empleados de la manufactura. Qué proyectan los estudios a 2030 y por qué sólo se automatiza lo estandarizado.
+- [Testamento y sucesión en la dirección del negocio familiar](https://ollinsoluciones.com/perspectivas/dejaras-heredado-el-negocio/): Según un cálculo propio con la ENASEM 2024, 74.2% de los hogares de 50 años o más declara no tener arreglos para heredar. Testamento y relevo en la dirección.
+- [Esperanza de vida de los negocios en México, por sector y tamaño](https://ollinsoluciones.com/perspectivas/cuanto-vive-un-negocio-en-mexico/): Al abrir, un negocio en México tiene una esperanza de vida de 7.8 años, según el INEGI (Censos de 1989 a 2014): 6.8 con hasta dos personas y 17.3 con 16 a 20.
+- [Tendencias de fondo del entorno de negocios en México hacia 2030](https://ollinsoluciones.com/perspectivas/la-empresa-mexicana-hacia-2030/): Población que envejece, jornada de 40 horas, cobro por transferencia y un T-MEC con revisión anual: lo que proyectan CONAPO, FMI y Banxico hacia 2030.
+- [Sucesión por parentesco y rentabilidad en la empresa familiar](https://ollinsoluciones.com/perspectivas/negocio-preparado-para-ser-heredado/): De las familias empresarias encuestadas por el Tec de Monterrey, 30% elige al director por ser el más calificado. Qué dice la evidencia sobre ese relevo.
+- [Inteligencia artificial y registros en los negocios de México](https://ollinsoluciones.com/perspectivas/inteligencia-artificial-en-los-negocios/): En 2023, apenas 2.1% de los negocios mexicanos con herramientas digitales usó inteligencia artificial. Qué mide la evidencia y qué hace falta antes.
+- [Crédito de proveedores y crédito bancario en las empresas mexicanas](https://ollinsoluciones.com/perspectivas/mas-empresas-se-financian-con-su-proveedor/): Según Banxico, en el segundo trimestre de 2026, 60.9% de las empresas se financió con proveedores y 24.5% con bancos. Qué implica para el flujo de efectivo.
+- [El comercio en México: número de negocios y esperanza de vida](https://ollinsoluciones.com/perspectivas/el-comercio-en-mexico/): Según el INEGI, el comercio reúne 47.3% de los negocios privados de México y su vida promedio, 6.9 años, es la más corta. Qué se asocia con que duren más.
+- [Separación de finanzas y registros contables en el negocio pequeño](https://ollinsoluciones.com/perspectivas/llevar-registros-no-es-cosa-de-empresas-grandes/): Tres de cada cuatro negocios urbanos de hasta diez personas no usaron contador ni programa en 2023. Qué dice la evidencia sobre el registro en el negocio chico.
+- [La manufactura en México: número de negocios y valor agregado](https://ollinsoluciones.com/perspectivas/la-industria-en-mexico/): Las manufacturas son uno de cada nueve negocios en México y generan más de un tercio del valor agregado. Duran más que el promedio; su productividad varía.
+- [Medición del desempeño y delegación en los equipos pequeños](https://ollinsoluciones.com/perspectivas/dirigir-un-equipo/): Sólo 3.7% de los negocios mexicanos de hasta diez personas capacitó a su personal en 2023. Los estudios sugieren que medir va antes de delegar y de capacitar.
+- [El primer año al frente de un negocio heredado](https://ollinsoluciones.com/perspectivas/heredar-negocio-familiar-primer-ano/): Qué observar, qué preguntar y qué dejar por escrito durante el primer año al frente de un negocio familiar, antes de cambiar lo que ya funciona.
+- [El costo del delito para los negocios: pérdidas y gasto en prevención](https://ollinsoluciones.com/perspectivas/el-delito-tambien-cobra/): En 2023 el delito costó 124.3 mil millones de pesos a los negocios de México y 54% se fue en prevenirlo. A quién le pesa más y qué se sabe de lo que lo reduce.
+- [Efectivo, transferencia y tarjeta en los negocios mexicanos](https://ollinsoluciones.com/perspectivas/como-cobran-los-negocios/): En 2023, 83.8% de los negocios cobró en efectivo y la transferencia ya rebasó a la tarjeta, según el INEGI. Qué cambia al aceptar pagos digitales.
+- [Búsqueda en internet y atención por WhatsApp en los negocios pequeños](https://ollinsoluciones.com/perspectivas/lo-que-tu-negocio-dice-en-internet/): Sólo 5.6% de los negocios urbanos tenía página propia en 2023, y casi nueve de cada diez usuarios buscan información en línea. Lo que pesan las reseñas.
+- [Trámites y formalización de los negocios informales](https://ollinsoluciones.com/perspectivas/formalizarse-que-cambia/): En varios municipios de México, abrir una empresa pasó de 30 a 1.4 días y casi no formalizó a los informales. Qué cambia al formalizarse y a quién le rinde.
+- [El T-MEC y las empresas pequeñas que proveen a exportadores](https://ollinsoluciones.com/perspectivas/exportar-siendo-pequeno/): Las manufactureras de hasta 250 personas aportaron en 2023 menos de 5% de lo exportado por el sector. El T-MEC y los aranceles les llegan por su cliente.
+- [Mujeres propietarias de negocios en México, por tamaño de empresa](https://ollinsoluciones.com/perspectivas/las-mujeres-que-dirigen-negocios/): Según el INEGI, en 2018 las mujeres eran dueñas de más de un tercio de los negocios micro, pequeños y medianos de México; casi todos, de hasta diez personas.
+- [La jornada de 40 horas y el costo de la hora trabajada](https://ollinsoluciones.com/perspectivas/jornada-de-40-horas/): La jornada de 40 horas ya es ley y baja dos horas cada enero hasta 2030. Qué dicen el INEGI y los estudios de otros países sobre horas, costo y empleo.
+- [El desfase entre el crecimiento de un negocio y sus herramientas](https://ollinsoluciones.com/perspectivas/cinco-senales-negocio-ponerse-al-dia/): Las ventas crecen y la utilidad no, el cierre de mes con prisa, tareas que dependen del dueño: cinco indicios de que la operación rebasó sus herramientas.
 
 ## Primera reunión
 
-- Primera reunión sin costo, de una hora.
+- La primera reunión, de una hora, corre por nuestra cuenta.
 - Respondemos el mismo día. Horario de atención: lunes a sábado, de 9:00 a 21:00 h.
 - Contacto: sólo por el formulario de https://ollinsoluciones.com/contacto/
 
 ## Preguntas frecuentes
 
-- ¿Cuánto cuesta trabajar con Ollin? La primera reunión, de una hora, no tiene costo. Después, el costo depende del alcance de cada proyecto: antes de empezar cualquier etapa te decimos cuánto cuesta, y queda por escrito junto con el alcance y el plazo.
-- ¿Tengo que dejar el sistema de mi contador? No. En contabilidad entregamos datos limpios para el cierre mensual, sin sustituir el sistema de tu contador. Tu contador conserva su sistema y recibe la información ordenada para cada cierre.
-- ¿Atienden fuera de la Ciudad de México? Sí. En la Ciudad de México las reuniones pueden ser presenciales o por Google Meet, según prefieras; en el resto de la República trabajamos a distancia y nos reunimos por Google Meet. Nuestro horario de atención es de lunes a sábado, de 9:00 a 21:00 h.
-- ¿Quién ve la información de mi negocio? Sólo quien tú autorizas. La usamos sólo para lo que acordamos contigo y nunca la vendemos ni la compartimos. Lo que conocemos de tu negocio es confidencial, y así lo firmamos. Si un día decides cambiar, te la llevas completa.
-- ¿Cuándo me responden? El mismo día. Nuestro horario de atención es de lunes a sábado, de 9:00 a 21:00 h. Escríbenos desde el formulario de contacto y te respondemos para acordar la primera reunión.
-- ¿Qué pasa en la primera reunión? Conocemos tu negocio y lo que hoy requiere más tiempo del que debería. Dura una hora y no tiene costo; en la Ciudad de México puede ser presencial o por Google Meet. Si decidimos seguir, antes de empezar te decimos qué sigue y cuánto cuesta.
+- ¿Cuánto cuesta trabajar con Ollin? La primera reunión, de una hora, no tiene costo. El costo de cada proyecto depende de su alcance y se acuerda por escrito, junto con los plazos, antes de iniciar cada etapa.
+- ¿Es necesario cambiar el sistema del contador? No. El contador conserva su sistema; nuestro trabajo le entrega la información ordenada para cada cierre mensual.
+- ¿Atienden fuera de la Ciudad de México? Sí. En la Ciudad de México las reuniones pueden ser presenciales o por videollamada; en el resto del país trabajamos a distancia.
 
 ## Páginas
 
-- [Nuestra historia](https://ollinsoluciones.com/nosotros/): cómo nació Ollin, las tres cosas que aprendimos, misión, visión y valores.
-- [Ámbitos](https://ollinsoluciones.com/ambitos/): los cinco momentos de un negocio en los que acompañamos al dueño.
+- [Conócenos](https://ollinsoluciones.com/nosotros/): quiénes somos, qué significa Ollin, lo que creemos, misión, visión y valores.
+- [Nuestro punto de vista](https://ollinsoluciones.com/nosotros/punto-de-vista/): La postura de Ollin ante la herencia y el relevo, la publicidad, la imagen, la administración y los sistemas de un negocio, y cómo trabaja cada tema.
+- [Ámbitos](https://ollinsoluciones.com/ambitos/): cinco momentos de un negocio, con lo que dicen los datos de cada uno.
 - [Cómo trabajamos](https://ollinsoluciones.com/como-trabajamos/): proceso, compromisos por escrito, información del cliente y preguntas frecuentes.
-- [Perspectivas](https://ollinsoluciones.com/perspectivas/): textos para dueños de negocios, por ámbito.
-- [Hablemos](https://ollinsoluciones.com/contacto/): formulario de contacto y qué pasa después de escribirnos.
+- [Perspectivas](https://ollinsoluciones.com/perspectivas/): textos para dueños de negocios, por sección y por tema (RSS: https://ollinsoluciones.com/perspectivas/feed.xml).
+- [Horizonte 2030](https://ollinsoluciones.com/perspectivas/horizonte/): Inteligencia artificial, automatización y el entorno de las empresas en México hacia 2030: lo medido, lo proyectado y las decisiones que dependen de ello.
+- [Herencias](https://ollinsoluciones.com/perspectivas/herencias/): Heredar un negocio implica dos decisiones: quién será su dueño y quién lo dirigirá. Textos con datos para quien prepara el relevo y para quien lo recibe.
+- [PyMES](https://ollinsoluciones.com/perspectivas/pymes/): Una cifra al mes sobre los negocios de México, de fuentes oficiales o estudios con método publicado, con su año y lo que significa para quien dirige.
+- [Contacto](https://ollinsoluciones.com/contacto/): formulario de contacto.
 - [Aviso de privacidad](https://ollinsoluciones.com/aviso-privacidad.html)
